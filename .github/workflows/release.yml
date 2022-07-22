@@ -15,18 +15,13 @@ jobs:
           java-version: 17
           distribution: 'adopt'
           cache: 'gradle'
-#      - uses: actions/cache@v3
-#        with:
-#          path: |
-#            ~/.gradle/caches
-#            ~/.gradle/wrapper
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-#          restore-keys: |
-#            ${{ runner.os }}-gradle-
-      - name: Build with Gradle
-        run: ./gradlew build --no-daemon
-      - name: Release
-        uses: AButler/upload-release-assets@v2.0
+      - run: ./gradlew build --no-daemon
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          files: 'build/libs/*'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/libs/DuckSMP-0.1.jar
+          asset_name: Built-Plugin
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: "Update"
