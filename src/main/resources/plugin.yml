@@ -1,0 +1,8 @@
+name: DuckSMP
+version: '${version}'
+main: io.github.haappi.ducksmp.DuckSMP
+api-version: 1.19
+load: STARTUP
+authors: [ haappi, AlysDaDuck ]
+description: SMP core for smp yes
+website: discord.gg/ducknation
