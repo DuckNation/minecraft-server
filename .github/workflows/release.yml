@@ -21,7 +21,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/libs/DuckSMP-0.1.jar
-          asset_name: Built-Plugin
-          tag: "V0.0.1"
+          asset_name: DuckSMP.jar
+          tag: ${{ env.GITHUB_REF }}
           overwrite: true
           body: "Update"
