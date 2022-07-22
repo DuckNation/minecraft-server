@@ -1,4 +1,4 @@
-name: CI
+name: Continuous Release
 on: [push]
 jobs:
   build:
