@@ -23,5 +23,5 @@ jobs:
           file: build/libs/DuckSMP-0.1.jar
           asset_name: DuckSMP.jar
           tag: "Version-0.1"
-          overwrite: true
+          overwrite: false
           body: "Update"
