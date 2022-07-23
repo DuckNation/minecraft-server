@@ -16,19 +16,17 @@ jobs:
           distribution: 'adopt'
           cache: 'gradle'
       - run: ./gradlew build --no-daemon
-      - name: Github Tag Generator
-        uses: TGPSKI/name-generator-node-action@v2
-        id: generator
-        with:
-          separator: '-'
-          length: '4'
-          style: 'upperCase'
+      - name: Set outputs
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Check outputs
+        run: echo ${{ steps.vars.outputs.sha_short }}
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/libs/DuckSMP-0.1.jar
           asset_name: DuckSMP.jar
-          tag: ${{ steps.generator.outputs.name }}
+          tag: ${{ steps.vars.outputs.sha_short }}
           overwrite: false
           body: "Update"
