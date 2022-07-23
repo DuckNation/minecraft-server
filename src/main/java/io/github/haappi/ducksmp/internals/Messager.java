@@ -19,6 +19,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -69,7 +70,7 @@ public class Messager implements Listener {
             case "ignore":
                 return;
             case "release":
-                downloadPluginUpdate(message.get("file", org.bson.types.Binary.class));
+                downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
 
                 Bukkit.getLogger().info("Downloaded new release of DuckSMP!");
                 Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("A new version of Duck SMP is available to update. It will update when no-one is online, or after an hour.", NamedTextColor.GREEN)));
@@ -77,7 +78,7 @@ public class Messager implements Listener {
                 if (Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
                 break;
             case "critical_release":
-                downloadPluginUpdate(message.get("file", org.bson.types.Binary.class));
+                downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
 
                 Bukkit.getLogger().severe("Downloaded critical release of DuckSMP!");
                 Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("An urgent version of Duck SMP has been released. Server will restart in 10 seconds.", NamedTextColor.RED)));
@@ -93,10 +94,18 @@ public class Messager implements Listener {
         insertEmptyDocumentIfNeeded();
     }
 
-    private void downloadPluginUpdate(Binary binary) {
+    private void downloadPluginUpdate(Binary binary, String sha) {
+        File folder = new File("plugins/");
+        if (folder.isDirectory()) {
+            for (File f : folder.listFiles()) {
+                if (f.getName().startsWith("DuckSMP-")) {
+                    f.delete();
+                }
+            }
+        }
         try {
             byte[] bytes = binary.getData();
-            java.io.File file = new java.io.File("plugins/DuckSMP.jar");
+            java.io.File file = new java.io.File("plugins/DuckSMP-" + sha + ".jar");
             java.io.FileOutputStream fos = new java.io.FileOutputStream(file);
             fos.write(bytes);
             fos.close();
