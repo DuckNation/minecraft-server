@@ -50,7 +50,7 @@ public class Messager implements Listener {
 
     @EventHandler
     public void playerQuit(PlayerQuitEvent event) {
-        if ((Bukkit.getOnlinePlayers().size() == 0) && (restartNeeded)) {
+        if ((Bukkit.getOnlinePlayers().size() <= 1) && (restartNeeded)) {
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart");
         }
     }
@@ -75,7 +75,7 @@ public class Messager implements Listener {
                 downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
 
                 Bukkit.getLogger().info("Downloaded new release of DuckSMP!");
-                Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("A new version of Duck SMP is available to update. It will update when no-one is online, or after an hour.", NamedTextColor.GREEN)));
+                Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("A new version of Duck SMP is available to update. It will update when no-one is online, or after an hour.", NamedTextColor.GREEN).append(Component.text(" Hash " + Messager.commitHash, NamedTextColor.YELLOW))));
                 restartNeeded = true;
                 if (Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
                 break;
@@ -83,7 +83,7 @@ public class Messager implements Listener {
                 downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
 
                 Bukkit.getLogger().severe("Downloaded critical release of DuckSMP!");
-                Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("An urgent version of Duck SMP has been released. Server will restart in 10 seconds.", NamedTextColor.RED)));
+                Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("An urgent version of Duck SMP has been released. Server will restart in 10 seconds.", NamedTextColor.RED).append(Component.text(" Hash " + Messager.commitHash, NamedTextColor.YELLOW))));
                 restartNeeded = true;
                 if (Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
                 doCountdown("Server will restart in ", this.plugin, 10);
