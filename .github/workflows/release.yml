@@ -17,12 +17,12 @@ jobs:
           cache: 'gradle'
       - run: ./gradlew build --no-daemon
       - name: Github Tag Generator
-      uses: TGPSKI/name-generator-node-action@v2
-      id: generator
-      with:
-        separator: '-'
-        length: '4'
-        style: 'upperCase'
+        uses: TGPSKI/name-generator-node-action@v2
+        id: generator
+        with:
+          separator: '-'
+          length: '4'
+          style: 'upperCase'
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
