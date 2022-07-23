@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 import static io.github.haappi.ducksmp.DuckSMP.taskIds;
 import static io.github.haappi.ducksmp.utils.Utils.getCountdown;
@@ -99,6 +100,7 @@ public class Messager implements Listener {
         if (folder.isDirectory()) {
             for (File f : folder.listFiles()) {
                 if (f.getName().startsWith("DuckSMP-")) {
+                    Bukkit.getLogger().info("Deleted commit hash: " + f.getName().split("-")[1]);
                     f.delete();
                 }
             }
