@@ -31,6 +31,7 @@ public class Messager implements Listener {
 
     private final DuckSMP plugin;
     private boolean restartNeeded = false;
+    public static String commitHash = "";
 
     public Messager() {
         this.plugin = DuckSMP.getInstance();
@@ -96,15 +97,7 @@ public class Messager implements Listener {
     }
 
     private void downloadPluginUpdate(Binary binary, String sha) {
-        File folder = new File("plugins/");
-        if (folder.isDirectory()) {
-            for (File f : folder.listFiles()) {
-                if (f.getName().startsWith("DuckSMP-")) {
-                    Bukkit.getLogger().info("Deleted an older version of DuckSMP.");
-                    f.delete();
-                }
-            }
-        }
+        Messager.commitHash = sha;
         try {
             byte[] bytes = binary.getData();
             java.io.File file = new java.io.File("plugins/DuckSMP-" + sha + ".jar");
