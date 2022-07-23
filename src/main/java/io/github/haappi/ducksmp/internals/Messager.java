@@ -100,7 +100,7 @@ public class Messager implements Listener {
         if (folder.isDirectory()) {
             for (File f : folder.listFiles()) {
                 if (f.getName().startsWith("DuckSMP-")) {
-                    Bukkit.getLogger().info("Deleted commit hash: " + f.getName().split("-")[1].split("-")[0]);
+                    Bukkit.getLogger().info("Deleted an older version of DuckSMP.");
                     f.delete();
                 }
             }
