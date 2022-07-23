@@ -34,7 +34,6 @@ public final class DuckSMP extends JavaPlugin {
     @Override
     public void onDisable() {
         for (int taskId : taskIds) {
-            System.out.println("Cancelling task " + taskId);
             Bukkit.getScheduler().cancelTask(taskId);
         }
         this.mongoClient.getDatabase("duckMinecraft").getCollection("messages").drop();
