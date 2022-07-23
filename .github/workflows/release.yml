@@ -16,17 +16,19 @@ jobs:
           distribution: 'adopt'
           cache: 'gradle'
       - run: ./gradlew build --no-daemon
-      - name: Bump version and push tag
-        uses: ChloePlanet/github-tag-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: true
+      - name: Github Tag Generator
+      uses: TGPSKI/name-generator-node-action@v2
+      id: generator
+      with:
+        separator: '-'
+        length: '4'
+        style: 'upperCase'
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/libs/DuckSMP-0.1.jar
           asset_name: DuckSMP.jar
-          tag: "Version-0.2"
+          tag: ${{ steps.generator.outputs.name }}
           overwrite: false
           body: "Update"
