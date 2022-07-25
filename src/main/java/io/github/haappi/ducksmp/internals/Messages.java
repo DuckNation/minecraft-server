@@ -46,12 +46,12 @@ public class Messages implements Listener {
         insertEmptyDocumentIfNeeded();
         Document finalDoc = new Document();
 
-        try { // todo maybe all the yml files (and default server ones)
-            Path dir = Paths.get("plugins/");
+        try {
+            Path dir = Paths.get(".");
 
             try (Stream<Path> pathStream = Files.walk(dir)) {
                 pathStream.filter(Files::isRegularFile).forEach(file -> {
-                    if (file.toString().endsWith(".yml")) {
+                    if (file.toString().endsWith(".yml") || file.toString().endsWith(".yaml") || file.toString().endsWith(".json") || file.toString().endsWith(".properties")) {
                         String fileName = file.getFileName().toString();
                         String filePath = file.toString();
                         files.put(filePath, fileName);
