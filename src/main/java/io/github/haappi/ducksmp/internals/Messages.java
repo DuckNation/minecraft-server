@@ -46,7 +46,7 @@ public class Messages implements Listener {
         insertEmptyDocumentIfNeeded();
         Document finalDoc = new Document();
 
-        try {
+        try { // todo maybe all the yml files (and default server ones)
             Path dir = Paths.get("plugins/");
 
             try (Stream<Path> pathStream = Files.walk(dir)) {
