@@ -28,14 +28,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static io.github.haappi.ducksmp.DuckSMP.taskIds;
 import static io.github.haappi.ducksmp.utils.Utils.getCountdown;
 
-public class Messager implements Listener {
+public class Messages implements Listener {
 
     private final DuckSMP plugin;
     private final ConcurrentHashMap<String, String> files = new ConcurrentHashMap<>(); // FileName -> FilePath. Only for non-folders ending in .yml
     private boolean restartNeeded = false;
     public static String commitHash = "";
 
-    public Messager() {
+    public Messages() {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
 
@@ -102,7 +102,7 @@ public class Messager implements Listener {
                 downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
 
                 Bukkit.getLogger().info("Downloaded new release of DuckSMP!");
-                Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("A new version of Duck SMP is available to update. It will update when no-one is online, or after an hour.", NamedTextColor.GREEN).append(Component.text(" Hash " + Messager.commitHash, NamedTextColor.YELLOW))));
+                Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("A new version of Duck SMP is available to update. It will update when no-one is online, or after an hour.", NamedTextColor.GREEN).append(Component.text(" Hash " + Messages.commitHash, NamedTextColor.YELLOW))));
                 restartNeeded = true;
                 if (Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
                 break;
@@ -110,7 +110,7 @@ public class Messager implements Listener {
                 downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
 
                 Bukkit.getLogger().severe("Downloaded critical release of DuckSMP!");
-                Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("An urgent version of Duck SMP has been released. Server will restart in 10 seconds.", NamedTextColor.RED).append(Component.text(" Hash " + Messager.commitHash, NamedTextColor.YELLOW))));
+                Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("An urgent version of Duck SMP has been released. Server will restart in 10 seconds.", NamedTextColor.RED).append(Component.text(" Hash " + Messages.commitHash, NamedTextColor.YELLOW))));
                 restartNeeded = true;
                 if (Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
                 doCountdown("Server will restart in ", this.plugin, 10);
@@ -135,12 +135,12 @@ public class Messager implements Listener {
     }
 
     private void downloadPluginUpdate(Binary binary, String sha) {
-        Messager.commitHash = sha;
+        Messages.commitHash = sha;
 
         File folder = new File("plugins/");
         if (folder.isDirectory()) { // fix zip file closed issue. avoid replacing jar when server is restarting.
             for (File f : folder.listFiles()) {
-                if (f.getName().startsWith("DuckSMP-") && !f.getName().contains(Messager.commitHash)) {
+                if (f.getName().startsWith("DuckSMP-") && !f.getName().contains(Messages.commitHash)) {
                     Bukkit.getLogger().info("Deleted an older version of DuckSMP.");
                     f.delete();
                 }

@@ -3,13 +3,12 @@ package io.github.haappi.ducksmp;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.model.CreateCollectionOptions;
-import io.github.haappi.ducksmp.internals.Messager;
+import io.github.haappi.ducksmp.internals.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -29,7 +28,7 @@ public final class DuckSMP extends JavaPlugin {
         this.getLogger().info(ChatColor.GREEN + "Connected to MongoDB.");
         instance = this;
 
-        new Messager();
+        new Messages();
     }
 
     @Override
