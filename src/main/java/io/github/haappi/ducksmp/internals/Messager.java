@@ -42,8 +42,12 @@ public class Messager implements Listener {
         Document finalDoc = new Document();;
         @NotNull BukkitTask id = Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
             for (Document message : collection.find(finalDoc).projection(finalDoc).cursorType(CursorType.TailableAwait)) {
-                if (message.getString("bound").equalsIgnoreCase("serverbound")) {
-                    handleMessage(message);
+                try {
+                    if (message.getString("bound").equalsIgnoreCase("serverbound")) {
+                        handleMessage(message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }, 40L);
