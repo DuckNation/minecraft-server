@@ -62,6 +62,7 @@ public class Messager implements Listener {
         Document doc = new Document();
         if (collection.find(doc).first() == null) {
             doc.put("type", "ignore");
+            doc.put("bound", "uranusbound");
             collection.insertOne(doc);
         }
     }
@@ -112,7 +113,7 @@ public class Messager implements Listener {
         Messager.commitHash = sha;
 
         File folder = new File("plugins/");
-        if (folder.isDirectory()) {
+        if (folder.isDirectory()) { // fix zip file closed issue. avoid replacing jar when server is restarting.
             for (File f : folder.listFiles()) {
                 if (f.getName().startsWith("DuckSMP-") && !f.getName().contains(Messager.commitHash)) {
                     Bukkit.getLogger().info("Deleted an older version of DuckSMP.");
