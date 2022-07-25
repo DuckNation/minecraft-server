@@ -39,16 +39,6 @@ public final class DuckSMP extends JavaPlugin {
         }
         this.mongoClient.getDatabase("duckMinecraft").getCollection("messages").drop();
         this.mongoClient.getDatabase("duckMinecraft").createCollection("messages", new CreateCollectionOptions().capped(true).sizeInBytes(1024 * 1024 * 10)); // 10 MB
-
-        File folder = new File("plugins/");
-        if (folder.isDirectory()) {
-            for (File f : folder.listFiles()) {
-                if (f.getName().startsWith("DuckSMP-") && !f.getName().contains(Messager.commitHash)) {
-                    Bukkit.getLogger().info("Deleted an older version of DuckSMP.");
-                    f.delete();
-                }
-            }
-        }
     }
 
     public static DuckSMP getInstance() {

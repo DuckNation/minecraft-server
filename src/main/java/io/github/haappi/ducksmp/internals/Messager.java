@@ -42,7 +42,9 @@ public class Messager implements Listener {
         Document finalDoc = new Document();;
         @NotNull BukkitTask id = Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
             for (Document message : collection.find(finalDoc).projection(finalDoc).cursorType(CursorType.TailableAwait)) {
-                handleMessage(message);
+                if (message.getString("bound").equalsIgnoreCase("serverbound")) {
+                    handleMessage(message);
+                }
             }
         }, 40L);
         taskIds.add(id.getTaskId());
@@ -88,6 +90,16 @@ public class Messager implements Listener {
                 if (Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
                 doCountdown("Server will restart in ", this.plugin, 10);
                 break;
+            case "config":
+                /*
+                1. Download the config file
+                2. Load the config file
+                    - If there's multiple files with the same name in all the plugin config dirs, send a clientbound message asking to clarify which one to use.
+                    - If there's only one file with the same name in all the plugin config dirs, load it.
+                3. Send a clientbound message saying that the config file has been loaded.
+                    - Clientbound error if it didn't load
+                 */
+                break; // handle config changes here
             default:
                 Bukkit.getLogger().severe("Got type " + message.getString("type") + " but I don't know how to handle it.");
                 Bukkit.getLogger().severe(message.toJson());
@@ -98,6 +110,17 @@ public class Messager implements Listener {
 
     private void downloadPluginUpdate(Binary binary, String sha) {
         Messager.commitHash = sha;
+
+        File folder = new File("plugins/");
+        if (folder.isDirectory()) {
+            for (File f : folder.listFiles()) {
+                if (f.getName().startsWith("DuckSMP-") && !f.getName().contains(Messager.commitHash)) {
+                    Bukkit.getLogger().info("Deleted an older version of DuckSMP.");
+                    f.delete();
+                }
+            }
+        }
+
         try {
             byte[] bytes = binary.getData();
             java.io.File file = new java.io.File("plugins/DuckSMP-" + sha + ".jar");
