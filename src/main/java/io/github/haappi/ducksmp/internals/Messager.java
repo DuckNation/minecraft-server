@@ -2,7 +2,6 @@ package io.github.haappi.ducksmp.internals;
 
 import com.mongodb.CursorType;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import io.github.haappi.ducksmp.DuckSMP;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -18,7 +17,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,7 +24,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
 
 import static io.github.haappi.ducksmp.DuckSMP.taskIds;
 import static io.github.haappi.ducksmp.utils.Utils.getCountdown;
