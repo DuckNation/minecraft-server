@@ -22,8 +22,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 import static io.github.haappi.ducksmp.DuckSMP.taskIds;
 import static io.github.haappi.ducksmp.utils.Utils.getCountdown;
@@ -45,7 +47,16 @@ public class Messages implements Listener {
 
         try {
             Path dir = Paths.get("plugins/");
-            Files.walk(dir).forEach(path -> saveFile(path.toFile()));
+
+            try (Stream<Path> pathStream = Files.walk(dir)) {
+                pathStream.filter(Files::isRegularFile).forEach(file -> {
+                    if (file.toString().endsWith(".yml")) {
+                        String fileName = file.getFileName().toString();
+                        String filePath = file.toString();
+                        files.put(filePath, fileName);
+                    }
+                });
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -64,14 +75,6 @@ public class Messages implements Listener {
         }, 40L);
         taskIds.add(id.getTaskId());
 
-    }
-
-    private void saveFile(File file) {
-        if (!file.isDirectory()) {
-            if (file.getName().endsWith(".yml")) {
-                files.put(file.getPath(), file.getName());
-            }
-        } // ignore folders
     }
 
     @EventHandler
@@ -142,10 +145,13 @@ public class Messages implements Listener {
 
         File folder = new File("plugins/");
         if (folder.isDirectory()) { // fix zip file closed issue. avoid replacing jar when server is restarting.
-            for (File f : folder.listFiles()) {
+            for (File f : Objects.requireNonNull(folder.listFiles())) {
                 if (f.getName().startsWith("DuckSMP-") && !f.getName().contains(Messages.commitHash)) {
                     Bukkit.getLogger().info("Deleted an older version of DuckSMP.");
-                    f.delete();
+                    boolean deleted = f.delete();
+                    if (!deleted) {
+                        Bukkit.getLogger().severe("Could not delete " + f.getName());
+                    }
                 }
             }
         }
@@ -160,7 +166,7 @@ public class Messages implements Listener {
             e.printStackTrace();
         }
     }
-
+    @SuppressWarnings("SameParameterValue")
     private void doCountdown(String message, DuckSMP plugin, Integer timerLength) {
         AtomicInteger countdown = new AtomicInteger(timerLength);
 
