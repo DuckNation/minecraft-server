@@ -4,6 +4,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.model.CreateCollectionOptions;
 import io.github.haappi.ducksmp.internals.Messages;
+import io.github.haappi.ducksmp.listeners.Villager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -37,6 +38,7 @@ public final class DuckSMP extends JavaPlugin {
         instance = this;
 
         new Messages();
+        new Villager();
     }
 
     @Override
