@@ -9,6 +9,7 @@ import org.bukkit.craftbukkit.v1_19_R1.entity.CraftLivingEntity;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
@@ -42,7 +43,6 @@ public class totem implements Listener {
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        // todo make pigs invulnerable
         if(event.getEntity().getKiller() != null){
             if (event.getEntity().getType() != randomMob) {
                 event.getDrops().removeIf(item -> item.getType() == Material.TOTEM_OF_UNDYING);
@@ -50,6 +50,11 @@ public class totem implements Listener {
                 event.getDrops().add(new ItemStack(Material.TOTEM_OF_UNDYING));
             }
         }
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        // todo if pig named technoblade (cancel damage)
     }
 
 }
