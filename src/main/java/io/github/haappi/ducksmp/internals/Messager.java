@@ -21,6 +21,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
@@ -30,6 +34,7 @@ import static io.github.haappi.ducksmp.utils.Utils.getCountdown;
 public class Messager implements Listener {
 
     private final DuckSMP plugin;
+    private final ConcurrentHashMap<String, String> files = new ConcurrentHashMap<>(); // FileName -> FilePath. Only for non-folders ending in .yml
     private boolean restartNeeded = false;
     public static String commitHash = "";
 
@@ -39,7 +44,16 @@ public class Messager implements Listener {
 
         MongoCollection<Document> collection = DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages");
         insertEmptyDocumentIfNeeded();
-        Document finalDoc = new Document();;
+        Document finalDoc = new Document();
+
+        try {
+            Path dir = Paths.get("plugins/");
+            Files.walk(dir).forEach(path -> saveFile(path.toFile()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(files);
+
         @NotNull BukkitTask id = Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
             for (Document message : collection.find(finalDoc).projection(finalDoc).cursorType(CursorType.TailableAwait)) {
                 try {
@@ -52,6 +66,15 @@ public class Messager implements Listener {
             }
         }, 40L);
         taskIds.add(id.getTaskId());
+
+    }
+
+    private void saveFile(File file) {
+        if (!file.isDirectory()) {
+            if (file.getName().endsWith(".yml")) {
+                files.put(file.getPath(), file.getName());
+            }
+        } // ignore folders
     }
 
     @EventHandler
@@ -96,10 +119,11 @@ public class Messager implements Listener {
                 doCountdown("Server will restart in ", this.plugin, 10);
                 break;
             case "config":
+
                 /*
                 1. Download the config file
                 2. Load the config file
-                    - If there's multiple files with the same name in all the plugin config dirs, send a clientbound message asking to clarify which one to use.
+                    - If there's multiple files with the same name in all the plugin config dirs, send a clientbound message asking to clarify which one to use. (picka fike 1-6_
                     - If there's only one file with the same name in all the plugin config dirs, load it.
                 3. Send a clientbound message saying that the config file has been loaded.
                     - Clientbound error if it didn't load
