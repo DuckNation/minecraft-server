@@ -106,7 +106,10 @@ public class Messages implements Listener {
                 downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
 
                 Bukkit.getLogger().info("Downloaded new release of DuckSMP! Hash: " + message.getString("sha"));
-                Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("A new version of Duck SMP is available to update. It will update when no-one is online, or after an hour.", NamedTextColor.GREEN).append(Component.text(" Hash " + Messages.commitHash, NamedTextColor.YELLOW))));
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    player.sendMessage(Component.text("A new version of Duck SMP is available to update. It will update when no-one is online, or after an hour.", NamedTextColor.GREEN).append(Component.text(" Hash " + Messages.commitHash, NamedTextColor.YELLOW)));
+                    player.sendMessage(Component.text("Commit message: " + message.getString("data"), NamedTextColor.YELLOW));
+                });
                 restartNeeded = true;
                 if (Bukkit.getOnlinePlayers().isEmpty())
                     Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
