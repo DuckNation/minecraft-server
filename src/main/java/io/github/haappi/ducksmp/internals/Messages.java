@@ -22,10 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
@@ -126,29 +123,39 @@ public class Messages implements Listener {
                 break;
             case "config":
                 Set<String> values = getKeysByValue(files, message.getString("fileName"));
-                if (values.isEmpty()) {
-                    Document doc = new Document();
-                    doc.put("type", "config");
-                    doc.put("bound", "clientbound");
-                    doc.put("fileName", message.getString("fileName"));
-                    doc.put("file", message.get("file", org.bson.types.Binary.class));
-                    doc.put("returned", false);
-                    doc.put("message", "A file was not found by the name of " + message.getString("fileName") + ".");
-                    getMongoClient().getDatabase("duckMinecraft").getCollection("messages").insertOne(doc);
-                    return;
+                List<String> stringsList = new ArrayList<>(values);
+                if (message.getInteger("index") == 0) {
+                    if (values.isEmpty()) {
+                        Document doc = new Document();
+                        doc.put("type", "config");
+                        doc.put("bound", "clientbound");
+                        doc.put("fileName", message.getString("fileName"));
+                        doc.put("file", message.get("file", org.bson.types.Binary.class));
+                        doc.put("returned", false);
+                        doc.put("message", "A file was not found by the name of " + message.getString("fileName") + ".");
+                        getMongoClient().getDatabase("duckMinecraft").getCollection("messages").insertOne(doc);
+                        return;
+                    }
+                    if (values.size() > 1 && !(message.getInteger("index") > stringsList.size() - 1)) {
+                        Document doc = new Document();
+                        doc.put("type", "config");
+                        doc.put("bound", "clientbound");
+                        doc.put("fileName", message.getString("fileName"));
+                        doc.put("file", message.get("file", org.bson.types.Binary.class));
+                        doc.put("returned", values);
+                        doc.put("message", "Multiple files were found by the name of " + message.getString("fileName") + ". Please pick one from the list.");
+                        getMongoClient().getDatabase("duckMinecraft").getCollection("messages").insertOne(doc);
+                        return;
+                    }
                 }
-                if (values.size() > 1) {
-                    Document doc = new Document();
-                    doc.put("type", "config");
-                    doc.put("bound", "clientbound");
-                    doc.put("fileName", message.getString("fileName"));
-                    doc.put("file", message.get("file", org.bson.types.Binary.class));
-                    doc.put("returned", values);
-                    doc.put("message", "Multiple files were found by the name of " + message.getString("fileName") + ". Please pick one from the list.");
-                    getMongoClient().getDatabase("duckMinecraft").getCollection("messages").insertOne(doc);
-                    return;
+
+
+                String filePath;
+                if (values.size() == 1) {
+                   filePath = values.iterator().next();
+                } else {
+                    filePath = stringsList.get(message.getInteger("index") - 1);
                 }
-                String filePath = values.iterator().next();
                 boolean yes = editFileData(message.get("file", org.bson.types.Binary.class), filePath);
                 if (!yes) {
                     Document doc = new Document();
@@ -161,6 +168,14 @@ public class Messages implements Listener {
                     getMongoClient().getDatabase("duckMinecraft").getCollection("messages").insertOne(doc);
                     return;
                 }
+                Document doc = new Document();
+                doc.put("type", "config");
+                doc.put("bound", "clientbound");
+                doc.put("fileName", message.getString("fileName"));
+                doc.put("file", message.get("file", org.bson.types.Binary.class));
+                doc.put("returned", false);
+                doc.put("message", "Inserted to " + filePath + ".");
+                getMongoClient().getDatabase("duckMinecraft").getCollection("messages").insertOne(doc);
                 // edit the matched file based on the filePath & name
 
                 /*
