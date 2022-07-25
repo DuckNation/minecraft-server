@@ -30,10 +30,10 @@ import static io.github.haappi.ducksmp.utils.Utils.getCountdown;
 
 public class Messages implements Listener {
 
+    public static String commitHash = "";
     private final DuckSMP plugin;
     private final ConcurrentHashMap<String, String> files = new ConcurrentHashMap<>(); // FileName -> FilePath. Only for non-folders ending in .yml
     private boolean restartNeeded = false;
-    public static String commitHash = "";
 
     public Messages() {
         this.plugin = DuckSMP.getInstance();
@@ -104,7 +104,8 @@ public class Messages implements Listener {
                 Bukkit.getLogger().info("Downloaded new release of DuckSMP!");
                 Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("A new version of Duck SMP is available to update. It will update when no-one is online, or after an hour.", NamedTextColor.GREEN).append(Component.text(" Hash " + Messages.commitHash, NamedTextColor.YELLOW))));
                 restartNeeded = true;
-                if (Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
+                if (Bukkit.getOnlinePlayers().isEmpty())
+                    Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
                 break;
             case "critical_release":
                 downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
@@ -112,7 +113,8 @@ public class Messages implements Listener {
                 Bukkit.getLogger().severe("Downloaded critical release of DuckSMP!");
                 Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("An urgent version of Duck SMP has been released. Server will restart in 10 seconds.", NamedTextColor.RED).append(Component.text(" Hash " + Messages.commitHash, NamedTextColor.YELLOW))));
                 restartNeeded = true;
-                if (Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
+                if (Bukkit.getOnlinePlayers().isEmpty())
+                    Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
                 doCountdown("Server will restart in ", this.plugin, 10);
                 break;
             case "config":

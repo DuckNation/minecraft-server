@@ -14,9 +14,17 @@ import java.util.Objects;
 
 public final class DuckSMP extends JavaPlugin {
 
-    private static DuckSMP instance;
     public static ArrayList<Integer> taskIds = new ArrayList<>();
+    private static DuckSMP instance;
     private MongoClient mongoClient;
+
+    public static DuckSMP getInstance() {
+        return instance;
+    }
+
+    public static MongoClient getMongoClient() {
+        return instance.mongoClient;
+    }
 
     @Override
     public void onEnable() {
@@ -38,14 +46,6 @@ public final class DuckSMP extends JavaPlugin {
         }
         this.mongoClient.getDatabase("duckMinecraft").getCollection("messages").drop();
         this.mongoClient.getDatabase("duckMinecraft").createCollection("messages", new CreateCollectionOptions().capped(true).sizeInBytes(1024 * 1024 * 10)); // 10 MB
-    }
-
-    public static DuckSMP getInstance() {
-        return instance;
-    }
-
-    public static MongoClient getMongoClient() {
-        return instance.mongoClient;
     }
 
     private boolean checkMongoConfig() {
