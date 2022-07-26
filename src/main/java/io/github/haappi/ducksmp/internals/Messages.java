@@ -42,9 +42,7 @@ public class Messages implements Listener {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
 
-        MongoCollection<Document> collection = DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages");
         insertEmptyDocumentIfNeeded();
-        Document finalDoc = new Document();
 
         try {
             Path dir = Paths.get(".");
@@ -63,18 +61,31 @@ public class Messages implements Listener {
         }
         System.out.println(files);
 
-        @NotNull BukkitTask id = Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
-            for (Document message : collection.find(finalDoc).projection(finalDoc).cursorType(CursorType.TailableAwait)) {
+        runAsyncTask();
+    }
+
+    private void runAsyncTask() {
+        Document finalDoc = new Document();
+        MongoCollection<Document> collection = DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages");
+
+
+            @NotNull BukkitTask id = Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
                 try {
-                    if (message.getString("bound").equalsIgnoreCase("serverbound")) {
-                        handleMessage(message);
+                    for (Document message : collection.find(finalDoc).projection(finalDoc).cursorType(CursorType.TailableAwait)) {
+                        try {
+                            if (message.getString("bound").equalsIgnoreCase("serverbound")) {
+                                handleMessage(message);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    runAsyncTask();
                 }
-            }
-        }, 40L);
-        taskIds.add(id.getTaskId());
+            }, 40L);
+            taskIds.add(id.getTaskId());
 
     }
 
