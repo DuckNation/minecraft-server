@@ -134,14 +134,14 @@ public class Listeners implements Listener {
                 }
             }
         } else {
-            event.getPlayer().getInventory().addItem(getHeart(1));
+//            event.getPlayer().getInventory().addItem(getHeart(1));
         }
     }
 
-    @EventHandler
-    public void onChat(AsyncChatEvent event) {
-        event.getPlayer().getPersistentDataContainer().set(new org.bukkit.NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER, 0);
-    }
+//    @EventHandler
+//    public void onChat(AsyncChatEvent event) {
+//        event.getPlayer().getPersistentDataContainer().set(new org.bukkit.NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER, 0);
+//    }
 
 
 }
