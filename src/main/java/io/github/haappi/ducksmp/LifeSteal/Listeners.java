@@ -58,7 +58,7 @@ public class Listeners implements Listener {
         List<Component> lore = Arrays.asList(
                 Component.text(""),
                 Component.text("Life Steal Heart.", NamedTextColor.GOLD),
-                Component.text("Click to claim ", NamedTextColor.AQUA).append(Component.text("1 heart", NamedTextColor.YELLOW).append(Component.text(" ❤", NamedTextColor.RED)))
+                Component.text("Click to claim ", NamedTextColor.AQUA).append(Component.text("1 heart ", NamedTextColor.YELLOW).append(Component.text("❤", NamedTextColor.RED)))
         );
 
         meta.lore(lore);
