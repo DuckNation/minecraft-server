@@ -4,20 +4,27 @@ import io.github.haappi.ducksmp.DuckSMP;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ItemDespawnEvent;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -48,24 +55,46 @@ public class Listeners implements Listener {
 //        ((CraftPlayer) event.getPlayer()).getHandle().connection.send(ClientboundSetPlayerTeamPacket.createAddOrModifyPacket(netherStar, true));
 //    }
 
+    @EventHandler
+    public void onItemDespawn(ItemDespawnEvent event) {
+        if (event.getEntity().getPersistentDataContainer().has(new NamespacedKey(plugin, "life_steal"), PersistentDataType.STRING)) {
+            event.setCancelled(true);
+            /* todo
+            a GUI so people can see the location of their hearts
+             */
+        }
+    }
+
+    @EventHandler
+    public void onSpawn(ItemSpawnEvent event) {
+        if (event.getEntity().getPersistentDataContainer().has(new NamespacedKey(plugin, "life_steal"), PersistentDataType.STRING)) {
+            Entity entity = event.getEntity();
+            entity.setPersistent(true);
+            entity.setInvulnerable(true);
+            entity.setGlowing(true);
+            entity.setVisualFire(false);
+            // todo armor stands above item.
+        }
+    }
 
 
-    public static ItemStack getHeart(int count, Player owner) {
+
+    public static @NotNull ItemStack getHeart(int count, Player owner) {
         ItemStack thing = new ItemStack(Material.NETHER_STAR, count);
         ItemMeta meta = thing.getItemMeta();
         meta.getPersistentDataContainer().set(new org.bukkit.NamespacedKey(DuckSMP.getInstance(), "life_steal"), PersistentDataType.STRING, "true");
         meta.getPersistentDataContainer().set(new org.bukkit.NamespacedKey(DuckSMP.getInstance(), "owner"), PersistentDataType.STRING, owner.getUniqueId().toString());
 
         List<Component> lore = Arrays.asList(
-                Component.text(""),
-                Component.text("Life Steal Heart.", NamedTextColor.GOLD),
-                Component.text("Click to claim ", NamedTextColor.AQUA).append(Component.text("1 heart ", NamedTextColor.YELLOW).append(Component.text("❤", NamedTextColor.RED))),
-                Component.text(""),
-                Component.text(owner.getName() + "'s heart.", NamedTextColor.GOLD)
+                Component.text("").decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE),
+                Component.text("Life Steal Heart.", NamedTextColor.GOLD).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE),
+                Component.text("Click to claim ", NamedTextColor.AQUA).append(Component.text("1 ", NamedTextColor.YELLOW).append(Component.text("heart ", NamedTextColor.AQUA)).append(Component.text("❤", NamedTextColor.RED))).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE),
+                Component.text("").decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE),
+                Component.text(owner.getName() + "'s heart.", NamedTextColor.GOLD).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE)
         );
 
         meta.lore(lore);
-        meta.displayName(Component.text("LifeSteal Heart", NamedTextColor.YELLOW));
+        meta.displayName(Component.text("LifeSteal Heart", NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE));
         thing.setItemMeta(meta);
 
         return thing;
@@ -141,10 +170,16 @@ public class Listeners implements Listener {
         }
     }
 
-//    @EventHandler
-//    public void onChat(AsyncChatEvent event) {
-//        event.getPlayer().getPersistentDataContainer().set(new org.bukkit.NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER, 0);
-//    }
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent event) {
+        switch (event.getMessage()) {
+            case "clear":
+                event.getPlayer().getPersistentDataContainer().set(new org.bukkit.NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER, 0);
+                break;
+            case "heart":
+                event.getPlayer().getInventory().addItem(getHeart(1, event.getPlayer()));
+        }
+    }
 
 
 }
