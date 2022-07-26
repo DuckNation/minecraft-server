@@ -28,7 +28,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static io.github.haappi.ducksmp.DuckSMP.getMongoClient;
-import static io.github.haappi.ducksmp.DuckSMP.taskIds;
 import static io.github.haappi.ducksmp.utils.Utils.getCountdown;
 
 public class Messages implements Listener {
@@ -67,27 +66,29 @@ public class Messages implements Listener {
     private void runAsyncTask() {
         Document finalDoc = new Document();
         MongoCollection<Document> collection = DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages");
-
-
-            @NotNull BukkitTask id = Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
-                try {
-                    for (Document message : collection.find(finalDoc).projection(finalDoc).cursorType(CursorType.TailableAwait)) {
-                        try {
-                            if (message.getString("bound").equalsIgnoreCase("serverbound")) {
-                                handleMessage(message);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+        if (!plugin.isEnabled()) {
+            return;
+        }
+        this.insertEmptyDocumentIfNeeded();
+        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
+            try {
+                for (Document message : collection.find(finalDoc).projection(finalDoc).cursorType(CursorType.TailableAwait)) {
+                    try {
+                        if (message.getString("bound").equalsIgnoreCase("serverbound")) {
+                            handleMessage(message);
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    runAsyncTask();
                 }
-            }, 40L);
-            taskIds.add(id.getTaskId());
+            } catch (Exception e) {
+                Bukkit.getLogger().severe("Error while reading messages from MongoDB");
+                Bukkit.getScheduler().runTaskLater(plugin, this::runAsyncTask, 20 * 3); // Try again in 3 seconds
+            }
+        }, 60L);
 
     }
+
 
     @EventHandler
     public void playerQuit(PlayerQuitEvent event) {
@@ -167,7 +168,7 @@ public class Messages implements Listener {
 
                 String filePath;
                 if (values.size() == 1) {
-                   filePath = values.iterator().next();
+                    filePath = values.iterator().next();
                 } else {
                     filePath = stringsList.get(message.getInteger("index") - 1);
                 }
@@ -252,6 +253,7 @@ public class Messages implements Listener {
 
         editFileData(binary, "plugins/DuckSMP-" + Messages.commitHash + ".jar");
     }
+
     @SuppressWarnings("SameParameterValue")
     private void doCountdown(String message, DuckSMP plugin, Integer timerLength) {
         AtomicInteger countdown = new AtomicInteger(timerLength);
