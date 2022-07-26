@@ -5,8 +5,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftLivingEntity;
-import org.bukkit.entity.*;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -14,7 +14,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -43,10 +42,9 @@ public class totem implements Listener {
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        if(event.getEntity().getKiller() != null){
-            if (event.getEntity().getType() != randomMob) {
-                event.getDrops().removeIf(item -> item.getType() == Material.TOTEM_OF_UNDYING);
-            } else {
+        event.getDrops().removeIf(item -> item.getType() == Material.TOTEM_OF_UNDYING);
+        if (event.getEntity().getKiller() != null) {
+            if (event.getEntity().getType() == randomMob) {
                 event.getDrops().add(new ItemStack(Material.TOTEM_OF_UNDYING));
             }
         }
