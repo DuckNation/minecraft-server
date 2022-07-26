@@ -6,6 +6,10 @@ import net.kyori.adventure.text.format.NamedTextColor;
 
 public class Utils {
 
+    public Utils() {
+        throw new UnsupportedOperationException("Tried to insinuate a utility class");
+    }
+
     public static String sFormat(Integer number) {
         if (number == 1) {
             return "";
