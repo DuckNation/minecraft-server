@@ -50,15 +50,18 @@ public class Listeners implements Listener {
 
 
 
-    public static ItemStack getHeart(int count) {
+    public static ItemStack getHeart(int count, Player owner) {
         ItemStack thing = new ItemStack(Material.NETHER_STAR, count);
         ItemMeta meta = thing.getItemMeta();
         meta.getPersistentDataContainer().set(new org.bukkit.NamespacedKey(DuckSMP.getInstance(), "life_steal"), PersistentDataType.STRING, "true");
+        meta.getPersistentDataContainer().set(new org.bukkit.NamespacedKey(DuckSMP.getInstance(), "owner"), PersistentDataType.STRING, owner.getUniqueId().toString());
 
         List<Component> lore = Arrays.asList(
                 Component.text(""),
                 Component.text("Life Steal Heart.", NamedTextColor.GOLD),
-                Component.text("Click to claim ", NamedTextColor.AQUA).append(Component.text("1 heart ", NamedTextColor.YELLOW).append(Component.text("❤", NamedTextColor.RED)))
+                Component.text("Click to claim ", NamedTextColor.AQUA).append(Component.text("1 heart ", NamedTextColor.YELLOW).append(Component.text("❤", NamedTextColor.RED))),
+                Component.text(""),
+                Component.text(owner.getName() + "'s heart.", NamedTextColor.GOLD)
         );
 
         meta.lore(lore);
@@ -93,7 +96,7 @@ public class Listeners implements Listener {
                     return;
                 }
             }
-            event.getDrops().add(getHeart(1));
+            event.getDrops().add(getHeart(1, player));
 
         }
     }
