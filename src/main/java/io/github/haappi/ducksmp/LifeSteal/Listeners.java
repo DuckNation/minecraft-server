@@ -31,6 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static io.github.haappi.ducksmp.utils.Utils.*;
+
 public class Listeners implements Listener {
 
     private final DuckSMP plugin;
@@ -86,15 +88,15 @@ public class Listeners implements Listener {
         meta.getPersistentDataContainer().set(new org.bukkit.NamespacedKey(DuckSMP.getInstance(), "owner"), PersistentDataType.STRING, owner.getUniqueId().toString());
 
         List<Component> lore = Arrays.asList(
-                Component.text("").decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE),
-                Component.text("Life Steal Heart.", NamedTextColor.GOLD).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE),
-                Component.text("Click to claim ", NamedTextColor.AQUA).append(Component.text("1 ", NamedTextColor.YELLOW).append(Component.text("heart ", NamedTextColor.AQUA)).append(Component.text("❤", NamedTextColor.RED))).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE),
-                Component.text("").decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE),
-                Component.text(owner.getName() + "'s heart.", NamedTextColor.GOLD).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE)
+                noItalics(""),
+                chain(noItalics("Click to claim a heart "), noItalics("❤", NamedTextColor.RED)),
+//                noItalics(""),
+                chain(noItalics(owner.getName(), NamedTextColor.YELLOW), noItalics("'s heart", NamedTextColor.GRAY))
         );
 
         meta.lore(lore);
-        meta.displayName(Component.text("LifeSteal Heart", NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE));
+        Component parsed = miniMessage.deserialize("<rainbow>Life Steal Heart</rainbow>");
+        meta.displayName(parsed.decoration(TextDecoration.ITALIC, false));
         thing.setItemMeta(meta);
 
         return thing;
@@ -132,6 +134,9 @@ public class Listeners implements Listener {
 
     private boolean isLifeStealItem(@Nullable ItemStack item) {
         if (item == null) {
+            return false;
+        }
+        if (item.getItemMeta() == null) {
             return false;
         }
         return item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "life_steal"), PersistentDataType.STRING);
