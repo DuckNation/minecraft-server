@@ -12,10 +12,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -92,6 +95,23 @@ public class Listeners implements Listener {
             }
             event.getDrops().add(getHeart(1));
 
+        }
+    }
+
+    private boolean isLifeStealItem(@Nullable ItemStack item) {
+        if (item == null) {
+            return false;
+        }
+        return item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "life_steal"), PersistentDataType.STRING);
+    }
+
+    @EventHandler
+    public void craftItem(PrepareItemCraftEvent event) {
+        CraftingInventory inv = event.getInventory();
+        for (ItemStack stack : inv.getStorageContents()) {
+            if (isLifeStealItem(stack)) {
+                inv.setResult(null);
+            }
         }
     }
 
