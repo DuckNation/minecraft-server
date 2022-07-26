@@ -1,12 +1,15 @@
 package io.github.haappi.ducksmp.listeners;
 
 import io.github.haappi.ducksmp.DuckSMP;
+import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Pig;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -14,6 +17,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -52,7 +56,11 @@ public class totem implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
-        // todo if pig named technoblade (cancel damage)
+        if (event.getEntity() instanceof Pig entity) {
+            if (PaperAdventure.asPlain(entity.customName(), Locale.US).equals("Technoblade")) {
+                event.setCancelled(true);
+            }
+        }
     }
 
 }
