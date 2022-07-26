@@ -125,7 +125,7 @@ public class Messages implements Listener {
                 restartNeeded = true;
                 if (Bukkit.getOnlinePlayers().isEmpty())
                     Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
-                Bukkit.getScheduler().runTaskLater(plugin, () -> doCountdown("Server will restart in ", this.plugin, 10), 3600L); // Restart after 1 hour
+                Bukkit.getScheduler().runTaskLater(plugin, () -> doCountdown("Server will restart in ", this.plugin, 10), 20 * 60 * 60L); // Restart after 1 hour
                 break;
             case "critical_release":
                 downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
