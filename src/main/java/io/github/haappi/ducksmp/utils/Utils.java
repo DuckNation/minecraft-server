@@ -11,6 +11,8 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -99,5 +101,17 @@ public class Utils {
             return false;
         }
         return item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(DuckSMP.getInstance(), "life_steal"), PersistentDataType.STRING);
+    }
+
+    public static ArmorStand createStand(Entity owner, int count) {
+        ArmorStand as = owner.getWorld().spawn(owner.getLocation(), ArmorStand.class);
+        as.setInvisible(true);
+        as.setInvulnerable(true);
+        as.setMarker(true);
+        as.setCustomNameVisible(true);
+        as.setGravity(false);
+        as.setPersistent(false);
+        as.customName(Component.text(count + "x", NamedTextColor.YELLOW).append(Component.text(" Heart ❤", NamedTextColor.RED)));
+        return as;
     }
 }
