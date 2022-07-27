@@ -1,14 +1,12 @@
 package io.github.haappi.ducksmp.LifeSteal;
 
 import io.github.haappi.ducksmp.DuckSMP;
-import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -57,6 +55,26 @@ public class Listeners implements Listener {
 //        ((CraftPlayer) event.getPlayer()).getHandle().connection.send(ClientboundSetPlayerTeamPacket.createAddOrModifyPacket(netherStar, true));
 //    }
 
+    public static @NotNull ItemStack getHeart(int count, Player owner) {
+        ItemStack thing = new ItemStack(Material.NETHER_STAR, count);
+        ItemMeta meta = thing.getItemMeta();
+        meta.getPersistentDataContainer().set(new org.bukkit.NamespacedKey(DuckSMP.getInstance(), "life_steal"), PersistentDataType.STRING, "true");
+        meta.getPersistentDataContainer().set(new org.bukkit.NamespacedKey(DuckSMP.getInstance(), "owner"), PersistentDataType.STRING, owner.getUniqueId().toString());
+
+        List<Component> lore = Arrays.asList(
+                noItalics(""),
+                chain(noItalics("Click to claim a heart "), noItalics("❤", NamedTextColor.RED)),
+//                noItalics(""),
+                chain(noItalics(owner.getName(), NamedTextColor.YELLOW), noItalics("'s heart", NamedTextColor.GRAY))
+        );
+
+        meta.lore(lore);
+        meta.displayName(miniMessage.deserialize("<rainbow>Life Steal Heart</rainbow>").decoration(TextDecoration.ITALIC, false));
+        thing.setItemMeta(meta);
+
+        return thing;
+    }
+
     @EventHandler
     public void onItemDespawn(ItemDespawnEvent event) {
         if (event.getEntity().getPersistentDataContainer().has(new NamespacedKey(plugin, "life_steal"), PersistentDataType.STRING)) {
@@ -77,28 +95,6 @@ public class Listeners implements Listener {
             entity.setVisualFire(false);
             // todo armor stands above item.
         }
-    }
-
-
-
-    public static @NotNull ItemStack getHeart(int count, Player owner) {
-        ItemStack thing = new ItemStack(Material.NETHER_STAR, count);
-        ItemMeta meta = thing.getItemMeta();
-        meta.getPersistentDataContainer().set(new org.bukkit.NamespacedKey(DuckSMP.getInstance(), "life_steal"), PersistentDataType.STRING, "true");
-        meta.getPersistentDataContainer().set(new org.bukkit.NamespacedKey(DuckSMP.getInstance(), "owner"), PersistentDataType.STRING, owner.getUniqueId().toString());
-
-        List<Component> lore = Arrays.asList(
-                noItalics(""),
-                chain(noItalics("Click to claim a heart "), noItalics("❤", NamedTextColor.RED)),
-//                noItalics(""),
-                chain(noItalics(owner.getName(), NamedTextColor.YELLOW), noItalics("'s heart", NamedTextColor.GRAY))
-        );
-
-        meta.lore(lore);
-        meta.displayName(miniMessage.deserialize("<rainbow>Life Steal Heart</rainbow>").decoration(TextDecoration.ITALIC, false));
-        thing.setItemMeta(meta);
-
-        return thing;
     }
 
     @EventHandler
@@ -164,7 +160,7 @@ public class Listeners implements Listener {
                     event.getItem().setAmount(event.getItem().getAmount() - 1);
                     Objects.requireNonNull(event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(Objects.requireNonNull(event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue() + (2 * 1));
                     event.getPlayer().getPersistentDataContainer().set(new org.bukkit.NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER, claimed + 1);
-                    event.getPlayer().sendMessage(Component.text("Claimed " , NamedTextColor.GREEN).append(Component.text("1", NamedTextColor.YELLOW).append(Component.text(" hearts.", NamedTextColor.GREEN))));
+                    event.getPlayer().sendMessage(Component.text("Claimed ", NamedTextColor.GREEN).append(Component.text("1", NamedTextColor.YELLOW).append(Component.text(" hearts.", NamedTextColor.GREEN))));
                 } else {
                     event.getPlayer().sendMessage(Component.text("You have already claimed 10 hearts.", NamedTextColor.RED));
                 }

@@ -24,6 +24,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
     public static ArrayList<Integer> taskIds = new ArrayList<>();
     private static DuckSMP instance;
     private MongoClient mongoClient;
+    private boolean hasListenerLoaded = false;
 
     public static DuckSMP getInstance() {
         return instance;
@@ -33,7 +34,6 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         return instance.mongoClient;
     }
 
-    private boolean hasListenerLoaded = false;
     @Override
     public void onEnable() {
         if (!checkMongoConfig()) {
