@@ -67,18 +67,20 @@ public final class DuckSMP extends JavaPlugin implements Listener {
                 return;
             }
             event.setCancelled(true);
-            Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> event.getWhoClicked().closeInventory());
 
             switch (event.getCurrentItem().getType()) {
                 case GREEN_TERRACOTTA: // no
-                    event.getWhoClicked().sendMessage(Component.text("Alright, you didn't join LifeSteal! Guess you live for another day", NamedTextColor.RED));
+                    event.getWhoClicked().sendMessage(Component.text("Alright, you didn't join LifeSteal. Guess you live for another day", NamedTextColor.RED));
                     break;
                 case RED_TERRACOTTA: // yes
                     event.getWhoClicked().getPersistentDataContainer().set(new NamespacedKey(DuckSMP.getInstance(), "claimed_hearts"), PersistentDataType.INTEGER, 0);
                     event.getWhoClicked().sendMessage(Component.text("You have joined LifeSteal! Now make sure you don't drop to zero hearts.", NamedTextColor.GREEN));
                     Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("" + event.getWhoClicked().getName() + " has joined LifeSteal!", NamedTextColor.GREEN)));
                     break;
+                default:
+                    return;
             }
+            Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> event.getWhoClicked().closeInventory());
         }
 
     }
