@@ -1,9 +1,7 @@
 package io.github.haappi.ducksmp.LifeSteal;
 
-import com.destroystokyo.paper.io.chunk.ChunkLoadTask;
 import io.github.haappi.ducksmp.DuckSMP;
 import io.github.haappi.ducksmp.utils.Utils;
-import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -37,6 +35,12 @@ public class Listeners implements Listener {
     private final DuckSMP plugin;
 
 //    private final PlayerTeam netherStar = new PlayerTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getNewScoreboard()).getHandle(), "Star");
+    private final ConcurrentHashMap<UUID, ArmorStand> armorMap = new ConcurrentHashMap<>();
+
+//    @EventHandler
+//    public void onJoin(PlayerJoinEvent event) {
+//        ((CraftPlayer) event.getPlayer()).getHandle().connection.send(ClientboundSetPlayerTeamPacket.createAddOrModifyPacket(netherStar, true));
+//    }
 
     public Listeners() {
         this.plugin = DuckSMP.getInstance();
@@ -51,11 +55,6 @@ public class Listeners implements Listener {
 //
 //        }, 20 * 30L, 40L);
     }
-
-//    @EventHandler
-//    public void onJoin(PlayerJoinEvent event) {
-//        ((CraftPlayer) event.getPlayer()).getHandle().connection.send(ClientboundSetPlayerTeamPacket.createAddOrModifyPacket(netherStar, true));
-//    }
 
     @EventHandler
     public void onItemDespawn(ItemDespawnEvent event) {
@@ -82,14 +81,12 @@ public class Listeners implements Listener {
     @EventHandler
     public void entityMergeEvent(ItemMergeEvent event) {
         if (!isLifeStealItem(event.getEntity().getItemStack())) {
-           return;
+            return;
         }
         event.setCancelled(true);
 //        removeStand(event.getEntity().getUniqueId());
 //        removeStand(event.getTarget().getUniqueId());
     }
-
-    private final ConcurrentHashMap<UUID, ArmorStand> armorMap = new ConcurrentHashMap<>();
 
     private void armorStandTask() {
         for (Map.Entry<UUID, ArmorStand> entry : this.armorMap.entrySet()) {
@@ -109,10 +106,10 @@ public class Listeners implements Listener {
 //                    stand.customName(name);
 //                }
 
-                if (stand.getLocation().add(0, -0.15, 0) != player.getLocation()) {
-                    stand.teleport(player.getLocation().add(0, 0.15, 0));
-                }
+            if (stand.getLocation().add(0, -0.15, 0) != player.getLocation()) {
+                stand.teleport(player.getLocation().add(0, 0.15, 0));
             }
+        }
 
 
     }
