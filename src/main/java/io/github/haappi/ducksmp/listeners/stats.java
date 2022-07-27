@@ -106,4 +106,5 @@ public class stats implements Listener {
             player.getActiveItem().setItemMeta(itemMeta);
         }
     }
+
 }
