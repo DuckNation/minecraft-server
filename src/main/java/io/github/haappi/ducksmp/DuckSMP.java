@@ -119,6 +119,16 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         if (event.getItem() == null) {
             return;
         }
+        if (event.getItem().getType().toString().toLowerCase().contains("elytra")) {
+            org.bukkit.inventory.ItemStack item = event.getPlayer().getInventory().getChestplate();
+            event.getPlayer().getInventory().setChestplate(event.getItem());
+            if (event.getHand() == EquipmentSlot.HAND) {
+                event.getPlayer().getInventory().setItemInMainHand(item);
+            } else {
+                event.getPlayer().getInventory().setItemInOffHand(item);
+            }
+            return;
+        }
         if (!(CraftItemStack.asNMSCopy(event.getItem()).getItem() instanceof ArmorItem)) {
             return;
         }
