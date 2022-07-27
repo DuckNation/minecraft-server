@@ -1,5 +1,6 @@
 package io.github.haappi.ducksmp;
 
+import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.model.CreateCollectionOptions;
@@ -11,28 +12,35 @@ import io.github.haappi.ducksmp.listeners.Villager;
 import io.github.haappi.ducksmp.listeners.crystal;
 import io.github.haappi.ducksmp.listeners.stats;
 import io.github.haappi.ducksmp.utils.CustomHolder;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.world.item.ArmorItem;
+import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 
+import static io.github.haappi.ducksmp.utils.Utils.miniMessage;
 import static io.github.haappi.ducksmp.utils.Utils.registerNewCommand;
 
 public final class DuckSMP extends JavaPlugin implements Listener {
@@ -202,4 +210,77 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         }
         return true;
     }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+
+        if (player.isOp()) {
+            event.quitMessage(Component.text()
+                    .append(
+                            Component.text("-", NamedTextColor.DARK_RED)
+                                    .append(Component.text(" " + player.getName(), NamedTextColor.GREEN))).build()
+            );
+        } else {
+            event.quitMessage(Component.text()
+                    .append(
+                            Component.text("-", NamedTextColor.DARK_RED)
+                                    .append(Component.text(" " + player.getName(), NamedTextColor.YELLOW))).build()
+            );
+        }
+    }
+
+    @EventHandler
+    public void onChat(AsyncChatEvent event) {
+        if (event.getPlayer().isOp()) {
+            event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
+                    .append(
+                            Component.text("<", NamedTextColor.GREEN),
+                            sourceDisplayName.color(NamedTextColor.GREEN),
+                            Component.text("> ", NamedTextColor.GREEN),
+                            Component.text()
+                                    .color(NamedTextColor.WHITE)
+                                    .append(message)
+                                    .build()
+                    )
+                    .build());
+        } else {
+            event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
+                    .append(
+                            Component.text("<", NamedTextColor.YELLOW),
+                            sourceDisplayName.color(NamedTextColor.YELLOW),
+                            Component.text("> ", NamedTextColor.YELLOW),
+                            Component.text()
+                                    .color(NamedTextColor.WHITE)
+                                    .append(message)
+                                    .build()
+                    )
+                    .build());
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        if (player.isOp()) {
+            event.joinMessage(Component.text()
+                    .append(
+                            Component.text("+", NamedTextColor.DARK_GREEN)
+                                    .append(Component.text(" " + player.getName(), NamedTextColor.GREEN))).build()
+            );
+        } else {
+            event.joinMessage(Component.text()
+                    .append(
+                            Component.text("+", NamedTextColor.DARK_GREEN)
+                                    .append(Component.text(" " + player.getName(), NamedTextColor.YELLOW))).build()
+            );
+        }
+    }
+
+    @EventHandler
+    public void onPing(PaperServerListPingEvent event) {
+        final Component component = miniMessage.deserialize("<bold><gold>Duck</gold><yellow>Nation</yellow><green> SMP</green></bold>");
+        event.motd(component);
+    }
+
 }
