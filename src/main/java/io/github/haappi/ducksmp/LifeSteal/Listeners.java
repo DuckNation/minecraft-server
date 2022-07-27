@@ -80,7 +80,7 @@ public class Listeners implements Listener {
                 }
                 return;
             }
-            if (claimed > 0) {
+            if (claimed > -6) { // they live with 3 hearts.
                 Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue() - 2);
                 player.getPersistentDataContainer().set(new NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER, claimed - 1);
             } else {
