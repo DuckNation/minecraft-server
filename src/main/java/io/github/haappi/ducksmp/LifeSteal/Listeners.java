@@ -101,12 +101,17 @@ public class Listeners implements Listener {
     public void onDeath(EntityDeathEvent event) {
         if (event.getEntity() instanceof Player player) {
             Integer claimed = player.getPersistentDataContainer().get(new org.bukkit.NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER);
-            if (claimed != null && claimed > 0) {
+            if (claimed == null) {
+                if (player.getKiller() != null) {
+                    player.getKiller().sendMessage(Component.text("Dang you just killed someone who isn't in life steal."));
+                }
+                return;
+            }
+            if (claimed > 0) {
                 Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue() - 2);
                 player.getPersistentDataContainer().set(new NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER, claimed - 1);
             } else {
-                player.getPersistentDataContainer().set(new NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER, 0);
-                return;
+                return; // return, they might be in negative hearts & can't lose anymore.
             }
 
             if (player.getKiller() != null) {
