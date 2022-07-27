@@ -23,7 +23,8 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.Objects;
 
 import static io.github.haappi.ducksmp.utils.GUIUtils.sendOptInForm;
-import static io.github.haappi.ducksmp.utils.Utils.*;
+import static io.github.haappi.ducksmp.utils.Utils.getHeart;
+import static io.github.haappi.ducksmp.utils.Utils.isLifeStealItem;
 
 public class Listeners implements Listener {
 

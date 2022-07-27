@@ -8,30 +8,23 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.geysermc.cumulus.form.SimpleForm;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.geysermc.floodgate.api.player.FloodgatePlayer;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.UUID;
 
 import static io.github.haappi.ducksmp.utils.Utils.chain;
 import static io.github.haappi.ducksmp.utils.Utils.noItalics;
 
 
-
 public class GUIUtils implements Listener {
-
 
 
     public static void sendOptInForm(FloodgatePlayer player) {
@@ -74,12 +67,12 @@ public class GUIUtils implements Listener {
         ItemMeta meta = readMe.getItemMeta();
         meta.displayName(Component.text("Info", NamedTextColor.AQUA));
         meta.lore(Arrays.asList(
-                    chain(noItalics("Warning: You will be partaking in ", NamedTextColor.RED), noItalics("LifeSteal SMP.", NamedTextColor.YELLOW)),
-                    noItalics("People will be allowed to kill you freely, and you will lose a heart ❤", NamedTextColor.RED),
-                    noItalics("upon death. Regain hearts by killing other players.", NamedTextColor.RED),
-                    chain(noItalics("You cannot leave "), noItalics("LifeSteal SMP ", NamedTextColor.YELLOW),
-                noItalics("once you have joined.")).decoration(TextDecoration.BOLD, true)
-                ));
+                chain(noItalics("Warning: You will be partaking in ", NamedTextColor.RED), noItalics("LifeSteal SMP.", NamedTextColor.YELLOW)),
+                noItalics("People will be allowed to kill you freely, and you will lose a heart ❤", NamedTextColor.RED),
+                noItalics("upon death. Regain hearts by killing other players.", NamedTextColor.RED),
+                chain(noItalics("You cannot leave "), noItalics("LifeSteal SMP ", NamedTextColor.YELLOW),
+                        noItalics("once you have joined.")).decoration(TextDecoration.BOLD, true)
+        ));
         readMe.setItemMeta(meta);
         confirmationMenu.setItem(13, readMe);
 
