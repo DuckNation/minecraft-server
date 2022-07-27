@@ -12,6 +12,7 @@ import io.github.haappi.ducksmp.utils.CustomHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
@@ -25,6 +26,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerCommandSendEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -111,7 +113,51 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         }
     }
 
-
+    @EventHandler
+    public void onRightClick(PlayerInteractEvent event) {
+        if (!(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+            return;
+        }
+        if (event.getItem() == null) {
+            return;
+        }
+        if (!(CraftItemStack.asNMSCopy(event.getItem()).getItem() instanceof ArmorItem)) {
+            return;
+        }
+        if (event.getItem().getType().toString().toLowerCase().contains("helmet")) {
+            org.bukkit.inventory.ItemStack item = event.getPlayer().getInventory().getHelmet();
+            event.getPlayer().getInventory().setHelmet(event.getItem());
+            if (event.getHand() == EquipmentSlot.HAND) {
+                event.getPlayer().getInventory().setItemInMainHand(item);
+            } else {
+                event.getPlayer().getInventory().setItemInOffHand(item);
+            }
+        } else if (event.getItem().getType().toString().toLowerCase().contains("boots")) {
+            org.bukkit.inventory.ItemStack item = event.getPlayer().getInventory().getBoots();
+            event.getPlayer().getInventory().setBoots(event.getItem());
+            if (event.getHand() == EquipmentSlot.HAND) {
+                event.getPlayer().getInventory().setItemInMainHand(item);
+            } else {
+                event.getPlayer().getInventory().setItemInOffHand(item);
+            }
+        } else if (event.getItem().getType().toString().toLowerCase().contains("leggings")) {
+            org.bukkit.inventory.ItemStack item = event.getPlayer().getInventory().getLeggings();
+            event.getPlayer().getInventory().setLeggings(event.getItem());
+            if (event.getHand() == EquipmentSlot.HAND) {
+                event.getPlayer().getInventory().setItemInMainHand(item);
+            } else {
+                event.getPlayer().getInventory().setItemInOffHand(item);
+            }
+        } else if (event.getItem().getType().toString().toLowerCase().contains("chestplate")) {
+            org.bukkit.inventory.ItemStack item = event.getPlayer().getInventory().getChestplate();
+            event.getPlayer().getInventory().setChestplate(event.getItem());
+            if (event.getHand() == EquipmentSlot.HAND) {
+                event.getPlayer().getInventory().setItemInMainHand(item);
+            } else {
+                event.getPlayer().getInventory().setItemInOffHand(item);
+            }
+        }
+    }
 
     @Override
     public void onDisable() {
