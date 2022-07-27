@@ -56,7 +56,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 
         new Messages();
         new Villager();
-        new totem();
+//        new totem(); // enable in like 2 days
         new crystal();
 
         Bukkit.getPluginManager().registerEvents(this, this);
