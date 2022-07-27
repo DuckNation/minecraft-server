@@ -9,6 +9,7 @@ import io.github.haappi.ducksmp.internals.Messages;
 import io.github.haappi.ducksmp.internals.nv;
 import io.github.haappi.ducksmp.listeners.Villager;
 import io.github.haappi.ducksmp.listeners.crystal;
+import io.github.haappi.ducksmp.listeners.stats;
 import io.github.haappi.ducksmp.utils.CustomHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -63,6 +64,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new Villager();
 //        new totem(); // enable in like 2 days
         new crystal();
+        new stats();
 
         Bukkit.getPluginManager().registerEvents(this, this);
 
