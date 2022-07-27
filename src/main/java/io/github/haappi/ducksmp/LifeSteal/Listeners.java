@@ -34,7 +34,7 @@ public class Listeners implements Listener {
 
     private final DuckSMP plugin;
 
-//    private final PlayerTeam netherStar = new PlayerTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getNewScoreboard()).getHandle(), "Star");
+    //    private final PlayerTeam netherStar = new PlayerTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getNewScoreboard()).getHandle(), "Star");
     private final ConcurrentHashMap<UUID, ArmorStand> armorMap = new ConcurrentHashMap<>();
 
 //    @EventHandler

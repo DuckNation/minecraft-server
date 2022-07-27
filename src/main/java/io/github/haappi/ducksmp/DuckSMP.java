@@ -6,6 +6,7 @@ import com.mongodb.client.model.CreateCollectionOptions;
 import io.github.haappi.ducksmp.LifeSteal.Listeners;
 import io.github.haappi.ducksmp.LifeSteal.signup;
 import io.github.haappi.ducksmp.internals.Messages;
+import io.github.haappi.ducksmp.internals.nv;
 import io.github.haappi.ducksmp.listeners.Villager;
 import io.github.haappi.ducksmp.listeners.crystal;
 import io.github.haappi.ducksmp.utils.CustomHolder;
@@ -66,6 +67,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(this, this);
 
         registerNewCommand(new signup("signup"));
+        registerNewCommand(new nv("nv"));
 
     }
 
