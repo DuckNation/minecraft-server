@@ -43,15 +43,19 @@ public class GUIUtils implements Listener {
                 .button("Never-mind..."); // id = 1;
         form.closedOrInvalidResultHandler(response -> {
             // no response was given
+            Bukkit.getPlayer(player.getJavaUniqueId()).sendMessage(Component.text("Alright, you didn't join LifeSteal. Guess you live for another day", NamedTextColor.RED));
             response.isClosed();
             response.isInvalid();
         });
 
         form.validResultHandler(response -> {
             if (response.clickedButtonId() == 0) {
-                Bukkit.getPlayer(player.getJavaUniqueId()).sendMessage("Thank you for your feedback!");
+                Player bukkitPlayer = Bukkit.getPlayer(player.getJavaUniqueId());
+                bukkitPlayer.getPersistentDataContainer().set(new NamespacedKey(DuckSMP.getInstance(), "claimed_hearts"), PersistentDataType.INTEGER, 0);
+                bukkitPlayer.sendMessage(Component.text("You have joined LifeSteal! Now make sure you don't drop to zero hearts.", NamedTextColor.GREEN));
+                Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Component.text("" + player.getJavaUsername() + " has joined LifeSteal!", NamedTextColor.GREEN)));
             } else {
-                Bukkit.getPlayer(player.getJavaUniqueId()).sendMessage("We're sorry to hear that, we'll try to improve our server!");
+                Bukkit.getPlayer(player.getJavaUniqueId()).sendMessage(Component.text("Alright, you didn't join LifeSteal. Guess you live for another day", NamedTextColor.RED));
             }
         });
 
