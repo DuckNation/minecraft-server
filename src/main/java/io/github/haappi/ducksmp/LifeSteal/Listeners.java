@@ -130,18 +130,5 @@ public class Listeners implements Listener {
         }
     }
 
-    @EventHandler
-    public void onChat(AsyncPlayerChatEvent event) {
-        switch (event.getMessage()) {
-            case "clear":
-                Integer claimed = event.getPlayer().getPersistentDataContainer().get(new org.bukkit.NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER);
-                event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() - (2 * claimed));
-                event.getPlayer().getPersistentDataContainer().set(new org.bukkit.NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER, 0);
-                break;
-            case "heart":
-                event.getPlayer().getInventory().addItem(getHeart(1, event.getPlayer()));
-        }
-    }
-
 
 }
