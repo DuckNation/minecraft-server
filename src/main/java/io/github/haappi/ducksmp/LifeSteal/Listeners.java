@@ -106,11 +106,12 @@ public class Listeners implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         if (event.getItem() != null) {
-            if (event.getItem().getItemMeta().getPersistentDataContainer().get(new org.bukkit.NamespacedKey(plugin, "life_steal"), PersistentDataType.STRING) != null) {
+            if (event.getItem().getItemMeta().getPersistentDataContainer().has(new org.bukkit.NamespacedKey(plugin, "life_steal"), PersistentDataType.STRING)) {
                 event.setCancelled(true);
                 Integer claimed = event.getPlayer().getPersistentDataContainer().get(new org.bukkit.NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER);
                 if (claimed == null) {
-                    claimed = 0;
+                    Bukkit.getScheduler().runTask(plugin, () -> sendOptInForm(event.getPlayer()));
+                    return;
                 }
                 if (claimed < 10) {
                     event.getItem().setAmount(event.getItem().getAmount() - 1);
