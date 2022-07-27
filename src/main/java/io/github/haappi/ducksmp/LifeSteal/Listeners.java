@@ -105,6 +105,10 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
+        if (!(event.getAction().isLeftClick() ||
+                event.getAction().isRightClick())) {
+            return;
+        }
         if (event.getItem() != null) {
             if (event.getItem().getItemMeta().getPersistentDataContainer().has(new org.bukkit.NamespacedKey(plugin, "life_steal"), PersistentDataType.STRING)) {
                 event.setCancelled(true);
