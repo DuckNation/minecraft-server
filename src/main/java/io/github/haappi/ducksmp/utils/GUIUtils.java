@@ -76,8 +76,8 @@ public class GUIUtils implements Listener {
         meta.lore(Arrays.asList(
                     chain(noItalics("Warning: You will be partaking in ", NamedTextColor.RED), noItalics("LifeSteal SMP.", NamedTextColor.YELLOW)),
                     noItalics("People will be allowed to kill you freely, and you will lose a heart ❤", NamedTextColor.RED),
-                    noItalics(" upon death. Regain hearts by killing other players.", NamedTextColor.RED),
-                    chain(noItalics(" You cannot leave "), noItalics("LifeSteal SMP ", NamedTextColor.YELLOW),
+                    noItalics("upon death. Regain hearts by killing other players.", NamedTextColor.RED),
+                    chain(noItalics("You cannot leave "), noItalics("LifeSteal SMP ", NamedTextColor.YELLOW),
                 noItalics("once you have joined.")).decoration(TextDecoration.BOLD, true)
                 ));
         readMe.setItemMeta(meta);
