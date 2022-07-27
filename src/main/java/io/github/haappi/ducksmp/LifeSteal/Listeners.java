@@ -22,7 +22,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Objects;
 
-import static io.github.haappi.ducksmp.utils.GUIUtils.sendOptInJava;
+import static io.github.haappi.ducksmp.utils.GUIUtils.sendOptInForm;
 import static io.github.haappi.ducksmp.utils.Utils.*;
 
 public class Listeners implements Listener {
@@ -135,7 +135,7 @@ public class Listeners implements Listener {
             case "heart":
                 event.getPlayer().getInventory().addItem(getHeart(1, event.getPlayer()));
             case "fat":
-                Bukkit.getScheduler().runTask(plugin, () -> sendOptInJava(event.getPlayer().getUniqueId()));
+                Bukkit.getScheduler().runTask(plugin, () -> sendOptInForm(event.getPlayer()));
         }
     }
 

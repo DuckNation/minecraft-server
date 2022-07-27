@@ -8,6 +8,7 @@ import io.github.haappi.ducksmp.internals.Messages;
 import io.github.haappi.ducksmp.listeners.Villager;
 import io.github.haappi.ducksmp.listeners.crystal;
 import io.github.haappi.ducksmp.listeners.totem;
+import io.github.haappi.ducksmp.utils.GUIUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -50,6 +51,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new crystal();
 
         Bukkit.getPluginManager().registerEvents(this, this);
+        Bukkit.getPluginManager().registerEvents(new GUIUtils(), DuckSMP.getInstance());
 
     }
 
