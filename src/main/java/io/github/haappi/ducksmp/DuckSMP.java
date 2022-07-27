@@ -8,13 +8,19 @@ import io.github.haappi.ducksmp.internals.Messages;
 import io.github.haappi.ducksmp.listeners.Villager;
 import io.github.haappi.ducksmp.listeners.crystal;
 import io.github.haappi.ducksmp.listeners.totem;
+import io.github.haappi.ducksmp.utils.CustomHolder;
 import io.github.haappi.ducksmp.utils.GUIUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -51,7 +57,29 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new crystal();
 
         Bukkit.getPluginManager().registerEvents(this, this);
-        Bukkit.getPluginManager().registerEvents(new GUIUtils(), DuckSMP.getInstance());
+
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getInventory().getHolder() instanceof CustomHolder) {
+            if (event.getCurrentItem() == null) {
+                return;
+            }
+            event.setCancelled(true);
+            Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> event.getWhoClicked().closeInventory());
+
+            switch (event.getCurrentItem().getType()) {
+                case GREEN_TERRACOTTA: // no
+                    event.getWhoClicked().sendMessage(Component.text("Alright, you didn't join LifeSteal! Guess you live for another day", NamedTextColor.RED));
+                    break;
+                case RED_TERRACOTTA: // yes
+                    event.getWhoClicked().getPersistentDataContainer().set(new NamespacedKey(DuckSMP.getInstance(), "claimed_hearts"), PersistentDataType.INTEGER, 0);
+                    event.getWhoClicked().sendMessage(Component.text("You have joined LifeSteal! Now make sure you don't drop to zero hearts.", NamedTextColor.GREEN));
+                    Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("" + event.getWhoClicked().getName() + " has joined LifeSteal!", NamedTextColor.GREEN)));
+                    break;
+            }
+        }
 
     }
 

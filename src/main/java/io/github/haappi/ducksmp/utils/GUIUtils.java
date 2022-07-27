@@ -32,28 +32,7 @@ import static io.github.haappi.ducksmp.utils.Utils.noItalics;
 
 public class GUIUtils implements Listener {
 
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getInventory().getHolder() instanceof CustomHolder) {
-            if (event.getCurrentItem() == null) {
-                return;
-            }
-            event.setCancelled(true);
-            Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> event.getWhoClicked().closeInventory());
 
-            switch (event.getCurrentItem().getType()) {
-                case GREEN_TERRACOTTA: // no
-                    event.getWhoClicked().sendMessage(Component.text("Alright, you didn't join LifeSteal! Guess you live for another day", NamedTextColor.RED));
-                    break;
-                case RED_TERRACOTTA: // yes
-                    event.getWhoClicked().getPersistentDataContainer().set(new NamespacedKey(DuckSMP.getInstance(), "claimed_hearts"), PersistentDataType.INTEGER, 0);
-                    event.getWhoClicked().sendMessage(Component.text("You have joined LifeSteal! Now make sure you don't drop to zero hearts.", NamedTextColor.GREEN));
-                    Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("" + event.getWhoClicked().getName() + " has joined LifeSteal!", NamedTextColor.GREEN)));
-                    break;
-            }
-        }
-
-    }
 
     public static void sendOptInForm(FloodgatePlayer player) {
         SimpleForm.Builder form = SimpleForm.builder()
