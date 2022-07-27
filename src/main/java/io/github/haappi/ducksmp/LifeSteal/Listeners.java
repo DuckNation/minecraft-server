@@ -95,8 +95,7 @@ public class Listeners implements Listener {
         );
 
         meta.lore(lore);
-        Component parsed = miniMessage.deserialize("<rainbow>Life Steal Heart</rainbow>");
-        meta.displayName(parsed.decoration(TextDecoration.ITALIC, false));
+        meta.displayName(miniMessage.deserialize("<rainbow>Life Steal Heart</rainbow>").decoration(TextDecoration.ITALIC, false));
         thing.setItemMeta(meta);
 
         return thing;
@@ -170,8 +169,6 @@ public class Listeners implements Listener {
                     event.getPlayer().sendMessage(Component.text("You have already claimed 10 hearts.", NamedTextColor.RED));
                 }
             }
-        } else {
-//            event.getPlayer().getInventory().addItem(getHeart(1));
         }
     }
 
