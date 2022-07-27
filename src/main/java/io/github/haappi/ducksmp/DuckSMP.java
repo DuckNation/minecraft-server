@@ -18,6 +18,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerCommandSendEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -93,6 +95,14 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         if (!hasListenerLoaded) {
             new Listeners();
             hasListenerLoaded = true;
+        }
+    }
+
+    @EventHandler
+    public void onCommandRun(PlayerCommandPreprocessEvent event) {
+        if (event.getMessage().contains("rg define")) {
+            String claimName = event.getMessage().split(" ")[2];
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), String.format("/rg flag -w %s %s pvp -g everyone allow", event.getPlayer().getLocation().getWorld().getName(), claimName));
         }
     }
 
