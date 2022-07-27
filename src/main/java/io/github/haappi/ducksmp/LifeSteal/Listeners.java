@@ -114,19 +114,6 @@ public class Listeners implements Listener {
                 return; // return, they might be in negative hearts & can't lose anymore.
             }
 
-            if (player.getKiller() != null) {
-                Player killer = player.getKiller();
-                Integer hearts = killer.getPersistentDataContainer().get(new NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER);
-                if (hearts == null) {
-                    hearts = 0;
-                }
-                if (hearts < 10) {
-                    killer.getPersistentDataContainer().set(new NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER, hearts + 1);
-                    Objects.requireNonNull(killer.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(Objects.requireNonNull(killer.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue() + 2);
-                    killer.sendMessage(Component.text("You have stolen a heart from " + player.getName() + ".", NamedTextColor.GREEN));
-                    return;
-                }
-            }
             event.getDrops().add(getHeart(1, player));
 
         }
