@@ -24,7 +24,7 @@ repositories {
 dependencies {
 //    implementation("junit:junit:4.13.2")
     paperDevBundle("1.19-R0.1-SNAPSHOT")
-    compileOnly("org.geysermc.floodgate:api:2.0-SNAPSHOT")
+    compileOnly("org.geysermc.floodgate:api:2.2.0-SNAPSHOT")
     implementation("org.mongodb:mongodb-driver-sync:4.6.0")
 //    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 //    testImplementation("com.github.seeseemelk:MockBukkit-v1.18:2.22.2")
