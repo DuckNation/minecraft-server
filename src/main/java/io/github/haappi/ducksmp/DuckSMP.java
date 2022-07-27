@@ -11,15 +11,19 @@ import io.github.haappi.ducksmp.listeners.crystal;
 import io.github.haappi.ducksmp.utils.CustomHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.minecraft.world.item.ArmorItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerCommandSendEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -103,8 +107,11 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         if (event.getMessage().contains("rg define")) {
             String claimName = event.getMessage().split(" ")[2];
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), String.format("/rg flag -w %s %s pvp -g everyone allow", event.getPlayer().getLocation().getWorld().getName(), claimName));
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), String.format("/rg flag -w %s %s use -g everyone allow", event.getPlayer().getLocation().getWorld().getName(), claimName));
         }
     }
+
+
 
     @Override
     public void onDisable() {
