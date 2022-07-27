@@ -1,4 +1,4 @@
-name: Continuous Release
+name: Continuous Integration
 on:
   push:
     branches:
@@ -6,8 +6,8 @@ on:
       - main
 jobs:
   build:
-    name: Continuous Release
-    if: "!contains(github.event.head_commit.message, '[Skip]')"
+    name: Continuous Integration
+    if: "!contains(github.event.head_commit.message, '[CI Skip]')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
