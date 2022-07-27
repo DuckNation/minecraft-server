@@ -119,9 +119,9 @@ public class Listeners implements Listener {
                 }
                 if (claimed < 10) {
                     event.getItem().setAmount(event.getItem().getAmount() - 1);
-                    Objects.requireNonNull(event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(Objects.requireNonNull(event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue() + (2 * 1));
+                    Objects.requireNonNull(event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(Objects.requireNonNull(event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue() + (2));
                     event.getPlayer().getPersistentDataContainer().set(new org.bukkit.NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER, claimed + 1);
-                    event.getPlayer().sendMessage(Component.text("Claimed ", NamedTextColor.GREEN).append(Component.text("1", NamedTextColor.YELLOW).append(Component.text(" hearts.", NamedTextColor.GREEN))));
+                    event.getPlayer().sendMessage(Component.text("Claimed ", NamedTextColor.GREEN).append(Component.text("one", NamedTextColor.YELLOW).append(Component.text(" heart.", NamedTextColor.GREEN))));
                 } else {
                     event.getPlayer().sendMessage(Component.text("You have already claimed 10 hearts.", NamedTextColor.RED));
                 }
@@ -139,8 +139,6 @@ public class Listeners implements Listener {
                 break;
             case "heart":
                 event.getPlayer().getInventory().addItem(getHeart(1, event.getPlayer()));
-            case "fat":
-                Bukkit.getScheduler().runTask(plugin, () -> sendOptInForm(event.getPlayer()));
         }
     }
 

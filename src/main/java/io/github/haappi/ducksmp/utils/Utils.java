@@ -6,8 +6,11 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.command.Command;
+import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -62,6 +65,10 @@ public class Utils {
         };
 
         return Component.text(countdown + " second" + sFormat(countdown), color);
+    }
+
+    public static Boolean registerNewCommand(Command command) {
+        return ((CraftServer) Bukkit.getServer()).getCommandMap().register("duck", command);
     }
 
     public static @NotNull ItemStack getHeart(int count, Player owner) {
