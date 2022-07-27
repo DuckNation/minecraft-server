@@ -26,6 +26,9 @@ public class stats implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         ItemMeta itemMeta = event.getPlayer().getActiveItem().getItemMeta();
+        if (itemMeta == null) {
+            return;
+        }
         PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
         if (!pdc.has(new NamespacedKey(plugin, "broken_blocks"), PersistentDataType.INTEGER)) {
             pdc.set(new NamespacedKey(plugin, "broken_blocks"), PersistentDataType.INTEGER, 1);
@@ -43,7 +46,10 @@ public class stats implements Listener {
         }
         if (event.getDamager() instanceof Player player) {
             ItemMeta itemMeta = player.getActiveItem().getItemMeta();
-            PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
+            if (itemMeta == null) {
+                return;
+            }
+                PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
             if (!pdc.has(new NamespacedKey(plugin, "damage_dealt"), PersistentDataType.DOUBLE)) {
                 pdc.set(new NamespacedKey(plugin, "damage_dealt"), PersistentDataType.DOUBLE, event.getDamage());
             } else {
@@ -61,7 +67,10 @@ public class stats implements Listener {
         }
         if (event.getDamager() instanceof Player player) {
             ItemMeta itemMeta = player.getActiveItem().getItemMeta();
-            PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
+            if (itemMeta == null) {
+                return;
+            }
+                PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
             if (!pdc.has(new NamespacedKey(plugin, "player_damage_dealt"), PersistentDataType.DOUBLE)) {
                 pdc.set(new NamespacedKey(plugin, "player_damage_dealt"), PersistentDataType.DOUBLE, event.getDamage());
             } else {
@@ -79,6 +88,9 @@ public class stats implements Listener {
         if (event.getEntity().getKiller() != null) {
             Player player = event.getEntity().getKiller();
             ItemMeta itemMeta = player.getActiveItem().getItemMeta();
+            if (itemMeta == null) {
+                return;
+            }
             PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
             if (!pdc.has(new NamespacedKey(plugin, "mobs_killed"), PersistentDataType.INTEGER)) {
                 pdc.set(new NamespacedKey(plugin, "mobs_killed"), PersistentDataType.INTEGER, 1);
@@ -97,6 +109,9 @@ public class stats implements Listener {
         if (event.getEntity().getKiller() != null) {
             Player player = event.getEntity().getKiller();
             ItemMeta itemMeta = player.getActiveItem().getItemMeta();
+            if (itemMeta == null) {
+                return;
+            }
             PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
             if (!pdc.has(new NamespacedKey(plugin, "players_killed"), PersistentDataType.INTEGER)) {
                 pdc.set(new NamespacedKey(plugin, "players_killed"), PersistentDataType.INTEGER, 1);
