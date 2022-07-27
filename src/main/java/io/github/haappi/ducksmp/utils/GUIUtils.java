@@ -37,13 +37,7 @@ public class GUIUtils {
     }
 
 public static void sendOptInJava(UUID uuid) {
-    IconMenu menu = new IconMenu("My Fancy Menu", 54, event -> {
-        event.getPlayer().sendMessage("You have chosen " + event.getName());
-        event.setWillClose(true);
-    }, DuckSMP.getInstance())
-            .setOption(3, new ItemStack(Material.APPLE, 1), "Food", "The food is delicious")
-            .setOption(4, new ItemStack(Material.IRON_SWORD, 1), "Weapon", "Weapons are for awesome people")
-            .setOption(5, new ItemStack(Material.EMERALD, 1), "Money", "Money brings happiness");
+
 }
 
 }
