@@ -17,7 +17,7 @@ public class stoprestart extends BukkitCommand {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        if (!sender.isOp) return;
+        if (!sender.isOp()) return;
         if (!restartNeeded) {
             sender.sendMessage(Component.text("There isn't a reset scheduled.", NamedTextColor.RED));
         } else {
