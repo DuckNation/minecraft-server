@@ -50,6 +50,7 @@ public class netheirte implements Listener {
         }
     }
 
+
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player player) {
