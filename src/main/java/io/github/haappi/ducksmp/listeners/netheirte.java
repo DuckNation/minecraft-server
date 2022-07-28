@@ -63,6 +63,9 @@ public class netheirte implements Listener {
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player player) {
             if (event.getEntity() instanceof Player) {
+                if (player.getInventory().getItemInMainHand().getItemMeta() == null) {
+                    return;
+                }
                 if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "np_pvp_tool"))) {
                     event.setCancelled(true);
                     player.sendMessage(Component.text("You can't damage players with this tool.", NamedTextColor.RED));
