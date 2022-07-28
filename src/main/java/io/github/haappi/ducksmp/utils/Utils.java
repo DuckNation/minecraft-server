@@ -6,9 +6,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
@@ -141,14 +139,24 @@ public class Utils {
     }
 
     public static ArmorStand createStand(Entity owner, int count) {
-        ArmorStand as = owner.getWorld().spawn(owner.getLocation(), ArmorStand.class);
+        ArmorStand as = getStand(owner.getWorld(), owner.getLocation());
+        as.customName(Component.text(count + "x", NamedTextColor.YELLOW).append(Component.text(" Heart ❤", NamedTextColor.RED)));
+        return as;
+    }
+
+    public static ArmorStand createStand(Player owner) {
+        return getStand(owner.getWorld(), owner.getLocation());
+    }
+
+    private static ArmorStand getStand(World world, Location location) {
+        ArmorStand as = world.spawn(location, ArmorStand.class);
         as.setInvisible(true);
         as.setInvulnerable(true);
         as.setMarker(true);
         as.setCustomNameVisible(true);
         as.setGravity(false);
         as.setPersistent(false);
-        as.customName(Component.text(count + "x", NamedTextColor.YELLOW).append(Component.text(" Heart ❤", NamedTextColor.RED)));
+
         return as;
     }
 }

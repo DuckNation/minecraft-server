@@ -12,6 +12,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
@@ -42,10 +43,10 @@ public class Listeners implements Listener {
     public Listeners() {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this::armorStandTask, 500L, 1L);
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this::armorStandTask, 20L, 1L);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onItemDespawn(ItemDespawnEvent event) {
         if (isLifeStealItem(event.getEntity().getItemStack())) {
             event.setCancelled(true);
@@ -57,14 +58,16 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPickup(EntityPickupItemEvent event) {
-        removeStand(event.getEntity().getUniqueId());
+        event.setCancelled(true);
+        removeStand(event.getItem().getUniqueId());
+        event.setCancelled(false);
     }
 
     private void removeStand(UUID uuid) {
         if (Bukkit.getEntity(armorMap.get(uuid)) != null) {
             Bukkit.getEntity(armorMap.get(uuid)).remove();
-            armorMap.remove(uuid);
         }
+        armorMap.remove(uuid);
     }
 
     @EventHandler
@@ -80,9 +83,9 @@ public class Listeners implements Listener {
     private void armorStandTask() {
         for (Map.Entry<UUID, UUID> entry : this.armorMap.entrySet()) {
             ArmorStand stand = (ArmorStand) Bukkit.getEntity(entry.getValue());
-            Entity player = Bukkit.getEntity(entry.getKey());
+            Entity entity = Bukkit.getEntity(entry.getKey());
 
-            if (player == null || stand == null) { // todo check if armor stand is null -> make a new one
+            if (entity == null || stand == null) { // todo check if armor stand is null -> make a new one
                 removeStand(entry.getKey());
                 continue;
             }
@@ -91,14 +94,9 @@ public class Listeners implements Listener {
                 armorMap.remove(entry.getKey());
             }
 
-            Component name = Component.text()
-                    .append(Component.text("lifestyeal sure")).build();
-            if (stand.name() != name) {
-                stand.customName(name);
-            }
 
-            if (stand.getLocation().add(0, -2.15, 0) != player.getLocation()) {
-                stand.teleport(player.getLocation().add(0, 2.15, 0));
+            if (stand.getLocation().add(0, -2.15, 0) != entity.getLocation()) {
+                stand.teleport(entity.getLocation().add(0, 0.15, 0));
             }
         }
 
