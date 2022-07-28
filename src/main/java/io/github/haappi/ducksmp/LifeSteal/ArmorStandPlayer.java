@@ -5,6 +5,7 @@ import io.github.haappi.ducksmp.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -59,7 +60,7 @@ public class ArmorStandPlayer implements Listener {
                 result = Component.text("No LifeSteal ✘", NamedTextColor.RED);
             }
 
-            stand.setCustomNameVisible(!player.isDead() && !player.isSneaking() && !player.isInvisible() && !enabledPlayers.contains(player.getUniqueId()));
+            stand.setCustomNameVisible(!player.isDead() && !player.isSneaking() && !player.isInvisible() && !enabledPlayers.contains(player.getUniqueId()) && (player.getGameMode() != GameMode.SPECTATOR));
 
             Component name = Component.text()
                     .append(result).build();
