@@ -45,7 +45,7 @@ public class vanish extends BukkitCommand implements Listener {
         }
     }
 
-//    @EventHandler(priority = EventPriority.LOWEST)
+    //    @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(PlayerCommandPreprocessEvent event) {
 //        override the default /tell /w commands
     }

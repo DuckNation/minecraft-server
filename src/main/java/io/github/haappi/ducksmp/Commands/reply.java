@@ -7,7 +7,6 @@ import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static io.github.haappi.ducksmp.Commands.tell.doTell;
