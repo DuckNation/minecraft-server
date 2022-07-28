@@ -12,6 +12,7 @@ import io.github.haappi.ducksmp.internals.stoprestart;
 import io.github.haappi.ducksmp.internals.vanish;
 import io.github.haappi.ducksmp.listeners.Villager;
 import io.github.haappi.ducksmp.listeners.crystal;
+import io.github.haappi.ducksmp.listeners.netheirte;
 import io.github.haappi.ducksmp.listeners.stats;
 import io.github.haappi.ducksmp.utils.CustomHolder;
 import io.papermc.paper.event.player.AsyncChatEvent;
@@ -75,6 +76,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 //        new totem(); // enable in like 2 days
         new crystal();
         new stats();
+        new netheirte();
 
         Bukkit.getPluginManager().registerEvents(this, this);
 
