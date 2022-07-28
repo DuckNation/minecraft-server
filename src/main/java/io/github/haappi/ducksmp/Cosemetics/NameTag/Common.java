@@ -74,6 +74,36 @@ public class Common implements Listener {
         packetsToSend.remove(event.getPlayer().getUniqueId());
     }
 
+    public static Component getFormattedPrefix(Player player) {
+        PersistentDataContainer container = player.getPersistentDataContainer();
+        Component prefix;
+
+        String prefixString = container.get(new NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING);
+
+        if (prefixString != null) {
+            prefix = Component.text(prefixString, chatColors.get(player.getUniqueId()));
+        } else {
+            prefix = Component.text(" ", NamedTextColor.WHITE);
+        }
+        return prefix;
+    }
+
+    public static void setStuff(Player player, String prefix, ChatFormatting color) {
+        PersistentDataContainer container = player.getPersistentDataContainer();
+        container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING, prefix);
+        container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_color"), PersistentDataType.INTEGER, color.getId());
+
+        chatColors.put(player.getUniqueId(), NamedTextColor.nearestTo(TextColor.color(color.getColor())));
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            for (Map.Entry<UUID, Tuple<ClientboundSetPlayerTeamPacket, ClientboundSetPlayerTeamPacket>> entry : packetsToSend.entrySet()) {
+                ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getA());
+                ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getB());
+            }
+        }
+
+    }
+
     public static void teamPacket(Player player, String teamName, String prefix, ChatFormatting color) {
         CraftScoreboard scoreboard = ((CraftScoreboardManager) Bukkit.getScoreboardManager()).getMainScoreboard();
         PlayerTeam team = new PlayerTeam(scoreboard.getHandle(), teamName);

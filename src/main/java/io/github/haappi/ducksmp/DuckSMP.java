@@ -5,6 +5,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.model.CreateCollectionOptions;
 import io.github.haappi.ducksmp.Commands.*;
+import io.github.haappi.ducksmp.Cosemetics.NameTag.BedrockMenu;
 import io.github.haappi.ducksmp.Cosemetics.NameTag.Common;
 import io.github.haappi.ducksmp.LifeSteal.ArmorStandPlayer;
 import io.github.haappi.ducksmp.LifeSteal.Listeners;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.chatColors;
+import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.getFormattedPrefix;
 import static io.github.haappi.ducksmp.utils.Utils.*;
 
 public final class DuckSMP extends JavaPlugin implements Listener {
@@ -87,6 +89,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         unRegisterBukkitCommand("tell");
         registerNewCommand(new tell("tell"));
         registerNewCommand(new reply("reply"));
+        registerNewCommand(new BedrockMenu("color"));
 
     }
 
@@ -244,9 +247,10 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         if (chatColors.get(event.getPlayer().getUniqueId()) != null) {
             event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
                     .append(
-                            Component.text("<", NamedTextColor.GREEN),
+                            getFormattedPrefix(event.getPlayer()),
+                            Component.text("<", NamedTextColor.LIGHT_PURPLE),
                             sourceDisplayName.color(chatColors.get(event.getPlayer().getUniqueId())),
-                            Component.text("> ", NamedTextColor.GREEN),
+                            Component.text("> ", NamedTextColor.LIGHT_PURPLE),
                             Component.text()
                                     .color(NamedTextColor.WHITE)
                                     .append(message)
