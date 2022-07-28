@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.model.CreateCollectionOptions;
+import io.github.haappi.ducksmp.Commands.tell;
 import io.github.haappi.ducksmp.LifeSteal.Listeners;
 import io.github.haappi.ducksmp.LifeSteal.signup;
 import io.github.haappi.ducksmp.internals.Messages;
@@ -41,8 +42,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static io.github.haappi.ducksmp.utils.Utils.miniMessage;
-import static io.github.haappi.ducksmp.utils.Utils.registerNewCommand;
+import static io.github.haappi.ducksmp.utils.Utils.*;
 
 public final class DuckSMP extends JavaPlugin implements Listener {
 
@@ -82,6 +82,8 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         registerNewCommand(new stoprestart("stoprestart"));
         registerNewCommand(new nv("nv"));
         registerNewCommand(new vanish("v"));
+        unRegisterBukkitCommand("tell");
+        registerNewCommand(new tell("tell"));
 
     }
 

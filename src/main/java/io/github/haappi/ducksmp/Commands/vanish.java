@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class vanish extends BukkitCommand implements Listener {
-    private final ArrayList<UUID> enabledPlayers = new ArrayList<>();
+    public static final ArrayList<UUID> enabledPlayers = new ArrayList<>();
 
     public vanish(String name) {
         super(name);
