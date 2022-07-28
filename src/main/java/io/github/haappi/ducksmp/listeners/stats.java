@@ -16,7 +16,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class stats implements Listener {
 
-    private DuckSMP plugin;
+    private final DuckSMP plugin;
 
     public stats() {
         this.plugin = DuckSMP.getInstance();
@@ -49,7 +49,7 @@ public class stats implements Listener {
             if (itemMeta == null) {
                 return;
             }
-                PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
+            PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
             if (!pdc.has(new NamespacedKey(plugin, "damage_dealt"), PersistentDataType.DOUBLE)) {
                 pdc.set(new NamespacedKey(plugin, "damage_dealt"), PersistentDataType.DOUBLE, event.getDamage());
             } else {
@@ -70,7 +70,7 @@ public class stats implements Listener {
             if (itemMeta == null) {
                 return;
             }
-                PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
+            PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
             if (!pdc.has(new NamespacedKey(plugin, "player_damage_dealt"), PersistentDataType.DOUBLE)) {
                 pdc.set(new NamespacedKey(plugin, "player_damage_dealt"), PersistentDataType.DOUBLE, event.getDamage());
             } else {

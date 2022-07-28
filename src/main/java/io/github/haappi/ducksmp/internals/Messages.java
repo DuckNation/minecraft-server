@@ -15,7 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,10 +32,10 @@ import static io.github.haappi.ducksmp.utils.Utils.getCountdown;
 public class Messages implements Listener {
 
     public static String commitHash = "";
-    private final DuckSMP plugin;
-    private final ConcurrentHashMap<String, String> files = new ConcurrentHashMap<>(); // FileName -> FilePath. Only for non-folders ending in .yml
     public static boolean restartNeeded = false;
     public static BukkitTask restartID;
+    private final DuckSMP plugin;
+    private final ConcurrentHashMap<String, String> files = new ConcurrentHashMap<>(); // FileName -> FilePath. Only for non-folders ending in .yml
 
     public Messages() {
         this.plugin = DuckSMP.getInstance();
