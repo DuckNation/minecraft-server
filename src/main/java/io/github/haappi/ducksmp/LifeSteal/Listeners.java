@@ -166,8 +166,6 @@ public class Listeners implements Listener {
             entity.setVelocity(entity.getVelocity().setY(0.2));
 
             armorMap.put(entity.getUniqueId(), Utils.createStand(entity, 1).getUniqueId());
-
-            // todo armor stands above item.
         }
     }
 
