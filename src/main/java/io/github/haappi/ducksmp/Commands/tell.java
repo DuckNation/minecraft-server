@@ -36,6 +36,7 @@ public class tell extends BukkitCommand implements Listener {
         }
         receiver.sendMessage(Component.text("From ", NamedTextColor.GRAY).append(Component.text(sender.getName(), NamedTextColor.YELLOW)).append(Component.text(": " + message, NamedTextColor.GRAY)));
         recentlyMessaged.put(receiver.getUniqueId(), sender.getUniqueId());
+        recentlyMessaged.put(sender.getUniqueId(), receiver.getUniqueId());
         sender.sendMessage(Component.text("To ", NamedTextColor.GRAY).append(Component.text(receiver.getName(), NamedTextColor.YELLOW)).append(Component.text(": " + message, NamedTextColor.GRAY)));
     }
 
