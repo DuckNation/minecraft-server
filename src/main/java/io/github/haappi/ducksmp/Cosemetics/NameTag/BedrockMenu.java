@@ -46,16 +46,17 @@ public class BedrockMenu extends BukkitCommand { // refactor to use one command 
         CustomForm.Builder form = CustomForm.builder()
                 .title("NameTag")
                 .dropdown("Select a color", Arrays.asList("Black", "Dark Blue", "Dark Green", "Dark Aqua", "Dark Red", "Dark Purple", "Gold", "Gray", "Dark Gray", "Blue", "Green", "Aqua", "Red", "Light Purple", "Yellow", "White"))
-                .input("Tag Prefix", "bob", "a");
+                .input("Tag Prefix", "6 characters max", "my awesome prefix");
 
         form.closedOrInvalidResultHandler(response -> {
+            player.sendMessage(Component.text("Form closed or invalid", NamedTextColor.RED));
             response.isClosed();
             response.isInvalid();
         });
 
         form.validResultHandler(response -> {
             Integer color = response.asDropdown();
-            String prefix = "[" + response.asInput() + "] ";
+            String prefix = "[" + response.asInput().substring(0, 7) + "] ";
             Common.teamPacket(player, String.valueOf(System.currentTimeMillis()), prefix, colorMapping.get(color));
             setStuff(player, prefix, colorMapping.get(color));
             player.sendMessage(Component.text("Your prefix is: " + prefix, NamedTextColor.nearestTo(TextColor.color(colorMapping.get(color).getColor()))));
