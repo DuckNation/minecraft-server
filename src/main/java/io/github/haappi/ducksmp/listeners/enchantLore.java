@@ -12,6 +12,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -43,6 +45,20 @@ public class enchantLore implements Listener {
 
         meta.lore(lore);
         item.setItemMeta(meta);
+    }
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent event) {
+        if (event.getMessage().contains("enchant") && event.getMessage().contains("cant see")) {
+            event.getPlayer().sendMessage(Component.text("Drop & pickup the item to view enchants.", NamedTextColor.RED));
+        }
+    }
+
+    @EventHandler
+    public void onUse(PlayerItemDamageEvent event) {
+        if (event.getItem().getType() == Material.AIR) {
+            return;
+        }
+        applyEnchantsToLore(event.getItem());
     }
 
     @EventHandler
