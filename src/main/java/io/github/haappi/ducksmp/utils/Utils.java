@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -20,7 +21,9 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Utils {
@@ -71,6 +74,40 @@ public class Utils {
 
     public static Boolean registerNewCommand(Command command) {
         return ((CraftServer) Bukkit.getServer()).getCommandMap().register("duck", command);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private static Object getPrivateField(Object object, String field) throws SecurityException,
+            NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        Class<?> clazz = object.getClass();
+        Field objectField = clazz.getDeclaredField(field);
+        objectField.setAccessible(true);
+        Object result = objectField.get(object);
+        objectField.setAccessible(false);
+        return result;
+    }
+
+    public static void unRegisterBukkitCommand(org.bukkit.command.Command command) {
+        try {
+            Object result = getPrivateField(Bukkit.getServer(), "commandMap");
+            SimpleCommandMap commandMap = (SimpleCommandMap) result;
+            HashMap<String, Command> thing = (HashMap<String, org.bukkit.command.Command>) commandMap.getKnownCommands();
+            thing.remove(command.getName());
+            for (String alias : command.getAliases()) {
+                if (thing.containsKey(alias) && thing.get(alias).toString().contains(Bukkit.getName())) {
+                    thing.remove(alias);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void unRegisterBukkitCommand(String command) {
+        org.bukkit.command.Command cmd = (((CraftServer) Bukkit.getServer()).getCommandMap()).getCommand(command);
+        if (cmd != null) {
+            unRegisterBukkitCommand(cmd);
+        }
     }
 
     public static @NotNull ItemStack getHeart(int count, Player owner) {
