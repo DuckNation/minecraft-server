@@ -56,7 +56,16 @@ public class BedrockMenu extends BukkitCommand { // refactor to use one command 
 
         form.validResultHandler(response -> {
             Integer color = response.asDropdown();
-            String prefix = "[" + response.asInput().substring(0, 7) + "] ";
+            if (response.asInput() == null) {
+                player.sendMessage(Component.text("Form closed or invalid", NamedTextColor.RED));
+                return;
+            }
+            String prefix;
+            if (response.asInput().length() < 7) {
+                prefix = response.asInput();
+            } else {
+                prefix = "[" + response.asInput().substring(0, 7) + "] ";
+            }
             Common.teamPacket(player, String.valueOf(System.currentTimeMillis()), prefix, colorMapping.get(color));
             setStuff(player, prefix, colorMapping.get(color));
             player.sendMessage(Component.text("Your prefix is: " + prefix, NamedTextColor.nearestTo(TextColor.color(colorMapping.get(color).getColor()))));
