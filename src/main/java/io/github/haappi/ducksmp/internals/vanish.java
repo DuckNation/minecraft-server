@@ -47,7 +47,10 @@ public class vanish extends BukkitCommand implements Listener {
     @Override
     public boolean execute(@NotNull org.bukkit.command.CommandSender sender, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player player) {
-            if (!player.isOp()) return true;
+            if (!player.isOp()) {
+                player.sendMessage(Component.text("You need to be an operator to use this command.", NamedTextColor.RED));
+                return true;
+            }
             if (enabledPlayers.contains(player.getUniqueId())) {
                 enabledPlayers.remove(player.getUniqueId());
                 player.sendMessage(Component.text("You are no longer invisible.", NamedTextColor.GREEN));

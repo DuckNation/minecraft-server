@@ -17,7 +17,10 @@ public class stoprestart extends BukkitCommand {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        if (!sender.isOp()) return true;
+        if (!sender.isOp()) {
+            sender.sendMessage(Component.text("You need to be an operator to use this command.", NamedTextColor.RED));
+            return true;
+        }
         if (!restartNeeded) {
             sender.sendMessage(Component.text("There isn't a reset scheduled.", NamedTextColor.RED));
         } else {
