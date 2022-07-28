@@ -38,7 +38,7 @@ public class enchantLore implements Listener {
         ArrayList<Component> lore = new ArrayList<>();
 
         for (Enchantment enchantment : item.getEnchantments().keySet()) {
-            lore.add(noItalics(WordUtils.capitalizeFully(enchantment.getKey().getKey().toLowerCase()), NamedTextColor.GRAY).append(noItalics(Component.text(" " + meta.getEnchantLevel(enchantment), NamedTextColor.AQUA))));
+            lore.add(noItalics(WordUtils.capitalizeFully(enchantment.getKey().getKey().toLowerCase().replace("_", " ")), NamedTextColor.GRAY).append(noItalics(Component.text(" " + meta.getEnchantLevel(enchantment), NamedTextColor.AQUA))));
         }
 
         meta.lore(lore);
