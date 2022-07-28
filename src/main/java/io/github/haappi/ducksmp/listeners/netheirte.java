@@ -35,6 +35,16 @@ public class netheirte implements Listener {
         }
     }
 
+    @EventHandler
+    public void onWoodenDamage(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player player) {
+            if (player.getActiveItem().getType() == Material.WOODEN_AXE) {
+                event.setCancelled(true);
+                player.sendMessage(Component.text("No!", NamedTextColor.RED));
+            }
+        }
+    }
+
 
     @EventHandler
     public void craftItem(SmithItemEvent event) {
