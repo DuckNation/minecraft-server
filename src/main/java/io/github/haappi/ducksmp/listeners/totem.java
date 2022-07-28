@@ -61,6 +61,7 @@ public class totem implements Listener {
         mobs.add(EntityType.ZOGLIN);
         mobs.add(EntityType.WANDERING_TRADER);
         mobs.add(EntityType.GIANT);
+        mobs.add(EntityType.BAT);
         for (int i = 0; i < 4; i++) {
             mobs.add(EntityType.VILLAGER);
         }
