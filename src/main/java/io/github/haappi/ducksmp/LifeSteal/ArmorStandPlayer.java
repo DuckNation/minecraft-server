@@ -57,6 +57,8 @@ public class ArmorStandPlayer implements Listener {
                 result = Component.text("No LifeSteal ✘", NamedTextColor.RED);
             }
 
+            stand.setCustomNameVisible(!player.isDead() && !player.isSneaking() && !player.isInvisible());
+
             Component name = Component.text()
                     .append(result).build();
             if (!stand.name().equals(name)) {
@@ -68,21 +70,6 @@ public class ArmorStandPlayer implements Listener {
             }
 
         });
-    }
-
-    @EventHandler
-    public void onShift(PlayerToggleSneakEvent event) {
-        if (event.isSneaking()) {
-            ArmorStand stand = (ArmorStand) Bukkit.getEntity(armorMap.get(event.getPlayer().getUniqueId()));
-            if (stand != null) {
-                stand.setCustomNameVisible(false);
-            }
-        } else {
-            ArmorStand stand = (ArmorStand) Bukkit.getEntity(armorMap.get(event.getPlayer().getUniqueId()));
-            if (stand != null) {
-                stand.setCustomNameVisible(true);
-            }
-        }
     }
 
     @SuppressWarnings("UnstableApiUsage")
