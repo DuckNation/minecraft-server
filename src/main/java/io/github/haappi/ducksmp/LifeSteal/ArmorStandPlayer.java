@@ -72,6 +72,7 @@ public class ArmorStandPlayer implements Listener {
         });
     }
 
+
     @SuppressWarnings("UnstableApiUsage")
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
