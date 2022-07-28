@@ -23,10 +23,12 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class Utils {
 
     public static final MiniMessage miniMessage = MiniMessage.miniMessage();
+    public static final Random random = new Random();
 
     public Utils() {
         throw new UnsupportedOperationException("This class is not meant to be instantiated");
