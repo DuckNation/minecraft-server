@@ -241,11 +241,11 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        if (event.getPlayer().isOp()) {
+        if (chatColors.get(event.getPlayer().getUniqueId()) != null) {
             event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
                     .append(
                             Component.text("<", NamedTextColor.GREEN),
-                            sourceDisplayName.color(NamedTextColor.GREEN),
+                            sourceDisplayName.color(chatColors.get(event.getPlayer().getUniqueId())),
                             Component.text("> ", NamedTextColor.GREEN),
                             Component.text()
                                     .color(NamedTextColor.WHITE)
@@ -253,11 +253,11 @@ public final class DuckSMP extends JavaPlugin implements Listener {
                                     .build()
                     )
                     .build());
-        } else if (chatColors.get(event.getPlayer().getUniqueId()) != null) {
+        } else if (event.getPlayer().isOp()) {
             event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
                     .append(
                             Component.text("<", NamedTextColor.GREEN),
-                            sourceDisplayName.color(chatColors.get(event.getPlayer().getUniqueId())),
+                            sourceDisplayName.color(NamedTextColor.GREEN),
                             Component.text("> ", NamedTextColor.GREEN),
                             Component.text()
                                     .color(NamedTextColor.WHITE)
