@@ -36,26 +36,13 @@ public class Listeners implements Listener {
 
     private final DuckSMP plugin;
 
-    //    private final PlayerTeam netherStar = new PlayerTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getNewScoreboard()).getHandle(), "Star");
-    private final ConcurrentHashMap<UUID, ArmorStand> armorMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, UUID> armorMap = new ConcurrentHashMap<>();
 
-//    @EventHandler
-//    public void onJoin(PlayerJoinEvent event) {
-//        ((CraftPlayer) event.getPlayer()).getHandle().connection.send(ClientboundSetPlayerTeamPacket.createAddOrModifyPacket(netherStar, true));
-//    }
 
     public Listeners() {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this::armorStandTask, 500L, 1L);
-
-//        netherStar.setColor(Objects.requireNonNull(PaperAdventure.asVanilla(NamedTextColor.DARK_PURPLE))); // todo lifesteal nether star colors get glowing
-        // & armor stand above head
-//
-//        Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-//
-//
-//        }, 20 * 30L, 40L);
     }
 
     @EventHandler
@@ -74,8 +61,8 @@ public class Listeners implements Listener {
     }
 
     private void removeStand(UUID uuid) {
-        if (armorMap.get(uuid) != null) {
-            armorMap.get(uuid).remove();
+        if (Bukkit.getEntity(armorMap.get(uuid)) != null) {
+            Bukkit.getEntity(armorMap.get(uuid)).remove();
             armorMap.remove(uuid);
         }
     }
@@ -91,25 +78,27 @@ public class Listeners implements Listener {
     }
 
     private void armorStandTask() {
-        for (Map.Entry<UUID, ArmorStand> entry : this.armorMap.entrySet()) {
-            ArmorStand stand = entry.getValue();
+        for (Map.Entry<UUID, UUID> entry : this.armorMap.entrySet()) {
+            ArmorStand stand = (ArmorStand) Bukkit.getEntity(entry.getValue());
             Entity player = Bukkit.getEntity(entry.getKey());
 
-            if (player == null) {
+            if (player == null || stand == null) { // todo check if armor stand is null -> make a new one
                 removeStand(entry.getKey());
                 continue;
-            } else {
-                if (stand.isDead()) {
-                    armorMap.remove(entry.getKey());
-                }
             }
-            //
-//                if (stand.name() != name) {
-//                    stand.customName(name);
-//                }
 
-            if (stand.getLocation().add(0, -0.15, 0) != player.getLocation()) {
-                stand.teleport(player.getLocation().add(0, 0.15, 0));
+            if (stand.isDead()) {
+                armorMap.remove(entry.getKey());
+            }
+
+            Component name = Component.text()
+                    .append(Component.text("lifestyeal sure")).build();
+            if (stand.name() != name) {
+                stand.customName(name);
+            }
+
+            if (stand.getLocation().add(0, -2.15, 0) != player.getLocation()) {
+                stand.teleport(player.getLocation().add(0, 2.15, 0));
             }
         }
 
@@ -141,7 +130,7 @@ public class Listeners implements Listener {
             for (Entity entity : entitiesList) {
                 if (entity instanceof Item item) {
                     if (isLifeStealItem(item.getItemStack())) {
-                        Bukkit.getScheduler().runTaskLater(plugin, () -> armorMap.put(entity.getUniqueId(), createStand(entity, 1)), 1L);
+                        Bukkit.getScheduler().runTaskLater(plugin, () -> armorMap.put(entity.getUniqueId(), createStand(entity, 1).getUniqueId()), 1L);
                     }
                 }
             }
@@ -174,7 +163,7 @@ public class Listeners implements Listener {
             entity.setVisualFire(false);
             entity.setVelocity(entity.getVelocity().setY(0.2));
 
-            armorMap.put(entity.getUniqueId(), Utils.createStand(entity, 1));
+            armorMap.put(entity.getUniqueId(), Utils.createStand(entity, 1).getUniqueId());
 
             // todo armor stands above item.
         }
