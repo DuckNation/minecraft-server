@@ -5,6 +5,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.model.CreateCollectionOptions;
 import io.github.haappi.ducksmp.Commands.*;
+import io.github.haappi.ducksmp.Cosemetics.NameTag.Common;
 import io.github.haappi.ducksmp.LifeSteal.ArmorStandPlayer;
 import io.github.haappi.ducksmp.LifeSteal.Listeners;
 import io.github.haappi.ducksmp.LifeSteal.signup;
@@ -37,6 +38,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.chatColors;
 import static io.github.haappi.ducksmp.utils.Utils.*;
 
 public final class DuckSMP extends JavaPlugin implements Listener {
@@ -73,6 +75,8 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 
         new ArmorStandPlayer();
         new enchantLore();
+
+        new Common();
 
         Bukkit.getPluginManager().registerEvents(this, this);
 
@@ -249,7 +253,19 @@ public final class DuckSMP extends JavaPlugin implements Listener {
                                     .build()
                     )
                     .build());
-        } else {
+        } else if (chatColors.get(event.getPlayer().getUniqueId()) != null) {
+            event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
+                    .append(
+                            Component.text("<", NamedTextColor.GREEN),
+                            sourceDisplayName.color(chatColors.get(event.getPlayer().getUniqueId())),
+                            Component.text("> ", NamedTextColor.GREEN),
+                            Component.text()
+                                    .color(NamedTextColor.WHITE)
+                                    .append(message)
+                                    .build()
+                    )
+                    .build());
+        } else { // todo make non-linked players gray
             event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
                     .append(
                             Component.text("<", NamedTextColor.YELLOW),
