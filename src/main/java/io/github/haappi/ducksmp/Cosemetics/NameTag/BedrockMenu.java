@@ -61,10 +61,10 @@ public class BedrockMenu extends BukkitCommand { // refactor to use one command 
                 return;
             }
             String prefix;
-            if (response.asInput().length() < 7) {
+            if (response.asInput().length() < 13) {
                 prefix = response.asInput();
             } else {
-                prefix = "[" + response.asInput().substring(0, 7) + "] ";
+                prefix = "[" + response.asInput().substring(0, 13) + "] ";
             }
             Common.teamPacket(player, String.valueOf(System.currentTimeMillis()), prefix, colorMapping.get(color));
             setStuff(player, prefix, colorMapping.get(color));
