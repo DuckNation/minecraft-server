@@ -60,7 +60,7 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onItemDespawn(ItemDespawnEvent event) {
-        if (event.getEntity().getPersistentDataContainer().has(new NamespacedKey(plugin, "life_steal"), PersistentDataType.STRING)) {
+        if (isLifeStealItem(event.getEntity().getItemStack())) {
             event.setCancelled(true);
             /* todo
             a GUI so people can see the location of their hearts
@@ -219,7 +219,7 @@ public class Listeners implements Listener {
             return;
         }
         if (event.getItem() != null) {
-            if (event.getItem().getItemMeta().getPersistentDataContainer().has(new org.bukkit.NamespacedKey(plugin, "life_steal"), PersistentDataType.STRING)) {
+            if (isLifeStealItem(event.getItem())) {
                 event.setCancelled(true);
                 Integer claimed = event.getPlayer().getPersistentDataContainer().get(new org.bukkit.NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER);
                 if (claimed == null) {

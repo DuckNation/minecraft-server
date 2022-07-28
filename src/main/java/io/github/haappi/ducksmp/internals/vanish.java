@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,6 +43,11 @@ public class vanish extends BukkitCommand implements Listener {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Component.text("You can't send messages while being invisible", NamedTextColor.RED));
         }
+    }
+
+//    @EventHandler(priority = EventPriority.LOWEST)
+    public void onChat(PlayerCommandPreprocessEvent event) {
+//        override the default /tell /w commands
     }
 
     @Override
