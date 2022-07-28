@@ -1,8 +1,10 @@
 package io.github.haappi.ducksmp.listeners;
 
 import io.github.haappi.ducksmp.DuckSMP;
+import net.minecraft.world.item.ArmorItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
@@ -28,7 +30,7 @@ public class netheirte implements Listener {
             if (stack == null) {
                 continue;
             }
-            if (stack.getType() == Material.NETHERITE_INGOT) {
+            if (CraftItemStack.asNMSCopy(stack).getItem() instanceof ArmorItem) {
                 inv.setResult(null);
                 event.setCancelled(true);
             }
