@@ -40,6 +40,7 @@ public class Common implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
     @EventHandler
+    @SuppressWarnings("ConstantConditions")
     public void onJoin(PlayerJoinEvent event) {
         Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
             Player player = event.getPlayer();
@@ -48,7 +49,7 @@ public class Common implements Listener {
             if (container.has(new NamespacedKey(plugin, "custom_prefix"), PersistentDataType.STRING)) {
                 prefix = container.get(new NamespacedKey(plugin, "custom_prefix"), PersistentDataType.STRING);
             } else {
-                prefix = "rank ";
+                return;
             }
 
             ChatFormatting color;
@@ -56,9 +57,9 @@ public class Common implements Listener {
             if (customColor != null) {
                 color = ChatFormatting.getById(customColor);
             } else {
-                color = ChatFormatting.WHITE;
+                return;
             }
-            chatColors.put(player.getUniqueId(), NamedTextColor.nearestTo(TextColor.fromHexString(color.toString())));
+            chatColors.put(player.getUniqueId(), NamedTextColor.nearestTo(TextColor.color(color.getColor())));
 
             teamPacket(event.getPlayer(), String.valueOf(System.currentTimeMillis()), prefix, color);
             for (Map.Entry<UUID, Tuple<ClientboundSetPlayerTeamPacket, ClientboundSetPlayerTeamPacket>> entry : packetsToSend.entrySet()) {
