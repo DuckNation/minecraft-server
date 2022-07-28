@@ -22,10 +22,12 @@ import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static io.github.haappi.ducksmp.utils.GUIUtils.sendOptInForm;
 import static io.github.haappi.ducksmp.utils.Utils.*;
@@ -132,26 +134,34 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        Entity[] entities = event.getChunk().getEntities();
-        for (Entity entity : entities) {
-            if (entity instanceof Item item) {
-                if (isLifeStealItem(item.getItemStack())) {
-                    armorMap.put(entity.getUniqueId(), createStand(entity, 1));
+        ConcurrentLinkedDeque<Entity> entitiesList = new ConcurrentLinkedDeque<>();
+        Collections.addAll(entitiesList, event.getChunk().getEntities());
+
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            for (Entity entity : entitiesList) {
+                if (entity instanceof Item item) {
+                    if (isLifeStealItem(item.getItemStack())) {
+                        Bukkit.getScheduler().runTaskLater(plugin, () -> armorMap.put(entity.getUniqueId(), createStand(entity, 1)), 1L);
+                    }
                 }
             }
-        }
+        });
     }
 
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
-        Entity[] entities = event.getChunk().getEntities();
-        for (Entity entity : entities) {
-            if (entity instanceof Item item) {
-                if (isLifeStealItem(item.getItemStack())) {
-                    removeStand(entity.getUniqueId());
+        ConcurrentLinkedDeque<Entity> entitiesList = new ConcurrentLinkedDeque<>();
+        Collections.addAll(entitiesList, event.getChunk().getEntities());
+
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            for (Entity entity : entitiesList) {
+                if (entity instanceof Item item) {
+                    if (isLifeStealItem(item.getItemStack())) {
+                        Bukkit.getScheduler().runTaskLater(plugin, () -> removeStand(entity.getUniqueId()), 1L);
+                    }
                 }
             }
-        }
+        });
     }
 
     @EventHandler
