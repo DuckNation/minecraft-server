@@ -95,7 +95,7 @@ public class Listeners implements Listener {
             }
 
 
-            if (stand.getLocation().add(0, -2.15, 0) != entity.getLocation()) {
+            if (stand.getLocation().add(0, 2.15, 0) != entity.getLocation()) {
                 stand.teleport(entity.getLocation().add(0, 0.15, 0));
             }
         }
