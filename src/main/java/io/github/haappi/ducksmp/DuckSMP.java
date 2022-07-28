@@ -9,10 +9,7 @@ import io.github.haappi.ducksmp.LifeSteal.ArmorStandPlayer;
 import io.github.haappi.ducksmp.LifeSteal.Listeners;
 import io.github.haappi.ducksmp.LifeSteal.signup;
 import io.github.haappi.ducksmp.internals.Messages;
-import io.github.haappi.ducksmp.listeners.Villager;
-import io.github.haappi.ducksmp.listeners.crystal;
-import io.github.haappi.ducksmp.listeners.netheirte;
-import io.github.haappi.ducksmp.listeners.stats;
+import io.github.haappi.ducksmp.listeners.*;
 import io.github.haappi.ducksmp.utils.CustomHolder;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
@@ -75,6 +72,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new netheirte();
 
         new ArmorStandPlayer();
+        new enchantLore();
 
         Bukkit.getPluginManager().registerEvents(this, this);
 
