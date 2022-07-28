@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.UUID;
@@ -67,6 +68,21 @@ public class ArmorStandPlayer implements Listener {
             }
 
         });
+    }
+
+    @EventHandler
+    public void onShift(PlayerToggleSneakEvent event) {
+        if (event.isSneaking()) {
+            ArmorStand stand = (ArmorStand) Bukkit.getEntity(armorMap.get(event.getPlayer().getUniqueId()));
+            if (stand != null) {
+                stand.setCustomNameVisible(false);
+            }
+        } else {
+            ArmorStand stand = (ArmorStand) Bukkit.getEntity(armorMap.get(event.getPlayer().getUniqueId()));
+            if (stand != null) {
+                stand.setCustomNameVisible(true);
+            }
+        }
     }
 
     @SuppressWarnings("UnstableApiUsage")

@@ -58,16 +58,16 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPickup(EntityPickupItemEvent event) {
-        event.setCancelled(true);
+//        event.setCancelled(true);
         removeStand(event.getItem().getUniqueId());
-        event.setCancelled(false);
+//        event.setCancelled(false);
     }
 
     private void removeStand(UUID uuid) {
         if (Bukkit.getEntity(armorMap.get(uuid)) != null) {
             Bukkit.getEntity(armorMap.get(uuid)).remove();
+            armorMap.remove(uuid);
         }
-        armorMap.remove(uuid);
     }
 
     @EventHandler
