@@ -32,6 +32,7 @@ public class ArmorStandPlayer implements Listener {
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this::armorStandTask, 500L, 2L);
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     private void armorStandTask() {
         armorMap.forEach((uuid, armorUuid) -> {
             Player player = Bukkit.getPlayer(uuid);
@@ -44,12 +45,15 @@ public class ArmorStandPlayer implements Listener {
             if (stand == null) {
                 armorMap.remove(uuid);
                 stand = Utils.createStand(player);
+                player.hideEntity(this.plugin, stand);
                 armorMap.put(uuid, stand.getUniqueId());
             }
 
             if (stand.isDead()) {
                 armorMap.remove(uuid);
-                armorMap.put(uuid, Utils.createStand(player).getUniqueId());
+                stand = Utils.createStand(player);
+                player.hideEntity(this.plugin, stand);
+                armorMap.put(uuid, stand.getUniqueId());
             }
 
             Component result;
@@ -70,6 +74,7 @@ public class ArmorStandPlayer implements Listener {
 
             if (stand.getLocation().add(0, -2.15, 0) != player.getLocation()) {
                 stand.teleport(player.getLocation().add(0, 2.15, 0));
+                player.hideEntity(this.plugin, stand);
             }
 
         });
