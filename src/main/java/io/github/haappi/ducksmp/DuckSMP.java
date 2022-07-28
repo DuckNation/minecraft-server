@@ -9,6 +9,7 @@ import io.github.haappi.ducksmp.LifeSteal.signup;
 import io.github.haappi.ducksmp.internals.Messages;
 import io.github.haappi.ducksmp.internals.nv;
 import io.github.haappi.ducksmp.internals.stoprestart;
+import io.github.haappi.ducksmp.internals.vanish;
 import io.github.haappi.ducksmp.listeners.Villager;
 import io.github.haappi.ducksmp.listeners.crystal;
 import io.github.haappi.ducksmp.listeners.stats;
@@ -80,6 +81,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         registerNewCommand(new signup("signup"));
         registerNewCommand(new stoprestart("stoprestart"));
         registerNewCommand(new nv("nv"));
+        registerNewCommand(new vanish("v"));
 
     }
 
