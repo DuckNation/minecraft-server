@@ -4,13 +4,10 @@ import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.model.CreateCollectionOptions;
-import io.github.haappi.ducksmp.Commands.tell;
+import io.github.haappi.ducksmp.Commands.*;
 import io.github.haappi.ducksmp.LifeSteal.Listeners;
 import io.github.haappi.ducksmp.LifeSteal.signup;
 import io.github.haappi.ducksmp.internals.Messages;
-import io.github.haappi.ducksmp.Commands.nv;
-import io.github.haappi.ducksmp.Commands.stoprestart;
-import io.github.haappi.ducksmp.Commands.vanish;
 import io.github.haappi.ducksmp.listeners.Villager;
 import io.github.haappi.ducksmp.listeners.crystal;
 import io.github.haappi.ducksmp.listeners.netheirte;
@@ -84,6 +81,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         registerNewCommand(new vanish("v"));
         unRegisterBukkitCommand("tell");
         registerNewCommand(new tell("tell"));
+        registerNewCommand(new reply("reply"));
 
     }
 

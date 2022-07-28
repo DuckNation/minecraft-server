@@ -1,6 +1,7 @@
 package io.github.haappi.ducksmp.Commands;
 
 import com.mongodb.lang.NonNull;
+import io.github.haappi.ducksmp.DuckSMP;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -24,6 +25,8 @@ public class tell extends BukkitCommand implements Listener {
     public tell(String name) {
         super(name);
         setAliases(Arrays.asList("w", "tell", "msg", "m"));
+
+        Bukkit.getScheduler().runTaskTimer(DuckSMP.getInstance(), recentlyMessaged::clear, 300L, 20 * 60 * 10); // 10 minutes
     }
 
     public static void doTell(@NonNull Player sender, @Nullable Player receiver, @NonNull String message) {
@@ -42,7 +45,7 @@ public class tell extends BukkitCommand implements Listener {
             sender.sendMessage(Component.text("You need to be a player to use this command.", NamedTextColor.RED));
             return true;
         }
-        if (args.length == 0) {
+        if (args.length < 2) {
             sender.sendMessage(Component.text("Usage: /tell <player> <message>", NamedTextColor.RED));
             return true;
         }
