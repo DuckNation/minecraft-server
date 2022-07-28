@@ -5,6 +5,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.model.CreateCollectionOptions;
 import io.github.haappi.ducksmp.Commands.*;
+import io.github.haappi.ducksmp.LifeSteal.ArmorStandPlayer;
 import io.github.haappi.ducksmp.LifeSteal.Listeners;
 import io.github.haappi.ducksmp.LifeSteal.signup;
 import io.github.haappi.ducksmp.internals.Messages;
@@ -72,6 +73,8 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new crystal();
         new stats();
         new netheirte();
+
+        new ArmorStandPlayer();
 
         Bukkit.getPluginManager().registerEvents(this, this);
 
