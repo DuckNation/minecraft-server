@@ -85,9 +85,13 @@ public class Listeners implements Listener {
             ArmorStand stand = (ArmorStand) Bukkit.getEntity(entry.getValue());
             Entity entity = Bukkit.getEntity(entry.getKey());
 
-            if (entity == null || stand == null) { // todo check if armor stand is null -> make a new one
+            if (entity == null) { // todo check if armor stand is null -> make a new one
                 removeStand(entry.getKey());
                 continue;
+            }
+
+            if (stand == null) {
+                stand = Utils.createStand(entity, 1);
             }
 
             if (stand.isDead()) {
