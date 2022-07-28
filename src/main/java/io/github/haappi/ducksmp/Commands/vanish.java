@@ -1,4 +1,4 @@
-package io.github.haappi.ducksmp.internals;
+package io.github.haappi.ducksmp.Commands;
 
 import io.github.haappi.ducksmp.DuckSMP;
 import io.papermc.paper.event.player.AsyncChatEvent;

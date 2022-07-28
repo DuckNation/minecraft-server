@@ -1,4 +1,4 @@
-package io.github.haappi.ducksmp.internals;
+package io.github.haappi.ducksmp.Commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
