@@ -64,6 +64,9 @@ public class Listeners implements Listener {
     }
 
     private void removeStand(UUID uuid) {
+        if (uuid == null) {
+            return;
+        }
         if (Bukkit.getEntity(armorMap.get(uuid)) != null) {
             Bukkit.getEntity(armorMap.get(uuid)).remove();
             if (uuid != null) {
