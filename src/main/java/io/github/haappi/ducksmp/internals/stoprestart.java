@@ -2,8 +2,10 @@ package io.github.haappi.ducksmp.internals;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import static io.github.haappi.ducksmp.internals.Messages.restartID;
@@ -24,9 +26,11 @@ public class stoprestart extends BukkitCommand {
         if (!restartNeeded) {
             sender.sendMessage(Component.text("There isn't a reset scheduled.", NamedTextColor.RED));
         } else {
-            sender.sendMessage(Component.text("Restart unscheduled!", NamedTextColor.GREEN));
             restartNeeded = false;
             restartID.cancel();
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.sendMessage(Component.text("The server restart has been cancelled.", NamedTextColor.GREEN));
+            }
         }
         return true;
     }
