@@ -248,9 +248,9 @@ public final class DuckSMP extends JavaPlugin implements Listener {
             event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
                     .append(
                             getFormattedPrefix(event.getPlayer()),
-                            Component.text("<", NamedTextColor.LIGHT_PURPLE),
+                            Component.text("[", chatColors.get(event.getPlayer().getUniqueId())),
                             sourceDisplayName.color(chatColors.get(event.getPlayer().getUniqueId())),
-                            Component.text("> ", NamedTextColor.LIGHT_PURPLE),
+                            Component.text("] ", chatColors.get(event.getPlayer().getUniqueId())),
                             Component.text()
                                     .color(NamedTextColor.WHITE)
                                     .append(message)
@@ -260,9 +260,9 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         } else if (event.getPlayer().isOp()) {
             event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
                     .append(
-                            Component.text("<", NamedTextColor.GREEN),
+                            Component.text("[", NamedTextColor.GREEN),
                             sourceDisplayName.color(NamedTextColor.GREEN),
-                            Component.text("> ", NamedTextColor.GREEN),
+                            Component.text("] ", NamedTextColor.GREEN),
                             Component.text()
                                     .color(NamedTextColor.WHITE)
                                     .append(message)
@@ -272,9 +272,9 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         } else { // todo make non-linked players gray
             event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
                     .append(
-                            Component.text("<", NamedTextColor.YELLOW),
+                            Component.text("[", NamedTextColor.YELLOW),
                             sourceDisplayName.color(NamedTextColor.YELLOW),
-                            Component.text("> ", NamedTextColor.YELLOW),
+                            Component.text("] ", NamedTextColor.YELLOW),
                             Component.text()
                                     .color(NamedTextColor.WHITE)
                                     .append(message)
