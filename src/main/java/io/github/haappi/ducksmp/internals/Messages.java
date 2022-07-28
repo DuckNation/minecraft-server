@@ -14,6 +14,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +35,8 @@ public class Messages implements Listener {
     public static String commitHash = "";
     private final DuckSMP plugin;
     private final ConcurrentHashMap<String, String> files = new ConcurrentHashMap<>(); // FileName -> FilePath. Only for non-folders ending in .yml
-    private boolean restartNeeded = false;
+    public static boolean restartNeeded = false;
+    public static BukkitTask restartID;
 
     public Messages() {
         this.plugin = DuckSMP.getInstance();
@@ -123,7 +126,7 @@ public class Messages implements Listener {
                 restartNeeded = true;
                 if (Bukkit.getOnlinePlayers().isEmpty())
                     Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
-                Bukkit.getScheduler().runTaskLater(plugin, () -> doCountdown("Server will restart in ", this.plugin, 10), 20 * 60 * 60L); // Restart after 1 hour
+                restartID = Bukkit.getScheduler().runTaskLater(plugin, () -> doCountdown("Server will restart in ", this.plugin, 10), 20 * 60 * 60L); // Restart after 1 hour
                 break;
             case "critical_release":
                 downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
