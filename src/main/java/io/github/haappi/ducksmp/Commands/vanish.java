@@ -12,6 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class vanish extends BukkitCommand implements Listener {
     }
 
     @EventHandler
-    public void onQuit(PlayerJoinEvent event) {
+    public void onQuit(PlayerQuitEvent event) {
         enabledPlayers.remove(event.getPlayer().getUniqueId());
     }
 
@@ -45,10 +46,6 @@ public class vanish extends BukkitCommand implements Listener {
         }
     }
 
-    //    @EventHandler(priority = EventPriority.LOWEST)
-    public void onChat(PlayerCommandPreprocessEvent event) {
-//        override the default /tell /w commands
-    }
 
     @Override
     public boolean execute(@NotNull org.bukkit.command.CommandSender sender, @NotNull String label, @NotNull String[] args) {

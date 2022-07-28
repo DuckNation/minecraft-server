@@ -18,6 +18,8 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static io.github.haappi.ducksmp.Commands.vanish.enabledPlayers;
+
 public class ArmorStandPlayer implements Listener {
 
     private final DuckSMP plugin;
@@ -57,7 +59,7 @@ public class ArmorStandPlayer implements Listener {
                 result = Component.text("No LifeSteal ✘", NamedTextColor.RED);
             }
 
-            stand.setCustomNameVisible(!player.isDead() && !player.isSneaking() && !player.isInvisible());
+            stand.setCustomNameVisible(!player.isDead() && !player.isSneaking() && !player.isInvisible() && !enabledPlayers.contains(player.getUniqueId()));
 
             Component name = Component.text()
                     .append(result).build();
@@ -81,7 +83,6 @@ public class ArmorStandPlayer implements Listener {
         armorMap.put(event.getPlayer().getUniqueId(), stand.getUniqueId());
         event.getPlayer().hideEntity(DuckSMP.getInstance(), stand);
     }
-
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         removeStand(event.getPlayer().getUniqueId());
