@@ -69,9 +69,7 @@ public class Listeners implements Listener {
         }
         if (Bukkit.getEntity(armorMap.get(uuid)) != null) {
             Bukkit.getEntity(armorMap.get(uuid)).remove();
-            if (uuid != null) {
-                armorMap.remove(uuid);
-            }
+            armorMap.remove(uuid);
         }
     }
 
