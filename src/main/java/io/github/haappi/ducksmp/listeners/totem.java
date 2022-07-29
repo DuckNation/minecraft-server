@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
@@ -27,7 +28,32 @@ public class totem implements Listener {
     private final DuckSMP plugin;
 
     public static EntityType randomMob;
-    public static final ArrayList<EntityType> mobs = new ArrayList<>();
+    public static final ArrayList<EntityType> mobs = new ArrayList<>(Arrays.asList(
+            EntityType.AXOLOTL,
+            EntityType.BEE,
+            EntityType.CAT,
+            EntityType.ELDER_GUARDIAN,
+            EntityType.ENDER_DRAGON,
+            EntityType.ENDERMITE,
+            EntityType.EVOKER,
+            EntityType.GHAST,
+            EntityType.HUSK,
+            EntityType.ILLUSIONER,
+            EntityType.RAVAGER,
+            EntityType.SHULKER,
+            EntityType.SKELETON_HORSE,
+            EntityType.TADPOLE,
+            EntityType.TURTLE,
+            EntityType.VEX,
+            EntityType.VILLAGER,
+            EntityType.WITCH,
+            EntityType.WITHER,
+            EntityType.ZOGLIN,
+            EntityType.WANDERING_TRADER,
+            EntityType.GIANT,
+            EntityType.BAT
+    ));
+
 
     public totem() {
         this.plugin = DuckSMP.getInstance();
@@ -39,30 +65,6 @@ public class totem implements Listener {
 //                .filter(type -> LivingEntity.class.isAssignableFrom(type.getEntityClass()))
 //                .toArray(EntityType[]::new);
         ArrayList<EntityType> mobs = new ArrayList<>();
-        mobs.add(EntityType.AXOLOTL);
-        mobs.add(EntityType.BEE);
-        mobs.add(EntityType.BLAZE);
-        mobs.add(EntityType.CAT);
-        mobs.add(EntityType.ELDER_GUARDIAN);
-        mobs.add(EntityType.ENDER_DRAGON);
-        mobs.add(EntityType.ENDERMITE);
-        mobs.add(EntityType.EVOKER);
-        mobs.add(EntityType.GHAST);
-        mobs.add(EntityType.HUSK);
-        mobs.add(EntityType.ILLUSIONER);
-        mobs.add(EntityType.RAVAGER);
-        mobs.add(EntityType.SHULKER);
-        mobs.add(EntityType.SKELETON_HORSE);
-        mobs.add(EntityType.TADPOLE);
-        mobs.add(EntityType.TURTLE);
-        mobs.add(EntityType.VEX);
-        mobs.add(EntityType.VILLAGER);
-        mobs.add(EntityType.WITCH);
-        mobs.add(EntityType.WITHER);
-        mobs.add(EntityType.ZOGLIN);
-        mobs.add(EntityType.WANDERING_TRADER);
-        mobs.add(EntityType.GIANT);
-        mobs.add(EntityType.BAT);
         for (int i = 0; i < 4; i++) {
             mobs.add(EntityType.VILLAGER);
         }
@@ -83,7 +85,8 @@ public class totem implements Listener {
         if (event.getEntity().getKiller() != null) {
             if (event.getEntity().getType() == randomMob) {
                 int randomNumber = Utils.random.nextInt(1, 10);
-                if (randomNumber < 2) {
+                event.getEntity().getKiller().sendMessage(String.valueOf(randomNumber));
+                if (randomNumber < 3) {
                     event.getDrops().add(new ItemStack(Material.TOTEM_OF_UNDYING));
                 }
             }
