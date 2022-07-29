@@ -70,7 +70,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 
         new Messages();
         new Villager();
-//        new totem(); // enable in like 2 days
+        new totem();
         new crystal();
         new stats();
         new netheirte();
@@ -90,6 +90,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         registerNewCommand(new tell("tell"));
         registerNewCommand(new reply("reply"));
         registerNewCommand(new BedrockMenu("color"));
+        registerNewCommand(new changeMob("changeMob"));
 
     }
 

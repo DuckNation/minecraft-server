@@ -27,6 +27,7 @@ public class totem implements Listener {
     private final DuckSMP plugin;
 
     public static EntityType randomMob;
+    public static final ArrayList<EntityType> mobs = new ArrayList<>();
 
     public totem() {
         this.plugin = DuckSMP.getInstance();
