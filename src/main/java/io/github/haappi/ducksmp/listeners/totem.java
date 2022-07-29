@@ -4,6 +4,7 @@ import io.github.haappi.ducksmp.DuckSMP;
 import io.github.haappi.ducksmp.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -12,9 +13,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class totem implements Listener {
 
@@ -88,7 +91,11 @@ public class totem implements Listener {
                 int randomNumber = Utils.random.nextInt(1, 10);
 //                event.getEntity().getKiller().sendMessage(String.valueOf(randomNumber));
                 if (randomNumber < 5) {
-                    event.getDrops().add(new ItemStack(Material.TOTEM_OF_UNDYING));
+                    ItemStack item = new ItemStack(Material.TOTEM_OF_UNDYING, 1);
+                    ItemMeta meta = item.getItemMeta();
+                    meta.lore(List.of(Component.text("Dropped from ", NamedTextColor.YELLOW).append(Component.text(randomMob.name(), NamedTextColor.GREEN)).decoration(TextDecoration.BOLD, false)));
+                    item.setItemMeta(meta);
+                    event.getDrops().add(item);
                 }
             }
         }
