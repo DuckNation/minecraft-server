@@ -108,9 +108,11 @@ public class Common implements Listener {
                 teamPacket(event.getPlayer(), String.valueOf(System.currentTimeMillis()), prefix, color);
             }
 
-            for (Map.Entry<UUID, Tuple<ClientboundSetPlayerTeamPacket, ClientboundSetPlayerTeamPacket>> entry : packetsToSend.entrySet()) {
-                ((CraftPlayer) event.getPlayer()).getHandle().connection.send(entry.getValue().getA());
-                ((CraftPlayer) event.getPlayer()).getHandle().connection.send(entry.getValue().getB());
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                for (Map.Entry<UUID, Tuple<ClientboundSetPlayerTeamPacket, ClientboundSetPlayerTeamPacket>> entry : packetsToSend.entrySet()) {
+                    ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getA());
+                    ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getB());
+                }
             }
         }, 20 * 3L);
     }
