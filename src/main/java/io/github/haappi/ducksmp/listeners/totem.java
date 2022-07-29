@@ -30,7 +30,6 @@ public class totem implements Listener {
             EntityType.ENDERMITE,
             EntityType.EVOKER,
             EntityType.GHAST,
-            EntityType.HUSK,
             EntityType.ILLUSIONER,
             EntityType.RAVAGER,
             EntityType.SHULKER,
@@ -39,12 +38,12 @@ public class totem implements Listener {
             EntityType.TURTLE,
             EntityType.VEX,
             EntityType.VILLAGER,
-            EntityType.WITCH,
+//            EntityType.WITCH,
             EntityType.WITHER,
             EntityType.ZOGLIN,
             EntityType.WANDERING_TRADER,
-            EntityType.GIANT,
-            EntityType.BAT
+            EntityType.GIANT
+//            EntityType.BAT
     ));
     public static EntityType randomMob;
     private final DuckSMP plugin;
@@ -89,7 +88,6 @@ public class totem implements Listener {
         if (event.getEntity().getKiller() != null) {
             if (event.getEntity().getType() == randomMob) {
                 int randomNumber = Utils.random.nextInt(1, 10);
-//                event.getEntity().getKiller().sendMessage(String.valueOf(randomNumber));
                 if (randomNumber < 5) {
                     ItemStack item = new ItemStack(Material.TOTEM_OF_UNDYING, 1);
                     ItemMeta meta = item.getItemMeta();

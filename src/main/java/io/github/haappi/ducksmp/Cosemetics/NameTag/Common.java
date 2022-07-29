@@ -88,23 +88,26 @@ public class Common implements Listener {
         Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
             Player player = event.getPlayer();
             PersistentDataContainer container = player.getPersistentDataContainer();
-            String prefix;
+            String prefix = "";
+            boolean shouldDoTheirs = true;
             if (container.has(new NamespacedKey(plugin, "custom_prefix"), PersistentDataType.STRING)) {
                 prefix = container.get(new NamespacedKey(plugin, "custom_prefix"), PersistentDataType.STRING);
             } else {
-                return;
+                shouldDoTheirs = false;
             }
 
-            ChatFormatting color;
+            ChatFormatting color = ChatFormatting.WHITE;
             Integer customColor = container.get(new NamespacedKey(plugin, "custom_color"), PersistentDataType.INTEGER);
             if (customColor != null) {
                 color = ChatFormatting.getById(customColor);
             } else {
-                return;
+                shouldDoTheirs = false;
             }
-            chatColors.put(player.getUniqueId(), NamedTextColor.nearestTo(TextColor.color(color.getColor())));
+            if (shouldDoTheirs) {
+                chatColors.put(player.getUniqueId(), NamedTextColor.nearestTo(TextColor.color(color.getColor())));
+                teamPacket(event.getPlayer(), String.valueOf(System.currentTimeMillis()), prefix, color);
+            }
 
-            teamPacket(event.getPlayer(), String.valueOf(System.currentTimeMillis()), prefix, color);
             for (Map.Entry<UUID, Tuple<ClientboundSetPlayerTeamPacket, ClientboundSetPlayerTeamPacket>> entry : packetsToSend.entrySet()) {
                 ((CraftPlayer) event.getPlayer()).getHandle().connection.send(entry.getValue().getA());
                 ((CraftPlayer) event.getPlayer()).getHandle().connection.send(entry.getValue().getB());
