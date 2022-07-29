@@ -85,7 +85,7 @@ public class totem implements Listener {
         if (event.getEntity().getKiller() != null) {
             if (event.getEntity().getType() == randomMob) {
                 int randomNumber = Utils.random.nextInt(1, 10);
-                event.getEntity().getKiller().sendMessage(String.valueOf(randomNumber));
+//                event.getEntity().getKiller().sendMessage(String.valueOf(randomNumber));
                 if (randomNumber < 3) {
                     event.getDrops().add(new ItemStack(Material.TOTEM_OF_UNDYING));
                 }
@@ -93,13 +93,13 @@ public class totem implements Listener {
         }
     }
 
-    @EventHandler
-    public void onEntityDamage(EntityDamageEvent event) {
-        if (event.getEntity() instanceof Pig entity) {
-            if (PaperAdventure.asPlain(entity.customName(), Locale.US).equals("Technoblade")) {
-                event.setCancelled(true);
-            }
-        }
-    }
+//    @EventHandler
+//    public void onEntityDamage(EntityDamageEvent event) {
+//        if (event.getEntity() instanceof Pig entity) {
+//            if (PaperAdventure.asPlain(entity.customName(), Locale.US).equals("Technoblade")) {
+//                event.setCancelled(true);
+//            }
+//        }
+//    }
 
 }
