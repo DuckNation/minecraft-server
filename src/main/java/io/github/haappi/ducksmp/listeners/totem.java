@@ -88,7 +88,7 @@ public class totem implements Listener {
         if (event.getEntity().getKiller() != null) {
             if (event.getEntity().getType() == randomMob) {
                 int randomNumber = Utils.random.nextInt(1, 10);
-                if (randomNumber < 5) {
+                if (randomNumber < 3) {
                     ItemStack item = new ItemStack(Material.TOTEM_OF_UNDYING, 1);
                     ItemMeta meta = item.getItemMeta();
                     meta.lore(List.of(Component.text("Dropped from ", NamedTextColor.YELLOW).append(Component.text(randomMob.name(), NamedTextColor.GREEN)).decoration(TextDecoration.BOLD, false)));
