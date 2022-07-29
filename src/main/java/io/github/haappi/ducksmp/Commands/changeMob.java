@@ -11,6 +11,7 @@ import java.util.List;
 import static io.github.haappi.ducksmp.listeners.totem.mobs;
 
 public class changeMob extends BukkitCommand {
+
     public changeMob(String name) {
         super(name);
         setAliases(List.of("cm"));
