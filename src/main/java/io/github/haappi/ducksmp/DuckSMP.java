@@ -42,6 +42,8 @@ import java.util.Objects;
 
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.chatColors;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.getFormattedPrefix;
+import static io.github.haappi.ducksmp.PacketListener.injectPlayer;
+import static io.github.haappi.ducksmp.PacketListener.removePlayer;
 import static io.github.haappi.ducksmp.utils.Utils.*;
 
 public final class DuckSMP extends JavaPlugin implements Listener {
@@ -210,7 +212,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
                 (!Objects.requireNonNull(config.getString("mongo-uri")).startsWith("mongodb"))) {
 
             config.addDefault("mongo-uri", "your-mongo-uri");
-            config.addDefault("secretKey", "this-is-not-secure-until-you-set-it");
+            config.addDefault("bookKey", "this-is-not-secure-until-you-set-it");
             config.options().copyDefaults(true);
             this.saveConfig();
             this.getLogger().severe("A proper Mongo URI is required to run this plugin.");
@@ -229,6 +231,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
+        removePlayer(player);
 
         if (player.isOp()) {
             event.quitMessage(Component.text()
@@ -290,6 +293,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        injectPlayer(player);
         if (player.isOp()) {
             event.joinMessage(Component.text()
                     .append(
