@@ -189,6 +189,13 @@ public class Listeners implements Listener {
                 return; // return, they might be in negative hearts & can't lose anymore.
             }
 
+            if (player.getKiller() != null) {
+                Player killer = player.getKiller();
+                if (!killer.getPersistentDataContainer().has(new org.bukkit.NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER)) {
+                 return; // don't drop hearts if killer isn't in lifesteal
+                }
+            }
+
             event.getDrops().add(getHeart(1, player));
 
         }
