@@ -33,6 +33,9 @@ public class enchantLore implements Listener {
     }
 
     private void applyEnchantsToLore(final ItemStack item) {
+        if (item.getType() == Material.TOTEM_OF_UNDYING) {
+            return;
+        } // todo make it add the persistent data types to the item
         @NotNull ItemMeta meta = item.getItemMeta();
         if (!meta.hasItemFlag(ItemFlag.HIDE_ENCHANTS)) {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
