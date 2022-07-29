@@ -86,7 +86,7 @@ public class totem implements Listener {
             if (event.getEntity().getType() == randomMob) {
                 int randomNumber = Utils.random.nextInt(1, 10);
 //                event.getEntity().getKiller().sendMessage(String.valueOf(randomNumber));
-                if (randomNumber < 3) {
+                if (randomNumber < 5) {
                     event.getDrops().add(new ItemStack(Material.TOTEM_OF_UNDYING));
                 }
             }
