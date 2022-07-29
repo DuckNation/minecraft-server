@@ -2,32 +2,22 @@ package io.github.haappi.ducksmp.listeners;
 
 import io.github.haappi.ducksmp.DuckSMP;
 import io.github.haappi.ducksmp.utils.Utils;
-import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Pig;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Stream;
 
 public class totem implements Listener {
 
-    private final DuckSMP plugin;
-
-    public static EntityType randomMob;
     public static final ArrayList<EntityType> mobs = new ArrayList<>(Arrays.asList(
             EntityType.AXOLOTL,
             EntityType.BEE,
@@ -53,6 +43,8 @@ public class totem implements Listener {
             EntityType.GIANT,
             EntityType.BAT
     ));
+    public static EntityType randomMob;
+    private final DuckSMP plugin;
 
 
     public totem() {
@@ -71,7 +63,16 @@ public class totem implements Listener {
         for (int i = 0; i < 4; i++) {
             mobs.add(EntityType.WITHER);
         }
-        randomMob = mobs.get(Utils.random.nextInt(mobs.size()));
+//        ;
+
+        Bukkit.getScheduler().runTaskTimer(this.plugin, () -> {
+            randomMob = mobs.get(Utils.random.nextInt(mobs.size()));
+            Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(
+                    Component.text("Aaaaaand the random mob that drops totems this time is: ", NamedTextColor.YELLOW)
+                            .append(Component.text(randomMob.name(), NamedTextColor.GREEN)
+                                    .append(Component.text("! Come back 3 hours later for a new mob!", NamedTextColor.YELLOW))
+                            )));
+        }, 0, 20 * 60 * 60 * 3); // 3 hours
     }
 
     @EventHandler

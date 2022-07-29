@@ -30,48 +30,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Common implements Listener {
 
-    private final DuckSMP plugin;
     public static final HashMap<UUID, Tuple<ClientboundSetPlayerTeamPacket, ClientboundSetPlayerTeamPacket>> packetsToSend = new HashMap<>();
     public static final ConcurrentHashMap<UUID, NamedTextColor> chatColors = new ConcurrentHashMap<>();
+    private final DuckSMP plugin;
 
 
     public Common() {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
-    @EventHandler
-    @SuppressWarnings("ConstantConditions")
-    public void onJoin(PlayerJoinEvent event) {
-        Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
-            Player player = event.getPlayer();
-            PersistentDataContainer container = player.getPersistentDataContainer();
-            String prefix;
-            if (container.has(new NamespacedKey(plugin, "custom_prefix"), PersistentDataType.STRING)) {
-                prefix = container.get(new NamespacedKey(plugin, "custom_prefix"), PersistentDataType.STRING);
-            } else {
-                return;
-            }
-
-            ChatFormatting color;
-            Integer customColor = container.get(new NamespacedKey(plugin, "custom_color"), PersistentDataType.INTEGER);
-            if (customColor != null) {
-                color = ChatFormatting.getById(customColor);
-            } else {
-                return;
-            }
-            chatColors.put(player.getUniqueId(), NamedTextColor.nearestTo(TextColor.color(color.getColor())));
-
-            teamPacket(event.getPlayer(), String.valueOf(System.currentTimeMillis()), prefix, color);
-            for (Map.Entry<UUID, Tuple<ClientboundSetPlayerTeamPacket, ClientboundSetPlayerTeamPacket>> entry : packetsToSend.entrySet()) {
-                ((CraftPlayer) event.getPlayer()).getHandle().connection.send(entry.getValue().getA());
-                ((CraftPlayer) event.getPlayer()).getHandle().connection.send(entry.getValue().getB());
-            }
-        }, 20 * 3L);
-    }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-        packetsToSend.remove(event.getPlayer().getUniqueId());
     }
 
     public static Component getFormattedPrefix(Player player) {
@@ -114,5 +80,40 @@ public class Common implements Listener {
         team.setColor(color);
 
         packetsToSend.put(player.getUniqueId(), new Tuple<>(ClientboundSetPlayerTeamPacket.createAddOrModifyPacket(team, true), ClientboundSetPlayerTeamPacket.createPlayerPacket(team, player.getName(), ClientboundSetPlayerTeamPacket.Action.ADD)));
+    }
+
+    @EventHandler
+    @SuppressWarnings("ConstantConditions")
+    public void onJoin(PlayerJoinEvent event) {
+        Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+            Player player = event.getPlayer();
+            PersistentDataContainer container = player.getPersistentDataContainer();
+            String prefix;
+            if (container.has(new NamespacedKey(plugin, "custom_prefix"), PersistentDataType.STRING)) {
+                prefix = container.get(new NamespacedKey(plugin, "custom_prefix"), PersistentDataType.STRING);
+            } else {
+                return;
+            }
+
+            ChatFormatting color;
+            Integer customColor = container.get(new NamespacedKey(plugin, "custom_color"), PersistentDataType.INTEGER);
+            if (customColor != null) {
+                color = ChatFormatting.getById(customColor);
+            } else {
+                return;
+            }
+            chatColors.put(player.getUniqueId(), NamedTextColor.nearestTo(TextColor.color(color.getColor())));
+
+            teamPacket(event.getPlayer(), String.valueOf(System.currentTimeMillis()), prefix, color);
+            for (Map.Entry<UUID, Tuple<ClientboundSetPlayerTeamPacket, ClientboundSetPlayerTeamPacket>> entry : packetsToSend.entrySet()) {
+                ((CraftPlayer) event.getPlayer()).getHandle().connection.send(entry.getValue().getA());
+                ((CraftPlayer) event.getPlayer()).getHandle().connection.send(entry.getValue().getB());
+            }
+        }, 20 * 3L);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        packetsToSend.remove(event.getPlayer().getUniqueId());
     }
 }

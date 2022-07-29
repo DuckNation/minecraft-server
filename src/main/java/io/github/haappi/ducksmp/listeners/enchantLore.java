@@ -46,6 +46,7 @@ public class enchantLore implements Listener {
         meta.lore(lore);
         item.setItemMeta(meta);
     }
+
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         if (event.getMessage().contains("enchant") && event.getMessage().contains("cant see")) {

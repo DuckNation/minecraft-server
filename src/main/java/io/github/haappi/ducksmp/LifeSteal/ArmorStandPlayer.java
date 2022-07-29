@@ -13,7 +13,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.UUID;
@@ -89,6 +88,7 @@ public class ArmorStandPlayer implements Listener {
         armorMap.put(event.getPlayer().getUniqueId(), stand.getUniqueId());
         event.getPlayer().hideEntity(DuckSMP.getInstance(), stand);
     }
+
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         removeStand(event.getPlayer().getUniqueId());

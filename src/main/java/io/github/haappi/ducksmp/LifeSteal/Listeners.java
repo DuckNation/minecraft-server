@@ -56,7 +56,7 @@ public class Listeners implements Listener {
         }
     }
 
-//    @EventHandler
+    //    @EventHandler
     public void onPickup(EntityPickupItemEvent event) {
 //        event.setCancelled(true);
         removeStand(event.getItem().getUniqueId());

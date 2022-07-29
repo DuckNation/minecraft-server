@@ -5,7 +5,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.minecraft.ChatFormatting;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -14,18 +13,17 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.geysermc.cumulus.form.CustomForm;
 import org.geysermc.floodgate.api.FloodgateApi;
-import org.geysermc.floodgate.api.player.FloodgatePlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.UUID;
 
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.setStuff;
 
 public class BedrockMenu extends BukkitCommand { // refactor to use one command -> detect client -> correct menu
 
     private final HashMap<Integer, ChatFormatting> colorMapping = new HashMap<>();
+
     public BedrockMenu(String name) {
         super(name);
         colorMapping.put(0, ChatFormatting.DARK_BLUE);
@@ -54,7 +52,7 @@ public class BedrockMenu extends BukkitCommand { // refactor to use one command 
         }
         CustomForm.Builder form = CustomForm.builder()
                 .title("Name Tag")
-                .dropdown("Select a color", Arrays.asList( "Dark Blue", "Dark Green", "Dark Aqua", "Dark Red", "Dark Purple", "Gold", "Gray", "Dark Gray", "Blue", "Green", "Aqua", "Red", "Light Purple", "Yellow"))
+                .dropdown("Select a color", Arrays.asList("Dark Blue", "Dark Green", "Dark Aqua", "Dark Red", "Dark Purple", "Gold", "Gray", "Dark Gray", "Blue", "Green", "Aqua", "Red", "Light Purple", "Yellow"))
                 .input("Tag Prefix", "14 characters max", thing);
 
         form.closedOrInvalidResultHandler(response -> {
