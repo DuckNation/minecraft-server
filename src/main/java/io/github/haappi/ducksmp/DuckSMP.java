@@ -96,7 +96,6 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         registerNewCommand(new Reply("reply"));
         registerNewCommand(new NameTagCommand("color"));
         registerNewCommand(new ChangeMob("changeMob"));
-
     }
 
     @EventHandler
