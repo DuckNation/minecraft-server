@@ -14,11 +14,8 @@ import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
@@ -92,59 +89,60 @@ public class JavaMenu {
         component = component.append(submitComponent);
         return Book.book(Component.text("Name Tag"), Component.text("ur mum"), List.of(component));
     }
+
     @SuppressWarnings("ConstantConditions")
     public static void menu(Player player, @NotNull String[] args) {
-            PersistentDataContainer container = player.getPersistentDataContainer();
-            if (args.length < 1) {
-                String thing = container.get(new NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING);
-                if (thing == null) {
-                    thing = "my awesome prefix";
-                } else {
-                    thing = thing.replace("[", "").replace("] ", "");
-                }
-                // todo get color ig
-                Book book = getBook(NamedTextColor.RED.asHexString(), thing);
-                player.openBook(book);
-                colors.put(player.getUniqueId(), NamedTextColor.RED.asHexString());
+        PersistentDataContainer container = player.getPersistentDataContainer();
+        if (args.length < 1) {
+            String thing = container.get(new NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING);
+            if (thing == null) {
+                thing = "my awesome prefix";
             } else {
-                if (!args[0].equals(secretKey)) {
-                    player.sendMessage(Component.text("What do you think you're doing? Tryna look at my code and crack it?", NamedTextColor.RED));
-                    return;
-                }
-                List<String> _args = Arrays.stream(args).toList();
-
-                switch (_args.get(1)) {
-                    case "color":
-                        responses.put(player.getUniqueId(), responses.getOrDefault(player.getUniqueId(), "Name Tag"));
-                        player.openBook(getBook(_args.get(2), responses.get(player.getUniqueId())));
-                        colors.put(player.getUniqueId(), _args.get(2));
-                        break;
-                    case "setname":
-                        player.sendBlockChange(player.getLocation(), Material.ACACIA_SIGN.createBlockData());
-                        ClientboundOpenSignEditorPacket packet = new ClientboundOpenSignEditorPacket(BlockPos.of(BlockPos.asLong(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ())));
-                        responses.put(player.getUniqueId(), responses.getOrDefault(player.getUniqueId(), "Name Tag"));
-                        ((CraftPlayer) player).getHandle().connection.send(packet);
-                        break;
-                    case "withcolorname":
-                        String color = colors.get(player.getUniqueId());
-                        if (color == null) {
-                            color = NamedTextColor.RED.asHexString();
-                        }
-                        player.openBook(getBook(color, responses.getOrDefault(player.getUniqueId(), "Name Tag")));
-                        break;
-                    case "done":
-                        String finalColor = colors.get(player.getUniqueId());
-                        if (finalColor == null) {
-                            finalColor = NamedTextColor.RED.asHexString();
-                        }
-                        String prefix = "[" + responses.getOrDefault(player.getUniqueId(), "Name Tag") + "] ";
-
-                        Common.teamPacket(player, String.valueOf(System.currentTimeMillis()), prefix, colorMapping.get(internalColorMapping.get(finalColor)));
-                        setStuff(player, prefix, colorMapping.get(internalColorMapping.get(finalColor)));
-                        player.sendMessage(Component.text("Your prefix is: " + prefix, NamedTextColor.nearestTo(TextColor.color(colorMapping.get(internalColorMapping.get(finalColor)).getColor()))));
-
-                }
+                thing = thing.replace("[", "").replace("] ", "");
             }
+            // todo get color ig
+            Book book = getBook(NamedTextColor.RED.asHexString(), thing);
+            player.openBook(book);
+            colors.put(player.getUniqueId(), NamedTextColor.RED.asHexString());
+        } else {
+            if (!args[0].equals(secretKey)) {
+                player.sendMessage(Component.text("What do you think you're doing? Tryna look at my code and crack it?", NamedTextColor.RED));
+                return;
+            }
+            List<String> _args = Arrays.stream(args).toList();
+
+            switch (_args.get(1)) {
+                case "color":
+                    responses.put(player.getUniqueId(), responses.getOrDefault(player.getUniqueId(), "Name Tag"));
+                    player.openBook(getBook(_args.get(2), responses.get(player.getUniqueId())));
+                    colors.put(player.getUniqueId(), _args.get(2));
+                    break;
+                case "setname":
+                    player.sendBlockChange(player.getLocation(), Material.ACACIA_SIGN.createBlockData());
+                    ClientboundOpenSignEditorPacket packet = new ClientboundOpenSignEditorPacket(BlockPos.of(BlockPos.asLong(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ())));
+                    responses.put(player.getUniqueId(), responses.getOrDefault(player.getUniqueId(), "Name Tag"));
+                    ((CraftPlayer) player).getHandle().connection.send(packet);
+                    break;
+                case "withcolorname":
+                    String color = colors.get(player.getUniqueId());
+                    if (color == null) {
+                        color = NamedTextColor.RED.asHexString();
+                    }
+                    player.openBook(getBook(color, responses.getOrDefault(player.getUniqueId(), "Name Tag")));
+                    break;
+                case "done":
+                    String finalColor = colors.get(player.getUniqueId());
+                    if (finalColor == null) {
+                        finalColor = NamedTextColor.RED.asHexString();
+                    }
+                    String prefix = "[" + responses.getOrDefault(player.getUniqueId(), "Name Tag") + "] ";
+
+                    Common.teamPacket(player, String.valueOf(System.currentTimeMillis()), prefix, colorMapping.get(internalColorMapping.get(finalColor)));
+                    setStuff(player, prefix, colorMapping.get(internalColorMapping.get(finalColor)));
+                    player.sendMessage(Component.text("Your prefix is: " + prefix, NamedTextColor.nearestTo(TextColor.color(colorMapping.get(internalColorMapping.get(finalColor)).getColor()))));
+
+            }
+        }
 
     }
 }
