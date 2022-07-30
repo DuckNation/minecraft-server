@@ -78,6 +78,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new totem();
         new crystal();
         new stats();
+        new StringRecipe();
         new netheirte();
 
         new ArmorStandPlayer();
