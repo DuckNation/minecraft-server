@@ -14,11 +14,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class stats implements Listener {
+public class StatHandler implements Listener {
 
     private final DuckSMP plugin;
 
-    public stats() {
+    public StatHandler() {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }

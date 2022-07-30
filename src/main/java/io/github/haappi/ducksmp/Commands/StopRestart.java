@@ -11,9 +11,9 @@ import org.jetbrains.annotations.NotNull;
 import static io.github.haappi.ducksmp.internals.Messages.restartID;
 import static io.github.haappi.ducksmp.internals.Messages.restartNeeded;
 
-public class stoprestart extends BukkitCommand {
+public class StopRestart extends BukkitCommand {
 
-    public stoprestart(String name) {
+    public StopRestart(String name) {
         super(name);
     }
 

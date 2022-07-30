@@ -8,11 +8,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-public class crystal implements Listener {
+public class Crystal implements Listener {
 
     private final DuckSMP plugin;
 
-    public crystal() {
+    public Crystal() {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }

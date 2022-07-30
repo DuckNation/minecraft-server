@@ -10,8 +10,8 @@ import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class nv extends BukkitCommand {
-    public nv(String nv) {
+public class NightVision extends BukkitCommand {
+    public NightVision(String nv) {
         super(nv);
     }
 

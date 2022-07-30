@@ -23,11 +23,11 @@ import java.util.ArrayList;
 
 import static io.github.haappi.ducksmp.utils.Utils.noItalics;
 
-public class enchantLore implements Listener {
+public class CustomLore implements Listener {
 
     private final DuckSMP plugin;
 
-    public enchantLore() {
+    public CustomLore() {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }

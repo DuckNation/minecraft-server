@@ -13,9 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.JavaMenu.currentlyInMenu;
 
 // https://www.spigotmc.org/threads/advanced-minecraft-nms-packet-tutorial.538194/
-public class PacketListener {
+public class PacketInjector {
 
-    public PacketListener() {
+    public PacketInjector() {
         throw new RuntimeException("Unable to instantiate a static class");
     }
 

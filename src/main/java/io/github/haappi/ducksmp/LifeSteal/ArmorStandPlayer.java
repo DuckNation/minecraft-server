@@ -18,7 +18,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static io.github.haappi.ducksmp.Commands.vanish.enabledPlayers;
+import static io.github.haappi.ducksmp.Commands.Vanish.enabledPlayers;
 
 public class ArmorStandPlayer implements Listener {
 

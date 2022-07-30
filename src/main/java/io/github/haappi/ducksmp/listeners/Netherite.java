@@ -18,11 +18,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.SmithingInventory;
 import org.bukkit.persistence.PersistentDataType;
 
-public class netheirte implements Listener {
+public class Netherite implements Listener {
 
     private final DuckSMP plugin;
 
-    public netheirte() {
+    public Netherite() {
 
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);

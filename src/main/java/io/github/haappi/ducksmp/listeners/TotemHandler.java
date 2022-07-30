@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class totem implements Listener {
+public class TotemHandler implements Listener {
 
     public static final ArrayList<EntityType> mobs = new ArrayList<>(Arrays.asList(
             EntityType.AXOLOTL,
@@ -49,7 +49,7 @@ public class totem implements Listener {
     private final DuckSMP plugin;
 
 
-    public totem() {
+    public TotemHandler() {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
 

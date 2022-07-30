@@ -6,10 +6,10 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.model.CreateCollectionOptions;
 import io.github.haappi.ducksmp.Commands.*;
 import io.github.haappi.ducksmp.Cosemetics.NameTag.Common;
-import io.github.haappi.ducksmp.Cosemetics.NameTag.nametag;
+import io.github.haappi.ducksmp.Cosemetics.NameTag.NameTagCommand;
 import io.github.haappi.ducksmp.LifeSteal.ArmorStandPlayer;
 import io.github.haappi.ducksmp.LifeSteal.Listeners;
-import io.github.haappi.ducksmp.LifeSteal.signup;
+import io.github.haappi.ducksmp.LifeSteal.Signup;
 import io.github.haappi.ducksmp.internals.Messages;
 import io.github.haappi.ducksmp.listeners.*;
 import io.github.haappi.ducksmp.utils.CustomHolder;
@@ -41,19 +41,18 @@ import java.util.Objects;
 
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.chatColors;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.getFormattedPrefix;
-import static io.github.haappi.ducksmp.PacketListener.injectPlayer;
-import static io.github.haappi.ducksmp.PacketListener.removePlayer;
+import static io.github.haappi.ducksmp.PacketInjector.injectPlayer;
+import static io.github.haappi.ducksmp.PacketInjector.removePlayer;
 import static io.github.haappi.ducksmp.utils.Utils.*;
 
 public final class DuckSMP extends JavaPlugin implements Listener {
 
     public static ArrayList<Integer> taskIds = new ArrayList<>();
     public static String secretKey;
+    public static boolean isDisabled = false;
     private static DuckSMP instance;
     private MongoClient mongoClient;
     private boolean hasListenerLoaded = false;
-
-    public static boolean isDisabled = false;
 
     public static DuckSMP getInstance() {
         return instance;
@@ -75,28 +74,28 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 
         new Messages();
         new Villager();
-        new totem();
-        new crystal();
-        new stats();
+        new TotemHandler();
+        new Crystal();
+        new StatHandler();
         new StringRecipe();
-        new netheirte();
+        new Netherite();
 
         new ArmorStandPlayer();
-        new enchantLore();
+        new CustomLore();
 
         new Common();
 
         Bukkit.getPluginManager().registerEvents(this, this);
 
-        registerNewCommand(new signup("signup"));
-        registerNewCommand(new stoprestart("stoprestart"));
-        registerNewCommand(new nv("nv"));
-        registerNewCommand(new vanish("v"));
+        registerNewCommand(new Signup("signup"));
+        registerNewCommand(new StopRestart("stoprestart"));
+        registerNewCommand(new NightVision("nv"));
+        registerNewCommand(new Vanish("v"));
         unRegisterBukkitCommand("tell");
-        registerNewCommand(new tell("tell"));
-        registerNewCommand(new reply("reply"));
-        registerNewCommand(new nametag("color"));
-        registerNewCommand(new changeMob("changeMob"));
+        registerNewCommand(new CustomTell("tell"));
+        registerNewCommand(new Reply("reply"));
+        registerNewCommand(new NameTagCommand("color"));
+        registerNewCommand(new ChangeMob("changeMob"));
 
     }
 

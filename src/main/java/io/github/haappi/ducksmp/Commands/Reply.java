@@ -9,11 +9,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static io.github.haappi.ducksmp.Commands.tell.doTell;
-import static io.github.haappi.ducksmp.Commands.tell.recentlyMessaged;
+import static io.github.haappi.ducksmp.Commands.CustomTell.doTell;
+import static io.github.haappi.ducksmp.Commands.CustomTell.recentlyMessaged;
 
-public class reply extends BukkitCommand {
-    public reply(String name) {
+public class Reply extends BukkitCommand {
+    public Reply(String name) {
         super(name);
         setAliases(List.of("r"));
     }

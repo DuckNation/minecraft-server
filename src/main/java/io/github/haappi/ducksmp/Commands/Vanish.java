@@ -17,10 +17,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class vanish extends BukkitCommand implements Listener {
+public class Vanish extends BukkitCommand implements Listener {
     public static final ArrayList<UUID> enabledPlayers = new ArrayList<>();
 
-    public vanish(String name) {
+    public Vanish(String name) {
         super(name);
         Bukkit.getPluginManager().registerEvents(this, DuckSMP.getInstance());
     }

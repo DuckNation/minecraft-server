@@ -16,13 +16,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
-import static io.github.haappi.ducksmp.Commands.vanish.enabledPlayers;
+import static io.github.haappi.ducksmp.Commands.Vanish.enabledPlayers;
 
-public class tell extends BukkitCommand implements Listener {
+public class CustomTell extends BukkitCommand implements Listener {
 
     public static final HashMap<UUID, UUID> recentlyMessaged = new HashMap<>();
 
-    public tell(String name) {
+    public CustomTell(String name) {
         super(name);
         setAliases(Arrays.asList("w", "tell", "msg", "m"));
 

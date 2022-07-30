@@ -11,9 +11,9 @@ import java.util.List;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.BedrockMenu.form;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.JavaMenu.menu;
 
-public class nametag extends BukkitCommand {
+public class NameTagCommand extends BukkitCommand {
 
-    public nametag(String name) {
+    public NameTagCommand(String name) {
         super(name);
         setAliases(List.of("menu"));
     }

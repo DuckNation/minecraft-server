@@ -11,9 +11,9 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.github.haappi.ducksmp.utils.GUIUtils.sendOptInForm;
 
-public class signup extends BukkitCommand {
+public class Signup extends BukkitCommand {
 
-    public signup(String name) {
+    public Signup(String name) {
         super(name);
     }
 
