@@ -1,17 +1,14 @@
 package io.github.haappi.ducksmp;
 
 import io.github.haappi.ducksmp.Cosemetics.NameTag.JavaMenu;
-import io.netty.channel.*;
-import net.kyori.adventure.text.Component;
-import net.minecraft.network.protocol.game.ClientboundCommandsPacket;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelDuplexHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPromise;
 import net.minecraft.network.protocol.game.ServerboundSignUpdatePacket;
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.lang.reflect.Field;
-import java.util.Arrays;
 
 // https://www.spigotmc.org/threads/advanced-minecraft-nms-packet-tutorial.538194/
 public class PacketListener {

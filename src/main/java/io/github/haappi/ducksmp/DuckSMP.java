@@ -49,10 +49,10 @@ import static io.github.haappi.ducksmp.utils.Utils.*;
 public final class DuckSMP extends JavaPlugin implements Listener {
 
     public static ArrayList<Integer> taskIds = new ArrayList<>();
+    public static String secretKey;
     private static DuckSMP instance;
     private MongoClient mongoClient;
     private boolean hasListenerLoaded = false;
-    public static String secretKey;
 
     public static DuckSMP getInstance() {
         return instance;
@@ -226,7 +226,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
             e.printStackTrace();
             return false;
         }
-        this.secretKey = config.getString("secretKey");
+        secretKey = config.getString("secretKey");
         return true;
     }
 

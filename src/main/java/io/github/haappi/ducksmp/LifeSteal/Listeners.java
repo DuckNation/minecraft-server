@@ -192,7 +192,7 @@ public class Listeners implements Listener {
             if (player.getKiller() != null) {
                 Player killer = player.getKiller();
                 if (!killer.getPersistentDataContainer().has(new org.bukkit.NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER)) {
-                 return; // don't drop hearts if killer isn't in lifesteal
+                    return; // don't drop hearts if killer isn't in lifesteal
                 }
             }
 

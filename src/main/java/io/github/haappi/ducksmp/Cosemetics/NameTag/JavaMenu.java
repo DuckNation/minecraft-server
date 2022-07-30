@@ -1,7 +1,6 @@
 package io.github.haappi.ducksmp.Cosemetics.NameTag;
 
 import io.github.haappi.ducksmp.DuckSMP;
-import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -23,7 +22,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -78,7 +76,7 @@ public class JavaMenu extends BukkitCommand implements Listener {
             }
             String colorName = WordUtils.capitalizeFully(color.toString().toLowerCase().replace("_", " "));
             if (colorName.equals("White") || colorName.equals("Black")) {
-               continue;
+                continue;
             }
             colors.add(Component.text(colorName, color).append(Component.text(" ", NamedTextColor.WHITE)).hoverEvent(HoverEvent.showText(Component.text("Click to set your name color to " + colorName))).clickEvent(ClickEvent.runCommand("/menu " + secretKey + " color " + color.asHexString())));
             current++;

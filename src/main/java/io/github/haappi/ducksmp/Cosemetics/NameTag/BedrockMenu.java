@@ -4,7 +4,6 @@ import io.github.haappi.ducksmp.DuckSMP;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
-import net.minecraft.ChatFormatting;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -16,7 +15,6 @@ import org.geysermc.floodgate.api.FloodgateApi;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.colorMapping;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.setStuff;
