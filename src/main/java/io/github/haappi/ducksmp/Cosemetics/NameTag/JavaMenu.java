@@ -26,6 +26,7 @@ import java.util.*;
 
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.colorMapping;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.setStuff;
+import static io.github.haappi.ducksmp.DuckSMP.secretKey;
 
 public class JavaMenu extends BukkitCommand implements Listener {
 
@@ -59,7 +60,7 @@ public class JavaMenu extends BukkitCommand implements Listener {
         Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> {
             if (responses.containsKey(player.getUniqueId())) {
                 String response = responses.get(player.getUniqueId());
-                Bukkit.getServer().dispatchCommand(player, "menu withcolorname " + response);
+                Bukkit.getServer().dispatchCommand(player, "menu " + secretKey + " withcolorname " + response);
             }
         });
 
@@ -76,7 +77,7 @@ public class JavaMenu extends BukkitCommand implements Listener {
             if (colorName.equals("White") || colorName.equals("Black")) {
                continue;
             }
-            colors.add(Component.text(colorName, color).append(Component.text(" ", NamedTextColor.WHITE)).hoverEvent(HoverEvent.showText(Component.text("Click to set your name color to " + colorName))).clickEvent(ClickEvent.runCommand("/menu color " + color.asHexString())));
+            colors.add(Component.text(colorName, color).append(Component.text(" ", NamedTextColor.WHITE)).hoverEvent(HoverEvent.showText(Component.text("Click to set your name color to " + colorName))).clickEvent(ClickEvent.runCommand("/menu " + secretKey + " color " + color.asHexString())));
             current++;
 
         }
@@ -84,19 +85,20 @@ public class JavaMenu extends BukkitCommand implements Listener {
     }
 
     private Book getBook(@NotNull String hexString, @NotNull String name) {
-        Component component = Component.text(name, NamedTextColor.nearestTo(TextColor.fromHexString(hexString))).decoration(TextDecoration.BOLD, true).hoverEvent(HoverEvent.showText(Component.text("Click to change your tag"))).clickEvent(ClickEvent.runCommand("/menu setname")).append(Component.newline());
+        Component component = Component.text(name, NamedTextColor.nearestTo(TextColor.fromHexString(hexString))).decoration(TextDecoration.BOLD, true).hoverEvent(HoverEvent.showText(Component.text("Click to change your tag"))).clickEvent(ClickEvent.runCommand("/menu " + secretKey + " setname")).append(Component.newline());
         for (Component color : getAllColors()) {
             component = component.append(color);
         }
         component = component.append(Component.newline().append(Component.newline()));
 
-        Component submitComponent = Component.text("Submit", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, true).decoration(TextDecoration.UNDERLINED, true).hoverEvent(HoverEvent.showText(Component.text("Submit your changes"))).clickEvent(ClickEvent.runCommand("/menu done"));
+        Component submitComponent = Component.text("Submit", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, true).decoration(TextDecoration.UNDERLINED, true).hoverEvent(HoverEvent.showText(Component.text("Submit your changes"))).clickEvent(ClickEvent.runCommand("/menu " + secretKey + " done"));
 
         component = component.append(submitComponent);
         return Book.book(Component.text("Name Tag"), Component.text("ur mum"), List.of(component));
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (sender instanceof Player player) {
 
@@ -105,13 +107,17 @@ public class JavaMenu extends BukkitCommand implements Listener {
                 player.openBook(book);
                 colors.put(player.getUniqueId(), NamedTextColor.RED.asHexString());
             } else {
+                if (!args[0].equals(secretKey)) {
+                    player.sendMessage(Component.text("What do you think you're doing? Tryna look at my code and crack it?", NamedTextColor.RED));
+                    return true;
+                }
                 List<String> _args = Arrays.stream(args).toList();
 
-                switch (_args.get(0)) {
+                switch (_args.get(1)) {
                     case "color":
                         responses.put(player.getUniqueId(), responses.getOrDefault(player.getUniqueId(), "Name Tag"));
-                        player.openBook(getBook(_args.get(1), responses.get(player.getUniqueId())));
-                        colors.put(player.getUniqueId(), _args.get(1));
+                        player.openBook(getBook(_args.get(2), responses.get(player.getUniqueId())));
+                        colors.put(player.getUniqueId(), _args.get(2));
                         break;
                     case "setname":
                         player.sendBlockChange(player.getLocation(), Material.ACACIA_SIGN.createBlockData());

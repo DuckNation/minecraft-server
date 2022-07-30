@@ -52,6 +52,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
     private static DuckSMP instance;
     private MongoClient mongoClient;
     private boolean hasListenerLoaded = false;
+    public static String secretKey;
 
     public static DuckSMP getInstance() {
         return instance;
@@ -225,6 +226,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
             e.printStackTrace();
             return false;
         }
+        this.secretKey = config.getString("secretKey");
         return true;
     }
 
