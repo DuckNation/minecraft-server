@@ -14,11 +14,14 @@ import net.minecraft.network.protocol.game.ClientboundOpenSignEditorPacket;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -101,9 +104,16 @@ public class JavaMenu extends BukkitCommand implements Listener {
     @SuppressWarnings("ConstantConditions")
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (sender instanceof Player player) {
-
+            PersistentDataContainer container = player.getPersistentDataContainer();
             if (args.length < 1) {
-                Book book = getBook(NamedTextColor.RED.asHexString(), "Name Tag");
+                String thing = container.get(new NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING);
+                if (thing == null) {
+                    thing = "my awesome prefix";
+                } else {
+                    thing = thing.replace("[", "").replace("] ", "");
+                }
+                // todo get color ig
+                Book book = getBook(NamedTextColor.RED.asHexString(), thing);
                 player.openBook(book);
                 colors.put(player.getUniqueId(), NamedTextColor.RED.asHexString());
             } else {
