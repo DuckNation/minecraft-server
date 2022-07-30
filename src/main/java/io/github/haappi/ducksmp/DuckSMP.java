@@ -212,7 +212,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
                 (!Objects.requireNonNull(config.getString("mongo-uri")).startsWith("mongodb"))) {
 
             config.addDefault("mongo-uri", "your-mongo-uri");
-            config.addDefault("bookKey", "this-is-not-secure-until-you-set-it");
+            config.addDefault("secretKey", "this-is-not-secure-until-you-set-it");
             config.options().copyDefaults(true);
             this.saveConfig();
             this.getLogger().severe("A proper Mongo URI is required to run this plugin.");
