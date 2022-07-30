@@ -8,6 +8,7 @@ import io.github.haappi.ducksmp.Commands.*;
 import io.github.haappi.ducksmp.Cosemetics.NameTag.BedrockMenu;
 import io.github.haappi.ducksmp.Cosemetics.NameTag.Common;
 import io.github.haappi.ducksmp.Cosemetics.NameTag.JavaMenu;
+import io.github.haappi.ducksmp.Cosemetics.NameTag.nametag;
 import io.github.haappi.ducksmp.LifeSteal.ArmorStandPlayer;
 import io.github.haappi.ducksmp.LifeSteal.Listeners;
 import io.github.haappi.ducksmp.LifeSteal.signup;
@@ -93,8 +94,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         unRegisterBukkitCommand("tell");
         registerNewCommand(new tell("tell"));
         registerNewCommand(new reply("reply"));
-        registerNewCommand(new BedrockMenu("color"));
-        registerNewCommand(new JavaMenu("menu"));
+        registerNewCommand(new nametag("color"));
         registerNewCommand(new changeMob("changeMob"));
 
     }

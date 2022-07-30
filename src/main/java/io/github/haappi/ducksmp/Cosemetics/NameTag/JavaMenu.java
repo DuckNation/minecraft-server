@@ -29,12 +29,12 @@ import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.colorMapping;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.setStuff;
 import static io.github.haappi.ducksmp.DuckSMP.secretKey;
 
-public class JavaMenu extends BukkitCommand implements Listener {
+public class JavaMenu {
 
     public static final HashMap<UUID, String> responses = new HashMap<>();
     public static final HashMap<UUID, String> colors = new HashMap<>();
 
-    private final Map<String, Integer> internalColorMapping = Map.ofEntries(
+    private static final Map<String, Integer> internalColorMapping = Map.ofEntries(
             Map.entry(NamedTextColor.DARK_BLUE.asHexString(), 0),
             Map.entry(NamedTextColor.DARK_GREEN.asHexString(), 1),
             Map.entry(NamedTextColor.DARK_AQUA.asHexString(), 2),
@@ -52,11 +52,6 @@ public class JavaMenu extends BukkitCommand implements Listener {
     );
 
 
-    public JavaMenu(String name) {
-        super(name);
-        Bukkit.getPluginManager().registerEvents(this, DuckSMP.getInstance());
-    }
-
     public static void callback(Player player) {
         Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> {
             if (responses.containsKey(player.getUniqueId())) {
@@ -67,7 +62,7 @@ public class JavaMenu extends BukkitCommand implements Listener {
 
     }
 
-    private List<Component> getAllColors() {
+    private static List<Component> getAllColors() {
         List<Component> colors = new ArrayList<>();
         int current = 0;
         for (NamedTextColor color : NamedTextColor.NAMES.values()) {
@@ -85,7 +80,7 @@ public class JavaMenu extends BukkitCommand implements Listener {
         return colors;
     }
 
-    private Book getBook(@NotNull String hexString, @NotNull String name) {
+    private static Book getBook(@NotNull String hexString, @NotNull String name) {
         Component component = Component.text(name, NamedTextColor.nearestTo(TextColor.fromHexString(hexString))).decoration(TextDecoration.BOLD, true).hoverEvent(HoverEvent.showText(Component.text("Click to change your tag"))).clickEvent(ClickEvent.runCommand("/menu " + secretKey + " setname")).append(Component.newline());
         for (Component color : getAllColors()) {
             component = component.append(color);
@@ -97,11 +92,8 @@ public class JavaMenu extends BukkitCommand implements Listener {
         component = component.append(submitComponent);
         return Book.book(Component.text("Name Tag"), Component.text("ur mum"), List.of(component));
     }
-
-    @Override
     @SuppressWarnings("ConstantConditions")
-    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        if (sender instanceof Player player) {
+    public static void menu(Player player, @NotNull String[] args) {
             PersistentDataContainer container = player.getPersistentDataContainer();
             if (args.length < 1) {
                 String thing = container.get(new NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING);
@@ -117,7 +109,7 @@ public class JavaMenu extends BukkitCommand implements Listener {
             } else {
                 if (!args[0].equals(secretKey)) {
                     player.sendMessage(Component.text("What do you think you're doing? Tryna look at my code and crack it?", NamedTextColor.RED));
-                    return true;
+                    return;
                 }
                 List<String> _args = Arrays.stream(args).toList();
 
@@ -153,8 +145,6 @@ public class JavaMenu extends BukkitCommand implements Listener {
 
                 }
             }
-        }
 
-        return true;
     }
 }

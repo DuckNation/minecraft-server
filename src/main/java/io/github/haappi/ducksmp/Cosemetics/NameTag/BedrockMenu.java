@@ -19,14 +19,9 @@ import java.util.Arrays;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.colorMapping;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.setStuff;
 
-public class BedrockMenu extends BukkitCommand { // refactor to use one command -> detect client -> correct menu
+public class BedrockMenu {
 
-
-    public BedrockMenu(String name) {
-        super(name);
-    }
-
-    public void form(Player player) {
+    public static void form(@NotNull Player player) {
         PersistentDataContainer container = player.getPersistentDataContainer();
         String thing = container.get(new NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING);
         if (thing == null) {
@@ -65,11 +60,9 @@ public class BedrockMenu extends BukkitCommand { // refactor to use one command 
         FloodgateApi.getInstance().getPlayer(player.getUniqueId()).sendForm(form.build());
     }
 
-    @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (sender instanceof Player player) {
             if (!FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
-                player.sendMessage(Component.text("Coming soon for Java Edition near you! :tm:", NamedTextColor.AQUA));
                 return true;
             }
             form(player);
