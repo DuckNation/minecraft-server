@@ -58,13 +58,6 @@ public class totem implements Listener {
 //                .filter(type -> type.getEntityClass() != null)
 //                .filter(type -> LivingEntity.class.isAssignableFrom(type.getEntityClass()))
 //                .toArray(EntityType[]::new);
-        ArrayList<EntityType> mobs = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            mobs.add(EntityType.VILLAGER);
-        }
-        for (int i = 0; i < 4; i++) {
-            mobs.add(EntityType.WITHER);
-        }
 //        ;
 
         Bukkit.getScheduler().runTaskTimer(this.plugin, () -> {
