@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static io.github.haappi.ducksmp.DuckSMP.getMongoClient;
+import static io.github.haappi.ducksmp.DuckSMP.isDisabled;
 import static io.github.haappi.ducksmp.utils.Utils.getCountdown;
 
 public class Messages implements Listener {
@@ -67,6 +68,9 @@ public class Messages implements Listener {
         Document finalDoc = new Document();
         MongoCollection<Document> collection = DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages");
         if (!plugin.isEnabled()) {
+            return;
+        }
+        if (isDisabled) {
             return;
         }
         this.insertEmptyDocumentIfNeeded();

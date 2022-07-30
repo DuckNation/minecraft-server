@@ -53,6 +53,8 @@ public final class DuckSMP extends JavaPlugin implements Listener {
     private MongoClient mongoClient;
     private boolean hasListenerLoaded = false;
 
+    public static boolean isDisabled = false;
+
     public static DuckSMP getInstance() {
         return instance;
     }
@@ -197,6 +199,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+        isDisabled = true;
         for (int taskId : taskIds) {
             Bukkit.getScheduler().cancelTask(taskId);
         }
