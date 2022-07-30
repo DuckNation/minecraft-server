@@ -14,6 +14,7 @@ import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -29,6 +30,7 @@ import static io.github.haappi.ducksmp.DuckSMP.secretKey;
 public class JavaMenu {
 
     public static final HashMap<UUID, String> responses = new HashMap<>();
+    public static final ArrayList<UUID> currentlyInMenu = new ArrayList<>();
     public static final HashMap<UUID, String> colors = new HashMap<>();
 
     private static final Map<String, Integer> internalColorMapping = Map.ofEntries(
@@ -54,6 +56,7 @@ public class JavaMenu {
             if (responses.containsKey(player.getUniqueId())) {
                 String response = responses.get(player.getUniqueId());
                 Bukkit.getServer().dispatchCommand(player, "menu " + secretKey + " withcolorname " + response);
+                currentlyInMenu.remove(player.getUniqueId());
             }
         });
 
@@ -118,10 +121,13 @@ public class JavaMenu {
                     colors.put(player.getUniqueId(), _args.get(2));
                     break;
                 case "setname":
+                    currentlyInMenu.add(player.getUniqueId());
+                    BlockData oldBlock = player.getLocation().getBlock().getBlockData();
                     player.sendBlockChange(player.getLocation(), Material.ACACIA_SIGN.createBlockData());
                     ClientboundOpenSignEditorPacket packet = new ClientboundOpenSignEditorPacket(BlockPos.of(BlockPos.asLong(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ())));
                     responses.put(player.getUniqueId(), responses.getOrDefault(player.getUniqueId(), "Name Tag"));
                     ((CraftPlayer) player).getHandle().connection.send(packet);
+                    player.sendBlockChange(player.getLocation(), oldBlock);
                     break;
                 case "withcolorname":
                     String color = colors.get(player.getUniqueId());

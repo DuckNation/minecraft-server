@@ -10,6 +10,8 @@ import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import static io.github.haappi.ducksmp.Cosemetics.NameTag.JavaMenu.currentlyInMenu;
+
 // https://www.spigotmc.org/threads/advanced-minecraft-nms-packet-tutorial.538194/
 public class PacketListener {
 
@@ -33,8 +35,10 @@ public class PacketListener {
             public void channelRead(@NotNull ChannelHandlerContext channelHandlerContext, @NotNull Object packet) throws Exception {
                 if (packet instanceof ServerboundSignUpdatePacket signUpdatePacket) {
                     if (JavaMenu.responses.containsKey(player.getUniqueId())) {
-                        JavaMenu.responses.replace(player.getUniqueId(), signUpdatePacket.getLines()[0]);
-                        JavaMenu.callback(player);
+                        if (currentlyInMenu.contains(player.getUniqueId())) {
+                            JavaMenu.responses.replace(player.getUniqueId(), signUpdatePacket.getLines()[0]);
+                            JavaMenu.callback(player);
+                        }
                     }
 //                    Field commandList;
 //                    commandList = ServerboundSignUpdatePacket.class.getDeclaredField("c");
