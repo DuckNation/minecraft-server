@@ -18,28 +18,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.colorMapping;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.setStuff;
 
 public class BedrockMenu extends BukkitCommand { // refactor to use one command -> detect client -> correct menu
 
-    private final HashMap<Integer, ChatFormatting> colorMapping = new HashMap<>();
 
     public BedrockMenu(String name) {
         super(name);
-        colorMapping.put(0, ChatFormatting.DARK_BLUE);
-        colorMapping.put(1, ChatFormatting.DARK_GREEN);
-        colorMapping.put(2, ChatFormatting.DARK_AQUA);
-        colorMapping.put(3, ChatFormatting.DARK_RED);
-        colorMapping.put(4, ChatFormatting.DARK_PURPLE);
-        colorMapping.put(5, ChatFormatting.GOLD);
-        colorMapping.put(6, ChatFormatting.GRAY);
-        colorMapping.put(7, ChatFormatting.DARK_GRAY);
-        colorMapping.put(8, ChatFormatting.BLUE);
-        colorMapping.put(9, ChatFormatting.GREEN);
-        colorMapping.put(10, ChatFormatting.AQUA);
-        colorMapping.put(11, ChatFormatting.RED);
-        colorMapping.put(12, ChatFormatting.LIGHT_PURPLE);
-        colorMapping.put(13, ChatFormatting.YELLOW);
     }
 
     public void form(Player player) {

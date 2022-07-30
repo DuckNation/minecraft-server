@@ -34,6 +34,23 @@ public class Common implements Listener {
     public static final ConcurrentHashMap<UUID, NamedTextColor> chatColors = new ConcurrentHashMap<>();
     private final DuckSMP plugin;
 
+    public static final Map<Integer, ChatFormatting> colorMapping = Map.ofEntries(
+        Map.entry(0, ChatFormatting.DARK_BLUE),
+        Map.entry(1, ChatFormatting.DARK_GREEN),
+        Map.entry(2, ChatFormatting.DARK_AQUA),
+        Map.entry(3, ChatFormatting.DARK_RED),
+        Map.entry(4, ChatFormatting.DARK_PURPLE),
+        Map.entry(5, ChatFormatting.GOLD),
+        Map.entry(6, ChatFormatting.GRAY),
+        Map.entry(7, ChatFormatting.DARK_GRAY),
+        Map.entry(8, ChatFormatting.BLUE),
+        Map.entry(9, ChatFormatting.GREEN),
+        Map.entry(10, ChatFormatting.AQUA),
+        Map.entry(11, ChatFormatting.RED),
+        Map.entry(12, ChatFormatting.LIGHT_PURPLE),
+        Map.entry(13, ChatFormatting.YELLOW)
+    );
+
 
     public Common() {
         this.plugin = DuckSMP.getInstance();
