@@ -70,9 +70,10 @@ public class Common implements Listener {
         return prefix;
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static void setStuff(Player player, String prefix, ChatFormatting color) {
         PersistentDataContainer container = player.getPersistentDataContainer();
-        container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING, prefix);
+        container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING, prefix.replaceAll("§", ""));
         container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_color"), PersistentDataType.INTEGER, color.getId());
 
         chatColors.put(player.getUniqueId(), NamedTextColor.nearestTo(TextColor.color(color.getColor())));
