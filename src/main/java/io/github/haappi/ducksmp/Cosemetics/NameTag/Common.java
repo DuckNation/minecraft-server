@@ -24,6 +24,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,6 +49,11 @@ public class Common implements Listener {
             Map.entry(12, ChatFormatting.LIGHT_PURPLE),
             Map.entry(13, ChatFormatting.YELLOW)
     );
+
+    public static final HashSet<String> noNoWords =  new HashSet<String>() {{
+        add("a");
+        add("b");
+    }};
     private final DuckSMP plugin;
 
 
@@ -73,7 +79,19 @@ public class Common implements Listener {
     @SuppressWarnings("ConstantConditions")
     public static void setStuff(Player player, String prefix, ChatFormatting color) {
         PersistentDataContainer container = player.getPersistentDataContainer();
-        container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING, prefix.replaceAll("§", ""));
+        container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING,
+                prefix.replaceAll("§0", "")
+                        .replaceAll("§F", "")
+                        .replaceAll("§f", "")
+                        .replaceAll("§l", "")
+                        .replaceAll("§m", "")
+                        .replaceAll("§n", "")
+                        .replaceAll("§o", "")
+                        .replaceAll("§L", "")
+                        .replaceAll("§M", "")
+                        .replaceAll("§N", "")
+                        .replaceAll("§O", "")
+        );
         container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_color"), PersistentDataType.INTEGER, color.getId());
 
         chatColors.put(player.getUniqueId(), NamedTextColor.nearestTo(TextColor.color(color.getColor())));
