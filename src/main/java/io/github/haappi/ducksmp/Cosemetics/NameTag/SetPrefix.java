@@ -39,7 +39,7 @@ public class SetPrefix extends BukkitCommand {
         }
         ArrayList<String> prefix = new ArrayList<>(Arrays.asList(args).subList(1, args.length));
         PersistentDataContainer container = target.getPersistentDataContainer();
-        container.set(new org.bukkit.NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING, "[" + String.join(" ", prefix) + "]");
+        container.set(new org.bukkit.NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING, "[" + String.join(" ", prefix) + "] ");
         target.kick(Component.text("Your prefix was forced changed by an operator.", NamedTextColor.RED).append(Component.text(" Your prefix is now: " + String.join(" ", prefix), NamedTextColor.AQUA)));
         sender.sendMessage(Component.text("Prefix changed for " + target.getName() + "!", NamedTextColor.AQUA));
 
