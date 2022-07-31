@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class GlobalDeathHandler implements Listener {
 
@@ -28,16 +29,17 @@ public class GlobalDeathHandler implements Listener {
 
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
-        org.bukkit.block.data.type.Chest chestData1;
-        org.bukkit.block.data.type.Chest chestData2;
+        AtomicReference<org.bukkit.block.data.type.Chest> chestData1 = new AtomicReference<>();
+        AtomicReference<org.bukkit.block.data.type.Chest> chestData2 = new AtomicReference<>();
 
         if (event.getEntity() instanceof Player player) {
-            org.bukkit.block.Chest bChest;
+            AtomicReference<Chest> bChest = new AtomicReference<>();
 
             Location loc = player.getLocation();
             final List<ItemStack> content = new ArrayList<>(event.getDrops());
 
             final ItemStack[] items = content.toArray(new ItemStack[0]);
+            event.getDrops().clear();
             final double x = loc.getX();
 
             final Location x1 = loc.clone();
@@ -48,36 +50,37 @@ public class GlobalDeathHandler implements Listener {
             Block block1 = x1.getBlock();
             Block block2 = x2.getBlock();
 
-            int itemAmount = 0;
-            for (final ItemStack ignored : items) {
-                itemAmount++;
-            }
-            block1.setType(Material.CHEST);
-            if (itemAmount >= 27) {
-                block2.setType(Material.CHEST);
+            int itemAmount = items.length;
 
-                Chest chest1 = (Chest) block1.getState();
-                Chest chest2 = (Chest) block2.getState();
 
-                chestData1 = (org.bukkit.block.data.type.Chest) chest1.getBlockData();
-                chestData2 = (org.bukkit.block.data.type.Chest) chest2.getBlockData();
-
-                chestData1.setType(org.bukkit.block.data.type.Chest.Type.LEFT);
-                block1.setBlockData(chestData1, true);
-                chestData2.setType(org.bukkit.block.data.type.Chest.Type.RIGHT);
-                block2.setBlockData(chestData2, true);
-            }
-            bChest = (org.bukkit.block.Chest) x1.getBlock().getState();
-            bChest.customName(Component.text(player.getName() + "'s grave", NamedTextColor.AQUA));
-            bChest.update();
 
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                block1.setType(Material.CHEST);
+                if (itemAmount >= 27) {
+                    block2.setType(Material.CHEST);
+
+                    Chest chest1 = (Chest) block1.getState();
+                    Chest chest2 = (Chest) block2.getState();
+
+                    chestData1.set((org.bukkit.block.data.type.Chest) chest1.getBlockData());
+                    chestData2.set((org.bukkit.block.data.type.Chest) chest2.getBlockData());
+
+                    chestData1.get().setType(org.bukkit.block.data.type.Chest.Type.LEFT);
+                    block1.setBlockData(chestData1.get(), true);
+                    chestData2.get().setType(org.bukkit.block.data.type.Chest.Type.RIGHT);
+                    block2.setBlockData(chestData2.get(), true);
+                }
+                bChest.set((Chest) x1.getBlock().getState());
+                bChest.get().customName(Component.text(player.getName() + "'s grave", NamedTextColor.AQUA));
+                bChest.get().update();
+
+
+
                 for (final ItemStack item : items) {
                     Chest bChest1 = (Chest) x1.getBlock().getState();
                     bChest1.getInventory().addItem(item);
                 }
-            }, 10);
-            event.getDrops().clear();
+            }, 20 * 2L); // 2 seconds
         }
     }
 }

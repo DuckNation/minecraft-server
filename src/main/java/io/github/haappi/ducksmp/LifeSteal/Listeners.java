@@ -129,7 +129,7 @@ public class Listeners implements Listener {
         }
     }
 
-    @EventHandler
+//    @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         ConcurrentLinkedDeque<Entity> entitiesList = new ConcurrentLinkedDeque<>();
         Collections.addAll(entitiesList, event.getChunk().getEntities());
@@ -145,7 +145,7 @@ public class Listeners implements Listener {
         });
     }
 
-    @EventHandler
+//    @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
         ConcurrentLinkedDeque<Entity> entitiesList = new ConcurrentLinkedDeque<>();
         Collections.addAll(entitiesList, event.getChunk().getEntities());
@@ -171,7 +171,7 @@ public class Listeners implements Listener {
             entity.setVisualFire(false);
             entity.setVelocity(entity.getVelocity().setY(0.2));
 
-            armorMap.put(entity.getUniqueId(), Utils.createStand(entity, 1).getUniqueId());
+//            armorMap.put(entity.getUniqueId(), Utils.createStand(entity, 1).getUniqueId());
         }
     }
 
