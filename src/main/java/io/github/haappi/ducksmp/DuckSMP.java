@@ -85,6 +85,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new CustomLore();
 
         new Common();
+        new GlobalDeathHandler();
 
         Bukkit.getPluginManager().registerEvents(this, this);
 

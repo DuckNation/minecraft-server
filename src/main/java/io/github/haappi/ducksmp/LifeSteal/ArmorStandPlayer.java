@@ -69,11 +69,10 @@ public class ArmorStandPlayer implements Listener {
                     .append(result).build();
             if (!stand.name().equals(name)) {
                 stand.customName(name);
-            }
+            } // todo make it show if they have the dragon egg ornot
 
             if (stand.getLocation().add(0, -2.15, 0) != player.getLocation()) {
                 stand.teleport(player.getLocation().add(0, 2.15, 0));
-                player.hideEntity(this.plugin, stand);
             }
 
         });
