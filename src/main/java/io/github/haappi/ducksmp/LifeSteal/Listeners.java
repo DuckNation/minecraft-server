@@ -91,7 +91,7 @@ public class Listeners implements Listener {
             if (entity == null) { // todo check if armor stand is null -> make a new one
                 removeStand(entry.getKey());
                 continue;
-            }
+            } // fix stands mass duplicating
 
             if (stand == null) {
                 stand = Utils.createStand(entity, 1);
@@ -126,7 +126,7 @@ public class Listeners implements Listener {
         }
     }
 
-    @EventHandler
+//    @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         ConcurrentLinkedDeque<Entity> entitiesList = new ConcurrentLinkedDeque<>();
         Collections.addAll(entitiesList, event.getChunk().getEntities());
@@ -142,7 +142,7 @@ public class Listeners implements Listener {
         });
     }
 
-    @EventHandler
+//    @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
         ConcurrentLinkedDeque<Entity> entitiesList = new ConcurrentLinkedDeque<>();
         Collections.addAll(entitiesList, event.getChunk().getEntities());
@@ -168,7 +168,7 @@ public class Listeners implements Listener {
             entity.setVisualFire(false);
             entity.setVelocity(entity.getVelocity().setY(0.2));
 
-            armorMap.put(entity.getUniqueId(), Utils.createStand(entity, 1).getUniqueId());
+//            armorMap.put(entity.getUniqueId(), Utils.createStand(entity, 1).getUniqueId());
         }
     }
 
