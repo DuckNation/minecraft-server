@@ -56,7 +56,7 @@ public class Listeners implements Listener {
         }
     }
 
-    //    @EventHandler
+        @EventHandler
     public void onPickup(EntityPickupItemEvent event) {
 //        event.setCancelled(true);
         removeStand(event.getItem().getUniqueId());
@@ -67,9 +67,12 @@ public class Listeners implements Listener {
         if (uuid == null) {
             return;
         }
-        if (Bukkit.getEntity(armorMap.get(uuid)) != null) {
-            Bukkit.getEntity(armorMap.get(uuid)).remove();
+        if (armorMap.get(armorMap.get(uuid)) == null) {
             armorMap.remove(uuid);
+        }
+        ArmorStand stand = (ArmorStand) Bukkit.getEntity(armorMap.get(uuid));
+        if (stand != null) {
+            stand.remove();
         }
     }
 
@@ -91,7 +94,7 @@ public class Listeners implements Listener {
             if (entity == null) { // todo check if armor stand is null -> make a new one
                 removeStand(entry.getKey());
                 continue;
-            } // fix stands mass duplicating
+            }
 
             if (stand == null) {
                 stand = Utils.createStand(entity, 1);
@@ -99,6 +102,8 @@ public class Listeners implements Listener {
 
             if (stand.isDead()) {
                 armorMap.remove(entry.getKey());
+                stand.remove();
+                continue;
             }
 
 
@@ -126,7 +131,7 @@ public class Listeners implements Listener {
         }
     }
 
-//    @EventHandler
+    @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         ConcurrentLinkedDeque<Entity> entitiesList = new ConcurrentLinkedDeque<>();
         Collections.addAll(entitiesList, event.getChunk().getEntities());
@@ -142,7 +147,7 @@ public class Listeners implements Listener {
         });
     }
 
-//    @EventHandler
+    @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
         ConcurrentLinkedDeque<Entity> entitiesList = new ConcurrentLinkedDeque<>();
         Collections.addAll(entitiesList, event.getChunk().getEntities());
@@ -168,7 +173,7 @@ public class Listeners implements Listener {
             entity.setVisualFire(false);
             entity.setVelocity(entity.getVelocity().setY(0.2));
 
-//            armorMap.put(entity.getUniqueId(), Utils.createStand(entity, 1).getUniqueId());
+            armorMap.put(entity.getUniqueId(), Utils.createStand(entity, 1).getUniqueId());
         }
     }
 
