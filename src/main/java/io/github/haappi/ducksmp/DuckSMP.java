@@ -7,6 +7,7 @@ import com.mongodb.client.model.CreateCollectionOptions;
 import io.github.haappi.ducksmp.Commands.*;
 import io.github.haappi.ducksmp.Cosemetics.NameTag.Common;
 import io.github.haappi.ducksmp.Cosemetics.NameTag.NameTagCommand;
+import io.github.haappi.ducksmp.Cosemetics.NameTag.SetPrefix;
 import io.github.haappi.ducksmp.LifeSteal.ArmorStandPlayer;
 import io.github.haappi.ducksmp.LifeSteal.Listeners;
 import io.github.haappi.ducksmp.LifeSteal.Signup;
@@ -96,6 +97,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         registerNewCommand(new Reply("reply"));
         registerNewCommand(new NameTagCommand("color"));
         registerNewCommand(new ChangeMob("changeMob"));
+        registerNewCommand(new SetPrefix("setprefix"));
     }
 
     @EventHandler

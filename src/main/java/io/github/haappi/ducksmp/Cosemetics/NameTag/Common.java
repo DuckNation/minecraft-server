@@ -50,10 +50,6 @@ public class Common implements Listener {
             Map.entry(13, ChatFormatting.YELLOW)
     );
 
-    public static final HashSet<String> noNoWords =  new HashSet<String>() {{
-        add("a");
-        add("b");
-    }};
     private final DuckSMP plugin;
 
 
