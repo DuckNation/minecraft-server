@@ -6,6 +6,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +30,17 @@ public class GlobalDeathHandler implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
+    private String getDeathPositionFormatted(Location location) {
+        return String.format("%s: %s, %s, %s", location.getWorld(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDeath(EntityDeathEvent event) {
         AtomicReference<org.bukkit.block.data.type.Chest> chestData1 = new AtomicReference<>();
         AtomicReference<org.bukkit.block.data.type.Chest> chestData2 = new AtomicReference<>();
 
         if (event.getEntity() instanceof Player player) {
+            player.getPersistentDataContainer().set(new NamespacedKey(plugin, "last_death_location"), PersistentDataType.STRING, getDeathPositionFormatted(player.getLocation()));
             AtomicReference<Chest> bChest = new AtomicReference<>();
 
             Location loc = player.getLocation();
