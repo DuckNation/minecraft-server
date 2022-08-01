@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 import static io.github.haappi.ducksmp.DuckSMP.getMongoClient;
 import static io.github.haappi.ducksmp.DuckSMP.isDisabled;
 import static io.github.haappi.ducksmp.utils.Utils.getCountdown;
+import static io.github.haappi.ducksmp.utils.Utils.miniMessage;
 
 public class Messages implements Listener {
 
@@ -124,7 +125,7 @@ public class Messages implements Listener {
                 Bukkit.getLogger().info("Downloaded new release of DuckSMP! Hash: " + message.getString("sha"));
                 Bukkit.getOnlinePlayers().forEach(player -> {
                     player.sendMessage(Component.text("A new version of Duck SMP is available to update. It will update when no-one is online, or after an hour.", NamedTextColor.GREEN).append(Component.text(" Hash " + Messages.commitHash, NamedTextColor.YELLOW)));
-                    player.sendMessage(Component.text("Update message: ", NamedTextColor.YELLOW).append(Component.text(message.getString("data"), NamedTextColor.AQUA)));
+                    player.sendMessage(Component.text("Update message: ", NamedTextColor.YELLOW).append(miniMessage.deserialize(message.getString("data"))));
                 });
                 restartNeeded = true;
                 if (Bukkit.getOnlinePlayers().isEmpty())
