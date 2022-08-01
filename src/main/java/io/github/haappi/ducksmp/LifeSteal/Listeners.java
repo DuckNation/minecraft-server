@@ -175,7 +175,7 @@ public class Listeners implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onDeath(EntityDeathEvent event) {
         if (event.getEntity() instanceof Player player) {
             Integer claimed = player.getPersistentDataContainer().get(new org.bukkit.NamespacedKey(plugin, "claimed_hearts"), PersistentDataType.INTEGER);

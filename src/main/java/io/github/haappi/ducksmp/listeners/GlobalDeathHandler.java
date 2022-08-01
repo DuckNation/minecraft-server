@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +28,7 @@ public class GlobalDeathHandler implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onDeath(EntityDeathEvent event) {
         AtomicReference<org.bukkit.block.data.type.Chest> chestData1 = new AtomicReference<>();
         AtomicReference<org.bukkit.block.data.type.Chest> chestData2 = new AtomicReference<>();
