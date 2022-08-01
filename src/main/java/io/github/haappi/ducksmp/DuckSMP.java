@@ -86,6 +86,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 
         new ArmorStandPlayer();
         new CustomLore();
+        new AntiSpam();
 
         new Common();
         new GlobalDeathHandler();
