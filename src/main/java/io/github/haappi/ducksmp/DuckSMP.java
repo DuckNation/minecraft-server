@@ -136,7 +136,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onCommandRun(PlayerCommandPreprocessEvent event) {
-        if (event.getMessage().contains("rg define")) {
+        if (event.getMessage().contains("rg claim")) {
             String claimName = event.getMessage().split(" ")[2];
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), String.format("/rg flag -w %s %s pvp -g everyone allow", event.getPlayer().getLocation().getWorld().getName(), claimName));
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), String.format("/rg flag -w %s %s use -g everyone allow", event.getPlayer().getLocation().getWorld().getName(), claimName));
