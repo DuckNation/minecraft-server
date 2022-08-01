@@ -20,6 +20,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.world.item.ArmorItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
@@ -34,8 +35,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.geysermc.floodgate.api.FloodgateApi;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -152,7 +155,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
             return;
         }
         if (event.getItem().getType().toString().toLowerCase().contains("elytra")) {
-            org.bukkit.inventory.ItemStack item = event.getPlayer().getInventory().getChestplate();
+            ItemStack item = event.getPlayer().getInventory().getChestplate();
             event.getPlayer().getInventory().setChestplate(event.getItem());
             if (event.getHand() == EquipmentSlot.HAND) {
                 event.getPlayer().getInventory().setItemInMainHand(item);
@@ -162,10 +165,18 @@ public final class DuckSMP extends JavaPlugin implements Listener {
             return;
         }
         if (!(CraftItemStack.asNMSCopy(event.getItem()).getItem() instanceof ArmorItem)) {
+            if (!FloodgateApi.getInstance().isFloodgatePlayer(event.getPlayer().getUniqueId())) {
+                return; // Java players right click to raise shield
+            }
+            if ((event.getItem().getType() == Material.SHIELD || event.getItem().getType() == Material.TOTEM_OF_UNDYING) && event.getHand() == EquipmentSlot.HAND) {
+                ItemStack item = event.getPlayer().getInventory().getItemInOffHand();
+                event.getPlayer().getInventory().setItemInMainHand(item);
+                event.getPlayer().getInventory().setItemInOffHand(event.getItem());
+            }
             return;
         }
         if (event.getItem().getType().toString().toLowerCase().contains("helmet")) {
-            org.bukkit.inventory.ItemStack item = event.getPlayer().getInventory().getHelmet();
+            ItemStack item = event.getPlayer().getInventory().getHelmet();
             event.getPlayer().getInventory().setHelmet(event.getItem());
             if (event.getHand() == EquipmentSlot.HAND) {
                 event.getPlayer().getInventory().setItemInMainHand(item);
@@ -173,7 +184,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
                 event.getPlayer().getInventory().setItemInOffHand(item);
             }
         } else if (event.getItem().getType().toString().toLowerCase().contains("boots")) {
-            org.bukkit.inventory.ItemStack item = event.getPlayer().getInventory().getBoots();
+            ItemStack item = event.getPlayer().getInventory().getBoots();
             event.getPlayer().getInventory().setBoots(event.getItem());
             if (event.getHand() == EquipmentSlot.HAND) {
                 event.getPlayer().getInventory().setItemInMainHand(item);
@@ -181,7 +192,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
                 event.getPlayer().getInventory().setItemInOffHand(item);
             }
         } else if (event.getItem().getType().toString().toLowerCase().contains("leggings")) {
-            org.bukkit.inventory.ItemStack item = event.getPlayer().getInventory().getLeggings();
+            ItemStack item = event.getPlayer().getInventory().getLeggings();
             event.getPlayer().getInventory().setLeggings(event.getItem());
             if (event.getHand() == EquipmentSlot.HAND) {
                 event.getPlayer().getInventory().setItemInMainHand(item);
@@ -189,7 +200,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
                 event.getPlayer().getInventory().setItemInOffHand(item);
             }
         } else if (event.getItem().getType().toString().toLowerCase().contains("chestplate")) {
-            org.bukkit.inventory.ItemStack item = event.getPlayer().getInventory().getChestplate();
+            ItemStack item = event.getPlayer().getInventory().getChestplate();
             event.getPlayer().getInventory().setChestplate(event.getItem());
             if (event.getHand() == EquipmentSlot.HAND) {
                 event.getPlayer().getInventory().setItemInMainHand(item);
