@@ -102,6 +102,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         registerNewCommand(new NameTagCommand("color"));
         registerNewCommand(new ChangeMob("changeMob"));
         registerNewCommand(new SetPrefix("setprefix"));
+        registerNewCommand(new Compass("compass"));
     }
 
     @EventHandler
