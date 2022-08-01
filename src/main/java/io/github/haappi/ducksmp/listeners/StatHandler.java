@@ -2,6 +2,7 @@ package io.github.haappi.ducksmp.listeners;
 
 import io.github.haappi.ducksmp.DuckSMP;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,8 +24,28 @@ public class StatHandler implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
+    private boolean canBeUsedForStats(Material item) {
+        String name = item.toString().toLowerCase();
+        return name.contains("shovel") ||
+                name.contains("pickaxe") ||
+                name.contains("axe") ||
+                name.contains("sword") ||
+                name.contains("hoe") ||
+                name.contains("shears") ||
+                name.contains("bow") ||
+                name.contains("fishing rod") ||
+                name.contains("trident") ||
+                name.contains("boots") ||
+                name.contains("leggings") ||
+                name.contains("chestplate") ||
+                name.contains("helmet");
+    }
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+        if (!canBeUsedForStats(event.getPlayer().getActiveItem().getType())) {
+            return;
+        }
         ItemMeta itemMeta = event.getPlayer().getActiveItem().getItemMeta();
         if (itemMeta == null) {
             return;
@@ -45,6 +66,9 @@ public class StatHandler implements Listener {
             return;
         }
         if (event.getDamager() instanceof Player player) {
+            if (!canBeUsedForStats(player.getActiveItem().getType())) {
+                return;
+            }
             ItemMeta itemMeta = player.getActiveItem().getItemMeta();
             if (itemMeta == null) {
                 return;
@@ -66,6 +90,9 @@ public class StatHandler implements Listener {
             return;
         }
         if (event.getDamager() instanceof Player player) {
+            if (!canBeUsedForStats(player.getActiveItem().getType())) {
+                return;
+            }
             ItemMeta itemMeta = player.getActiveItem().getItemMeta();
             if (itemMeta == null) {
                 return;
@@ -86,6 +113,9 @@ public class StatHandler implements Listener {
             return;
         }
         if (event.getEntity().getKiller() != null) {
+            if (!canBeUsedForStats(event.getEntity().getKiller().getActiveItem().getType())) {
+                return;
+            }
             Player player = event.getEntity().getKiller();
             ItemMeta itemMeta = player.getActiveItem().getItemMeta();
             if (itemMeta == null) {
@@ -107,6 +137,9 @@ public class StatHandler implements Listener {
             return;
         }
         if (event.getEntity().getKiller() != null) {
+            if (!canBeUsedForStats(event.getEntity().getKiller().getActiveItem().getType())) {
+                return;
+            }
             Player player = event.getEntity().getKiller();
             ItemMeta itemMeta = player.getActiveItem().getItemMeta();
             if (itemMeta == null) {
