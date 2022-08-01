@@ -8,6 +8,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -77,6 +78,9 @@ public class TotemHandler implements Listener {
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
+        if (event.getEntity() instanceof Player) {
+            return;
+        }
         event.getDrops().removeIf(item -> item.getType() == Material.TOTEM_OF_UNDYING);
         if (event.getEntity().getKiller() != null) {
             if (event.getEntity().getType() == randomMob) {
@@ -91,14 +95,5 @@ public class TotemHandler implements Listener {
             }
         }
     }
-
-//    @EventHandler
-//    public void onEntityDamage(EntityDamageEvent event) {
-//        if (event.getEntity() instanceof Pig entity) {
-//            if (PaperAdventure.asPlain(entity.customName(), Locale.US).equals("Technoblade")) {
-//                event.setCancelled(true);
-//            }
-//        }
-//    }
 
 }
