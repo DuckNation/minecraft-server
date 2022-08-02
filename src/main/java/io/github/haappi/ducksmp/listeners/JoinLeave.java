@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -140,13 +141,14 @@ public class JoinLeave implements Listener {
                 );
     }
 
-    private @Nullable String getPlayerMOTDFromIP(String ipAddress) {
+    private @NotNull String getPlayerMOTDFromIP(String ipAddress) {
         String mapping = IPNameMapping.get(ipAddress);
         if (mapping != null) {
             if (mapping.equals("")) {
-                return "";
+//                return "";
+            } else {
+                return String.format("\n<gray>Welcome Back</gray> <aqua><bold>%s</bold></aqua><gray>", IPNameMapping.get(ipAddress));
             }
-            return String.format("\n<gray>Welcome Back</gray> <aqua><bold>%s</bold></aqua><gray>", IPNameMapping.get(ipAddress));
         }
         Document doc = DuckSMP.getMongoClient().getDatabase("duckMinecraft")
                 .getCollection("playerData")
@@ -154,7 +156,7 @@ public class JoinLeave implements Listener {
         // just so bunny & fire have a chance of getting both of their names lmao
         if (doc == null) {
             IPNameMapping.put(ipAddress, "");
-            return null;
+            return "";
         } else {
             IPNameMapping.put(ipAddress, doc.getString("playerName"));
             return String.format("\n<gray>Welcome Back</gray> <aqua><bold>%s</bold></aqua><gray>", IPNameMapping.get(ipAddress));
