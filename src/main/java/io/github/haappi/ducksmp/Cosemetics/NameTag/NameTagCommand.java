@@ -10,7 +10,6 @@ import java.util.List;
 
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.BedrockMenu.form;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.JavaMenu.menu;
-import static io.github.haappi.ducksmp.utils.Json.openFile;
 
 public class NameTagCommand extends BukkitCommand {
 
