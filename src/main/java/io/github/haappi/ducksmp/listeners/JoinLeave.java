@@ -124,6 +124,7 @@ public class JoinLeave implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> saveStuffInDB(player));
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void saveStuffInDB(Player player) {
         Document doc = new Document();
         doc.put("playerIP", encrypt(player.getAddress().getAddress().getHostAddress())); // it's encrypted with the key in the config
