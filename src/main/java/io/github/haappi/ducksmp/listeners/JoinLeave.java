@@ -146,7 +146,7 @@ public class JoinLeave implements Listener {
             if (mapping.equals("")) {
 //                return "";
             } else {
-                return String.format("\n<gray>Welcome Back</gray> <aqua><bold>%s</bold></aqua><gray>", IPNameMapping.get(ipAddress));
+                return String.format("<newline><gray>Welcome Back</gray> <aqua><bold>%s</bold></aqua><gray>", IPNameMapping.get(ipAddress));
             }
         }
         Document doc = DuckSMP.getMongoClient().getDatabase("duckMinecraft")
@@ -158,7 +158,7 @@ public class JoinLeave implements Listener {
             return "";
         } else {
             IPNameMapping.put(ipAddress, doc.getString("playerName"));
-            return String.format("\n<gray>Welcome Back</gray> <aqua><bold>%s</bold></aqua><gray>", IPNameMapping.get(ipAddress));
+            return String.format("<newline><gray>Welcome Back</gray> <aqua><bold>%s</bold></aqua><gray>", IPNameMapping.get(ipAddress));
         }
     }
 
