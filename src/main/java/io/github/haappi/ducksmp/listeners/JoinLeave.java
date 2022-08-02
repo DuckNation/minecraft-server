@@ -151,9 +151,11 @@ public class JoinLeave implements Listener {
                 .getCollection("playerData")
                 .find(new Document("playerIP", encrypt(ipAddress))).first();
         if (doc == null) {
+            IPNameMapping.put(ipAddress, "");
             return null;
         } else {
-            return String.format("\n<gray>Welcome Back</gray> <aqua><bold>%s</bold></aqua><gray>", doc.getString("playerName"));
+            IPNameMapping.put(ipAddress, doc.getString("playerName"));
+            return String.format("\n<gray>Welcome Back</gray> <aqua><bold>%s</bold></aqua><gray>", IPNameMapping.get(ipAddress));
         }
     }
 
