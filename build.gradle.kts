@@ -11,6 +11,8 @@ version = "0.1"
 var mainClassName = "io.github.haappi.ducksmp.DuckSMP"
 val shade = configurations.create("shade")
 
+var version = "1.19.1"
+
 repositories {
     mavenCentral()
     mavenLocal()
@@ -19,12 +21,14 @@ repositories {
     maven("https://repo.dmulloy2.net/repository/public/")
     maven("https://hub.spigotmc.org/nexus/content/repositories/public/")
     maven("https://repo.opencollab.dev/maven-snapshots/")
+    maven("https://nexus.scarsz.me/content/groups/public/")
 }
 
 dependencies {
 //    implementation("junit:junit:4.13.2")
-    paperDevBundle("1.19-R0.1-SNAPSHOT")
+    paperDevBundle("$version-R0.1-SNAPSHOT")
     compileOnly("org.geysermc.floodgate:api:2.2.0-SNAPSHOT")
+    compileOnly("com.discordsrv:discordsrv:1.25.0")
     implementation("org.mongodb:mongodb-driver-sync:4.6.0")
 //    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 //    testImplementation("com.github.seeseemelk:MockBukkit-v1.18:2.22.2")
@@ -52,7 +56,7 @@ tasks {
     }
 
     runServer {
-        minecraftVersion("1.19")
+        minecraftVersion(version)
     }
 
 
