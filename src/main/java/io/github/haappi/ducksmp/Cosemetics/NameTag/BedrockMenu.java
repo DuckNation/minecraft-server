@@ -50,7 +50,7 @@ public class BedrockMenu {
             if (responseInput.length() < 13) {
                 prefix = "[" + responseInput + "] ";
             } else {
-                prefix = "[" + responseInput.substring(0, 13) + "] ";
+                prefix = "[" + responseInput + "] ";
             }
             Common.teamPacket(player, String.valueOf(System.currentTimeMillis()), prefix, colorMapping.get(color));
             setStuff(player, prefix, colorMapping.get(color));

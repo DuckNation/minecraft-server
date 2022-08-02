@@ -88,6 +88,7 @@ public class Common implements Listener {
                         .replaceAll("§O", "")
                         .replaceAll("§k", "")
                         .replaceAll("§K", "")
+                        .substring(0, 15)
         );
         container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_color"), PersistentDataType.INTEGER, color.getId());
 
