@@ -149,7 +149,8 @@ public class JoinLeave implements Listener {
         }
         Document doc = DuckSMP.getMongoClient().getDatabase("duckMinecraft")
                 .getCollection("playerData")
-                .find(new Document("playerIP", encrypt(ipAddress))).first();
+                .find(new Document("playerIP", encrypt(ipAddress))).first(); // todo some way to somehow get a random player name from the IP provided.
+        // just so bunny & fire have a chance of getting both of their names lmao
         if (doc == null) {
             IPNameMapping.put(ipAddress, "");
             return null;
