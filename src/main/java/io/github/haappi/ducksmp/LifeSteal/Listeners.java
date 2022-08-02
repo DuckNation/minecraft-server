@@ -56,7 +56,7 @@ public class Listeners implements Listener {
         }
     }
 
-//    @EventHandler
+    //    @EventHandler
     public void onPickup(EntityPickupItemEvent event) {
         removeStand(event.getEntity().getUniqueId());
     }
@@ -129,7 +129,7 @@ public class Listeners implements Listener {
         }
     }
 
-//    @EventHandler
+    //    @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         ConcurrentLinkedDeque<Entity> entitiesList = new ConcurrentLinkedDeque<>();
         Collections.addAll(entitiesList, event.getChunk().getEntities());
@@ -145,7 +145,7 @@ public class Listeners implements Listener {
         });
     }
 
-//    @EventHandler
+    //    @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
         ConcurrentLinkedDeque<Entity> entitiesList = new ConcurrentLinkedDeque<>();
         Collections.addAll(entitiesList, event.getChunk().getEntities());

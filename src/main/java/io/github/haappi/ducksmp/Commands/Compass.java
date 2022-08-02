@@ -28,7 +28,8 @@ public class Compass extends BukkitCommand implements Listener {
             " · ◈ · ◈ · ◈ · S · ◈ · ◈ · ◈ · SW · ◈ · ◈ · ◈ · W · ◈ · ◈ · ◈ · NW" +
             " · ◈ · ◈ · ◈ · N · ◈ · ◈ · ◈ · NE · ◈ · ◈ · ◈ · E · ◈ · ◈ · ◈ · SE" +
             " · ◈ · ◈ · ◈ · ";
-    
+    private final HashMap<UUID, BossBar> bossBars = new HashMap<>();
+
     public Compass(String name) {
         super(name);
         this.plugin = DuckSMP.getInstance();
@@ -73,8 +74,6 @@ public class Compass extends BukkitCommand implements Listener {
         }
     }
 
-    private final HashMap<UUID, BossBar> bossBars = new HashMap<>();
-
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (sender instanceof Player player) {
@@ -97,47 +96,45 @@ public class Compass extends BukkitCommand implements Listener {
                 if (args[0].equalsIgnoreCase("color")) {
 
                     switch (args[1].toLowerCase()) {
-                        case "red":
+                        case "red" -> {
                             player.getPersistentDataContainer().set(new NamespacedKey(plugin, "compass_color"), PersistentDataType.BYTE, (byte) 0);
                             bossBars.get(player.getUniqueId()).color(getColor((byte) 0));
                             player.sendMessage(Component.text("Compass color set to ", NamedTextColor.GRAY).append(Component.text("red", NamedTextColor.RED)));
-                            break;
-                        case "green":
+                        }
+                        case "green" -> {
                             player.getPersistentDataContainer().set(new NamespacedKey(plugin, "compass_color"), PersistentDataType.BYTE, (byte) 1);
                             bossBars.get(player.getUniqueId()).color(getColor((byte) 1));
                             player.sendMessage(Component.text("Compass color set to ", NamedTextColor.GRAY).append(Component.text("green", NamedTextColor.GREEN)));
-                            break;
-                        case "blue":
+                        }
+                        case "blue" -> {
                             player.getPersistentDataContainer().set(new NamespacedKey(plugin, "compass_color"), PersistentDataType.BYTE, (byte) 2);
                             bossBars.get(player.getUniqueId()).color(getColor((byte) 2));
                             player.sendMessage(Component.text("Compass color set to ", NamedTextColor.GRAY).append(Component.text("blue", NamedTextColor.BLUE)));
-                            break;
-                        case "white":
+                        }
+                        case "white" -> {
                             player.getPersistentDataContainer().set(new NamespacedKey(plugin, "compass_color"), PersistentDataType.BYTE, (byte) 4);
                             bossBars.get(player.getUniqueId()).color(getColor((byte) 4));
                             player.sendMessage(Component.text("Compass color set to ", NamedTextColor.GRAY).append(Component.text("white", NamedTextColor.WHITE)));
-                            break;
-                        case "pink":
+                        }
+                        case "pink" -> {
                             player.getPersistentDataContainer().set(new NamespacedKey(plugin, "compass_color"), PersistentDataType.BYTE, (byte) 5);
                             bossBars.get(player.getUniqueId()).color(getColor((byte) 5));
                             player.sendMessage(Component.text("Compass color set to ", NamedTextColor.GRAY).append(Component.text("pink", NamedTextColor.LIGHT_PURPLE)));
-                            break;
-                        case "purple":
+                        }
+                        case "purple" -> {
                             player.getPersistentDataContainer().set(new NamespacedKey(plugin, "compass_color"), PersistentDataType.BYTE, (byte) 6);
                             bossBars.get(player.getUniqueId()).color(getColor((byte) 6));
                             player.sendMessage(Component.text("Compass color set to ", NamedTextColor.GRAY).append(Component.text("purple", NamedTextColor.DARK_PURPLE)));
-                            break;
-                        default:
-                            player.sendMessage(Component.text(
-                                            "Invalid color.", NamedTextColor.RED)
-                                    .append(Component.text(" Valid colors: ", NamedTextColor.GRAY)
-                                            .append(Component.text("red ", NamedTextColor.RED)
-                                                    .append(Component.text("green ", NamedTextColor.GREEN)
-                                                            .append(Component.text("blue ", NamedTextColor.BLUE)
-                                                                    .append(Component.text("purple ", NamedTextColor.DARK_PURPLE)
-                                                                            .append(Component.text("white ", NamedTextColor.WHITE)
-                                                                                    .append(Component.text("pink ", NamedTextColor.LIGHT_PURPLE)))))))));
-                            break;
+                        }
+                        default -> player.sendMessage(Component.text(
+                                        "Invalid color.", NamedTextColor.RED)
+                                .append(Component.text(" Valid colors: ", NamedTextColor.GRAY)
+                                        .append(Component.text("red ", NamedTextColor.RED)
+                                                .append(Component.text("green ", NamedTextColor.GREEN)
+                                                        .append(Component.text("blue ", NamedTextColor.BLUE)
+                                                                .append(Component.text("purple ", NamedTextColor.DARK_PURPLE)
+                                                                        .append(Component.text("white ", NamedTextColor.WHITE)
+                                                                                .append(Component.text("pink ", NamedTextColor.LIGHT_PURPLE)))))))));
                     }
 
                 } else {

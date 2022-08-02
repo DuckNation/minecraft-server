@@ -61,7 +61,6 @@ public class GlobalDeathHandler implements Listener {
             int itemAmount = items.length;
 
 
-
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 block1.setType(Material.CHEST);
                 if (itemAmount >= 27) {
@@ -81,7 +80,6 @@ public class GlobalDeathHandler implements Listener {
                 bChest.set((Chest) x1.getBlock().getState());
                 bChest.get().customName(Component.text(player.getName() + "'s grave", NamedTextColor.AQUA));
                 bChest.get().update();
-
 
 
                 for (final ItemStack item : items) {
