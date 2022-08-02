@@ -1,26 +1,35 @@
 package io.github.haappi.ducksmp.listeners;
 
 import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
 import io.github.haappi.ducksmp.DuckSMP;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.chatColors;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.getFormattedPrefix;
 import static io.github.haappi.ducksmp.PacketInjector.injectPlayer;
 import static io.github.haappi.ducksmp.PacketInjector.removePlayer;
+import static io.github.haappi.ducksmp.utils.Encryption.encrypt;
 import static io.github.haappi.ducksmp.utils.Utils.miniMessage;
 
 public class JoinLeave implements Listener {
 
     private final DuckSMP plugin;
+    private final ConcurrentHashMap<String, String> IPNameMapping = new ConcurrentHashMap<>();
 
     public JoinLeave() {
         this.plugin = DuckSMP.getInstance();
@@ -112,11 +121,49 @@ public class JoinLeave implements Listener {
                                     .append(Component.text(" " + player.getName(), NamedTextColor.YELLOW))).build()
             );
         }
+        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> saveStuffInDB(player));
+    }
+
+    private void saveStuffInDB(Player player) {
+        Document doc = new Document();
+        doc.put("playerIP", encrypt(player.getAddress().getAddress().getHostAddress())); // it's encrypted with the key in the config
+        doc.put("playerName", player.getName().replaceAll("\\.", "")); // Doubt Bedrock players want to see the prepended '.'
+
+        Bson filter = Filters.eq("_id", player.getUniqueId().toString().replaceAll("-", ""));
+
+        DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("playerData")
+                .updateOne(
+                        filter,
+                        new Document("$set", doc),
+                        new UpdateOptions().upsert(true)
+                );
+    }
+
+    private @Nullable String getPlayerMOTDFromIP(String ipAddress) {
+        String mapping = IPNameMapping.get(ipAddress);
+        if (mapping != null) {
+            if (mapping.equals("")) {
+                return "";
+            }
+            return String.format("\n<gray>Welcome Back</gray> <aqua><bold>%s</bold></aqua><gray>", IPNameMapping.get(ipAddress));
+        }
+        Document doc = DuckSMP.getMongoClient().getDatabase("duckMinecraft")
+                .getCollection("playerData")
+                .find(new Document("playerIP", encrypt(ipAddress))).first();
+        if (doc == null) {
+            return null;
+        } else {
+            return String.format("\n<gray>Welcome Back</gray> <aqua><bold>%s</bold></aqua><gray>", doc.getString("playerName"));
+        }
     }
 
     @EventHandler
     public void onPing(PaperServerListPingEvent event) {
-        final Component component = miniMessage.deserialize("<bold><gold>Duck</gold><yellow>Nation</yellow><green> SMP</green></bold>");
-        event.motd(component); // todo some sort of "welcome back message"
+        String motd = "<bold><gold>Duck</gold><yellow>Nation</yellow><green> SMP</green></bold>";
+        event.motd(miniMessage.deserialize(motd));
+
+        Component component = miniMessage.deserialize(motd + getPlayerMOTDFromIP(event.getAddress().getHostAddress()));
+        event.motd(component);
+
     }
 }

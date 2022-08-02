@@ -24,9 +24,8 @@ import org.geysermc.floodgate.api.FloodgateApi;
 
 public class Extra implements Listener {
 
-    private boolean hasListenerLoaded = false;
-
     private final DuckSMP plugin;
+    private boolean hasListenerLoaded = false;
 
     public Extra() {
         this.plugin = DuckSMP.getInstance();

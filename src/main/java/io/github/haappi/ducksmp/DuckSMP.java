@@ -81,7 +81,6 @@ public final class DuckSMP extends JavaPlugin implements Listener {
     }
 
 
-
     @Override
     public void onDisable() {
         isDisabled = true;
@@ -100,6 +99,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 
             config.addDefault("mongo-uri", "your-mongo-uri");
             config.addDefault("secretKey", "this-is-not-secure-until-you-set-it");
+            config.addDefault("secretKeyIP", "this-is-not-secure-until-you-set-it");
             config.options().copyDefaults(true);
             this.saveConfig();
             this.getLogger().severe("A proper Mongo URI is required to run this plugin.");
@@ -115,7 +115,6 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         secretKey = config.getString("secretKey");
         return true;
     }
-
 
 
 }
