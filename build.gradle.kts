@@ -21,15 +21,16 @@ repositories {
     maven("https://repo.dmulloy2.net/repository/public/")
     maven("https://hub.spigotmc.org/nexus/content/repositories/public/")
     maven("https://repo.opencollab.dev/maven-snapshots/")
-    maven("https://nexus.scarsz.me/content/groups/public/")
+    maven("https://hub.jeff-media.com/nexus/repository/jeff-media-public/")
 }
 
 dependencies {
 //    implementation("junit:junit:4.13.2")
     paperDevBundle("$version-R0.1-SNAPSHOT")
     compileOnly("org.geysermc.floodgate:api:2.2.0-SNAPSHOT")
-    compileOnly("com.discordsrv:discordsrv:1.25.0")
     implementation("org.mongodb:mongodb-driver-sync:4.6.0")
+    implementation("com.googlecode.json-simple:json-simple:1.1.1")
+    implementation("com.jeff_media:CustomBlockData:2.1.0")
 //    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 //    testImplementation("com.github.seeseemelk:MockBukkit-v1.18:2.22.2")
 }
