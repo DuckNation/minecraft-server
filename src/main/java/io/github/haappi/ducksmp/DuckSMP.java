@@ -80,6 +80,8 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         registerNewCommand(new Compass("compass"));
 //        registerNewCommand(new Home("home"));
         registerNewCommand(new Flex("flex"));
+        registerNewCommand(new Link("link"));
+        registerNewCommand(new Unlink("unlink"));
 //        registerNewCommand(new TPClaim("tpclaim"));
     }
 
