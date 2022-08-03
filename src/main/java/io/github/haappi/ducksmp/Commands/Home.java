@@ -198,15 +198,13 @@ public class Home extends BukkitCommand implements Listener {
                 .input("Home Name", "Enter the name of your home here.");
 
         form.closedOrInvalidResultHandler(response -> {
-            player.sendMessage(Component.text("Form closed or invalid", NamedTextColor.RED));
-            response.isClosed();
-            response.isInvalid();
+            Home.callback("", pickingName.remove(player.getUniqueId()), player);
         });
 
         form.validResultHandler(response -> {
             String responseInput = response.asInput();
             if (responseInput == null) {
-                player.sendMessage(Component.text("Form closed or invalid", NamedTextColor.RED));
+                Home.callback("", pickingName.remove(player.getUniqueId()), player);
                 return;
             }
             Home.callback(responseInput, pickingName.remove(player.getUniqueId()), player);
