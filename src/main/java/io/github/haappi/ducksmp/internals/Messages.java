@@ -119,6 +119,16 @@ public class Messages implements Listener {
                 break;
             case "ignore":
                 return;
+            case "discord_update":
+                String playerUUID = message.getString("uuid");
+                String message2 = message.getString("message");
+                if (playerUUID != null) {
+                    Player p = Bukkit.getPlayer(playerUUID);
+                    if (p != null) {
+                        p.sendMessage(miniMessage.deserialize(message2));
+                    }
+                }
+                break;
             case "release":
                 downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
 
