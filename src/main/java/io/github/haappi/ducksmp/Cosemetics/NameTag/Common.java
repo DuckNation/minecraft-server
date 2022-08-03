@@ -88,7 +88,7 @@ public class Common implements Listener {
                 .replaceAll("§k", "")
                 .replaceAll("§K", "");
         if (prefix.length() > 16) {
-            _prefix = prefix.substring(0, 16);
+            _prefix = prefix.substring(0, 16) + "] ";
         }
         container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING, _prefix);
         container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_color"), PersistentDataType.INTEGER, color.getId());
