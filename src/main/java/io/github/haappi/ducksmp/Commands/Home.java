@@ -308,7 +308,7 @@ public class Home extends BukkitCommand implements Listener {
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
-        tasks.remove(event.getPlayer().getUniqueId());
+        Bukkit.getScheduler().cancelTask(tasks.remove(event.getPlayer().getUniqueId()));
     }
 
     private void teleport(Player player, Location location) {
