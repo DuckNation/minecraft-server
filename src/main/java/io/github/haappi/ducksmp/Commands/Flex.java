@@ -59,7 +59,7 @@ public class Flex extends BukkitCommand {
             name = Component.text("<" + playerName + "> ", NamedTextColor.YELLOW).append(Component.text("Hey guys! Look at my item-  ", NamedTextColor.WHITE));
         }
         if (itemStack.getItemMeta().hasDisplayName()) {
-            name = name.append(Component.newline()).append(Component.text("| ", NamedTextColor.GRAY)).append(itemStack.getItemMeta().displayName().color(itemStack.getRarity().getColor())).append(Component.text(" [" + formatStringAsTitleCase(itemStack.getType().name().toLowerCase().replace("_", " ")) + "] ", itemStack.getRarity().getColor()).append(Component.text("x " + itemStack.getAmount(), NamedTextColor.GRAY)));")));
+            name = name.append(Component.newline()).append(Component.text("| ", NamedTextColor.GRAY)).append(itemStack.getItemMeta().displayName().color(itemStack.getRarity().getColor())).append(Component.text(" [" + formatStringAsTitleCase(itemStack.getType().name().toLowerCase().replace("_", " ")) + "] ", itemStack.getRarity().getColor()).append(Component.text("x " + itemStack.getAmount(), NamedTextColor.GRAY)));
         } else {
             name = name.append(Component.newline()).append(Component.text("| ", NamedTextColor.GRAY)).append(Component.text("[" + formatStringAsTitleCase(itemStack.getType().name().toLowerCase().replace("_", " ")) + "] ", itemStack.getRarity().getColor()).append(Component.text("x " + itemStack.getAmount(), NamedTextColor.GRAY)));
         }
