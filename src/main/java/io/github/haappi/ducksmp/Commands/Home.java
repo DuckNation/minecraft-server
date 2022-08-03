@@ -97,8 +97,11 @@ public class Home extends BukkitCommand implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.getBlock().getType() == Material.MAGENTA_GLAZED_TERRACOTTA) {
-            event.getBlockPlaced().setType(Material.AIR);
-            setNameOfHome(event.getPlayer(), event.getBlock().getLocation());
+            PersistentDataContainer container = event.getItemInHand().getItemMeta().getPersistentDataContainer();
+            if (container.has(new NamespacedKey(plugin, "custom_home"), PersistentDataType.STRING)) {
+                event.getBlockPlaced().setType(Material.AIR);
+                setNameOfHome(event.getPlayer(), event.getBlock().getLocation());
+            }
         }
     }
 
