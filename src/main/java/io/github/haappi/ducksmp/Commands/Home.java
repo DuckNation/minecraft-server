@@ -263,6 +263,11 @@ public class Home extends BukkitCommand implements Listener {
             return true;
         }
 
+        if (location.getWorld().getUID() != player.getWorld().getUID()) {
+            player.sendMessage(noItalics("Home " + homeName + " is in a different world.", NamedTextColor.RED));
+            return true;
+        }
+
         loadChunks(location, 6);
         player.sendMessage(noItalics("Teleporting to home " + homeName + ".", NamedTextColor.GREEN).append(Component.text(" Don't move for 10 seconds.", NamedTextColor.RED)));
         tasks.put(player.getUniqueId(), Bukkit.getScheduler().runTaskLater(plugin, () -> teleport(player, location), 20L * 10).getTaskId()); // 10 seconds
