@@ -41,6 +41,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.colorMapping;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.setStuff;
+import static io.github.haappi.ducksmp.listeners.Combat.canUseCommand;
+import static io.github.haappi.ducksmp.listeners.Combat.timers;
 import static io.github.haappi.ducksmp.utils.Utils.*;
 
 public class Home extends BukkitCommand implements Listener {
@@ -280,6 +282,10 @@ public class Home extends BukkitCommand implements Listener {
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (!(sender instanceof Player player)) {
             sender.sendMessage(noItalics("You must be a player to use this command.", NamedTextColor.RED));
+            return true;
+        }
+        if (!canUseCommand(player)) {
+            sender.sendMessage(noItalics("You can't do this in combat!", NamedTextColor.RED));
             return true;
         }
         if (player.isInLava() || player.isInPowderedSnow() || player.isInWaterOrRainOrBubbleColumn()) {
