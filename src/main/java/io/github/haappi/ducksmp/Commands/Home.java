@@ -109,6 +109,11 @@ public class Home extends BukkitCommand implements Listener {
             Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> player.getWorld().dropItem(blockLocation, getHome(1)));
             return;
         }
+        if (homeName.contains(" ")) {
+            player.sendMessage(noItalics("Home name cannot contain spaces", NamedTextColor.RED));
+            Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> player.getWorld().dropItem(blockLocation, getHome(1)));
+            return;
+        }
 
         Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> {
             PersistentDataContainer container = player.getPersistentDataContainer();
