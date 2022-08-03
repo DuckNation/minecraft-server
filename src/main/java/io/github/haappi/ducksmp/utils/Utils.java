@@ -9,12 +9,14 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.network.protocol.game.ClientboundSetPlayerTeamPacket;
 import net.minecraft.util.Tuple;
 import org.bukkit.*;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -26,6 +28,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.packetsToSend;
+import static io.github.haappi.ducksmp.listeners.Combat.canUseCommand;
 
 public class Utils {
 
@@ -193,5 +196,25 @@ public class Utils {
                 ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getB());
             }
         }
+    }
+
+    public static boolean canRunAway(Player player) {
+        if (!canUseCommand(player)) {
+            player.sendMessage(noItalics("You can't do this in combat!", NamedTextColor.RED));
+            return false;
+        }
+        if (player.isInLava() || player.isInPowderedSnow() || player.isInWaterOrRainOrBubbleColumn()) {
+            player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
+            return false;
+        }
+        if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
+            player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
+            return false;
+        }
+        if (player.getNearbyEntities(10, 10, 10).stream().anyMatch(entity -> entity instanceof Monster)) {
+            player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
+            return false;
+        }
+        return true;
     }
 }

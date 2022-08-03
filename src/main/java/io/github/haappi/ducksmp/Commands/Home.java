@@ -9,7 +9,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundOpenSignEditorPacket;
 import org.bukkit.*;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -37,7 +36,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static io.github.haappi.ducksmp.listeners.Combat.canUseCommand;
 import static io.github.haappi.ducksmp.utils.Utils.*;
 
 public class Home extends BukkitCommand implements Listener {
@@ -285,22 +283,7 @@ public class Home extends BukkitCommand implements Listener {
             sender.sendMessage(noItalics("You must be a player to use this command.", NamedTextColor.RED));
             return true;
         }
-        if (!canUseCommand(player)) {
-            sender.sendMessage(noItalics("You can't do this in combat!", NamedTextColor.RED));
-            return true;
-        }
-        if (player.isInLava() || player.isInPowderedSnow() || player.isInWaterOrRainOrBubbleColumn()) {
-            player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
-            return true;
-        }
-        if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
-            player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
-            return true;
-        }
-        if (player.getNearbyEntities(10, 10, 10).stream().anyMatch(entity -> entity instanceof Monster)) {
-            player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
-            return true;
-        }
+        if (!canRunAway(player)) return true;
         if (args.length < 1) {
             sender.sendMessage(noItalics("Usage: /home <home_name | list>", NamedTextColor.RED));
             return true;
