@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -38,11 +39,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import static io.github.haappi.ducksmp.utils.Utils.*;
 
 public class Home extends BukkitCommand implements Listener {
+    private static final HashMap<UUID, Integer> tasks = new HashMap<>();
+    public static ConcurrentHashMap<UUID, Location> pickingName = new ConcurrentHashMap<>();
     private final DuckSMP plugin;
 
-    private static final HashMap<UUID, Integer> tasks = new HashMap<>();
-
-    public static ConcurrentHashMap<UUID, Location> pickingName = new ConcurrentHashMap<>();
     public Home(@NotNull String name) {
         super(name);
         this.plugin = DuckSMP.getInstance();
@@ -67,22 +67,6 @@ public class Home extends BukkitCommand implements Listener {
         Bukkit.addRecipe(homeRecipe(Material.YELLOW_BED));
     }
 
-    private ShapedRecipe homeRecipe(Material bedType) {
-        NamespacedKey key = new NamespacedKey(plugin, "home_recipe_" + bedType.name().toLowerCase());
-
-        ShapedRecipe recipe = new ShapedRecipe(key, getHome(2));
-
-        recipe.shape(
-                "ABA",
-                "BCB",
-                "ABA");
-        recipe.setIngredient('A', bedType);
-        recipe.setIngredient('B', Material.CRYING_OBSIDIAN);
-        recipe.setIngredient('C', Material.COMPASS);
-
-        return recipe;
-    }
-
     private static ItemStack getHome(int count) {
         ItemStack item = new ItemStack(Material.MAGENTA_GLAZED_TERRACOTTA, count);
         ItemMeta meta = item.getItemMeta();
@@ -92,32 +76,6 @@ public class Home extends BukkitCommand implements Listener {
         item.setItemMeta(meta);
 
         return item;
-    }
-
-    @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.getBlock().getType() == Material.MAGENTA_GLAZED_TERRACOTTA) {
-            PersistentDataContainer container = event.getItemInHand().getItemMeta().getPersistentDataContainer();
-            if (container.has(new NamespacedKey(plugin, "custom_home"), PersistentDataType.STRING)) {
-                event.getBlockPlaced().setType(Material.AIR);
-                setNameOfHome(event.getPlayer(), event.getBlock().getLocation());
-            }
-        }
-    }
-
-    private void setNameOfHome(Player player, Location blockLocation) {
-        // todo refactor this later to use the forms for Bedrock
-        pickingName.put(player.getUniqueId(), blockLocation);
-        BlockData oldBlock = player.getLocation().getBlock().getBlockData();
-        player.sendBlockChange(player.getLocation(), Material.ACACIA_SIGN.createBlockData());
-        ClientboundOpenSignEditorPacket packet = new ClientboundOpenSignEditorPacket(BlockPos.of(BlockPos.asLong(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ())));
-        ((CraftPlayer) player).getHandle().connection.send(packet);
-        player.sendBlockChange(player.getLocation(), oldBlock);
-    }
-
-    @EventHandler
-    public void onBlockMove(CustomBlockDataMoveEvent event) {
-        event.setCancelled(true);
     }
 
     public static void callback(String homeName, Location blockLocation, Player player) {
@@ -158,7 +116,11 @@ public class Home extends BukkitCommand implements Listener {
             if (homes == null) {
                 homes = new HashMap<>();
             }
-            System.out.println(homes);
+            if (homes.size() > 5) {
+                player.sendMessage(noItalics("You can only have 5 homes.", NamedTextColor.RED));
+                Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> player.getWorld().dropItem(blockLocation, getHome(1)));
+                return;
+            }
             if (homes.containsKey(homeName)) {
                 player.sendMessage(noItalics("Home ", NamedTextColor.RED).append(Component.text(homeName, NamedTextColor.GOLD)).append(Component.text(" already exists.", NamedTextColor.RED)));
                 Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> player.getWorld().dropItem(blockLocation, getHome(1)));
@@ -179,9 +141,66 @@ public class Home extends BukkitCommand implements Listener {
 
     }
 
+    private ShapedRecipe homeRecipe(Material bedType) {
+        NamespacedKey key = new NamespacedKey(plugin, "home_recipe_" + bedType.name().toLowerCase());
+
+        ShapedRecipe recipe = new ShapedRecipe(key, getHome(2));
+
+        recipe.shape(
+                "ABA",
+                "BCB",
+                "ABA");
+        recipe.setIngredient('A', bedType);
+        recipe.setIngredient('B', Material.CRYING_OBSIDIAN);
+        recipe.setIngredient('C', Material.COMPASS);
+
+        return recipe;
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        if (event.getBlock().getType() == Material.MAGENTA_GLAZED_TERRACOTTA) {
+            PersistentDataContainer container = event.getItemInHand().getItemMeta().getPersistentDataContainer();
+            if (container.has(new NamespacedKey(plugin, "custom_home"), PersistentDataType.STRING)) {
+                event.getBlockPlaced().setType(Material.AIR);
+                setNameOfHome(event.getPlayer(), event.getBlock().getLocation());
+            }
+        }
+    }
+
+    private void setNameOfHome(Player player, Location blockLocation) {
+        // todo refactor this later to use the forms for Bedrock
+        pickingName.put(player.getUniqueId(), blockLocation);
+        BlockData oldBlock = player.getLocation().getBlock().getBlockData();
+        player.sendBlockChange(player.getLocation(), Material.ACACIA_SIGN.createBlockData());
+        ClientboundOpenSignEditorPacket packet = new ClientboundOpenSignEditorPacket(BlockPos.of(BlockPos.asLong(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ())));
+        ((CraftPlayer) player).getHandle().connection.send(packet);
+        player.sendBlockChange(player.getLocation(), oldBlock);
+    }
+
+    @EventHandler
+    public void onBlockMove(CustomBlockDataMoveEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBlockDelete(BlockBreakEvent event) {
+        if (event.getBlock().getType() != Material.MAGENTA_GLAZED_TERRACOTTA) {
+            return;
+        }
+
+        PersistentDataContainer customBlockData = new CustomBlockData(event.getBlock(), plugin);
+        String data = customBlockData.getOrDefault(new NamespacedKey(plugin, "owner"), PersistentDataType.STRING, "no_one");
+        if (!data.equals("no_one")) {
+            event.getBlock().setType(Material.AIR);
+            event.setDropItems(false);
+            event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), getHome(1));
+        }
+    }
+
     @EventHandler
     public void onTap(PlayerInteractEvent event) {
-        if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_AIR) {
+        if (!(event.getAction() == Action.LEFT_CLICK_BLOCK)) {
             return;
         }
         if (event.getClickedBlock() == null) {
@@ -223,7 +242,7 @@ public class Home extends BukkitCommand implements Listener {
         if (homeName.equalsIgnoreCase("list")) {
             Component component = Component.text("====== Your Homes ====== ", NamedTextColor.GRAY);
 
-            for (Map.Entry<String, String> home: homes.entrySet()) {
+            for (Map.Entry<String, String> home : homes.entrySet()) {
                 component = component.append(Component.newline()).append(Component.text(home.getKey() + " ", NamedTextColor.YELLOW).append(formattedLocation(getLocation(home.getValue()))));
             }
 
