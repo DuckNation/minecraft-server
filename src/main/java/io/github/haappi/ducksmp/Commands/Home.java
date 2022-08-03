@@ -14,7 +14,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -294,6 +294,10 @@ public class Home extends BukkitCommand implements Listener {
             return true;
         }
         if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
+            player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
+            return true;
+        }
+        if (player.getNearbyEntities(10, 10, 10).stream().anyMatch(entity -> entity instanceof Monster)) {
             player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
             return true;
         }
