@@ -6,3 +6,6 @@ load: STARTUP
 authors: [ haappi, AlysDaDuck ]
 description: SMP core for smp yes
 website: discord.gg/ducknation
+depend:
+  - floodgate
+#  - WorldGuard
