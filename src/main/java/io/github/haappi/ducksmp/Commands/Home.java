@@ -249,10 +249,6 @@ public class Home extends BukkitCommand implements Listener {
             sender.sendMessage(noItalics("You must be a player to use this command.", NamedTextColor.RED));
             return true;
         }
-        if (Objects.equals(player.getUniqueId().toString(), "687f8ded-17cf-4e2f-a0eb-6a366f8cd2c5")) {
-            player.sendMessage(noItalics("You are not allowed to use this command.", NamedTextColor.RED));
-            return true;
-        }
         if (player.isInLava() || player.isInPowderedSnow() || player.isInWaterOrRainOrBubbleColumn()) {
             player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
             return true;
@@ -303,9 +299,9 @@ public class Home extends BukkitCommand implements Listener {
             return true;
         }
 
-        loadChunks(location, 6);
         player.sendMessage(noItalics("Teleporting to home " + homeName + ".", NamedTextColor.GREEN).append(Component.text(" Don't move for 10 seconds.", NamedTextColor.RED)));
         tasks.put(player.getUniqueId(), Bukkit.getScheduler().runTaskLater(plugin, () -> teleport(player, location), 20L * 10).getTaskId()); // 10 seconds
+        loadChunks(location, 6);
 
         return true;
     }
@@ -328,7 +324,7 @@ public class Home extends BukkitCommand implements Listener {
             return;
         }
         if (tasks.containsKey(event.getPlayer().getUniqueId())) {
-            tasks.remove(event.getPlayer().getUniqueId());
+            Bukkit.getScheduler().cancelTask(tasks.remove(event.getPlayer().getUniqueId()));
             event.getPlayer().sendMessage(Component.text("You moved! Teleport cancelled.", NamedTextColor.RED));
         }
     }
