@@ -18,6 +18,7 @@ import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -175,8 +176,11 @@ public class Home extends BukkitCommand implements Listener {
         return recipe;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockPlace(BlockPlaceEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
         if (event.getBlock().getType() == Material.MAGENTA_GLAZED_TERRACOTTA) {
             PersistentDataContainer container = event.getItemInHand().getItemMeta().getPersistentDataContainer();
             if (container.has(new NamespacedKey(plugin, "custom_home"), PersistentDataType.STRING)) {
@@ -222,13 +226,16 @@ public class Home extends BukkitCommand implements Listener {
         player.sendBlockChange(player.getLocation(), oldBlock);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockMove(CustomBlockDataMoveEvent event) {
         event.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockDelete(BlockBreakEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
         if (event.getBlock().getType() != Material.MAGENTA_GLAZED_TERRACOTTA) {
             return;
         }
@@ -242,7 +249,7 @@ public class Home extends BukkitCommand implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onTap(PlayerInteractEvent event) {
         if (!(event.getAction() == Action.LEFT_CLICK_BLOCK)) {
             return;
