@@ -40,6 +40,7 @@ import static io.github.haappi.ducksmp.utils.Utils.*;
 
 public class Home extends BukkitCommand implements Listener {
     private static final HashMap<UUID, Integer> tasks = new HashMap<>();
+    private static final HashMap<UUID, Long> cooldowns = new HashMap<>();
     public static ConcurrentHashMap<UUID, Location> pickingName = new ConcurrentHashMap<>();
     private final DuckSMP plugin;
 
@@ -236,8 +237,13 @@ public class Home extends BukkitCommand implements Listener {
             sender.sendMessage(noItalics("Usage: /home <home_name | list>", NamedTextColor.RED));
             return true;
         }
+        if (cooldowns.getOrDefault(player.getUniqueId(), 0L) > System.currentTimeMillis()) {
+            sender.sendMessage(noItalics("You must wait " + (cooldowns.getOrDefault(player.getUniqueId(), 0L) - System.currentTimeMillis()) / 1000 + " seconds before using this command again.", NamedTextColor.RED));
+            return true;
+        }
+        cooldowns.put(player.getUniqueId(), System.currentTimeMillis() + 20000);
 
-        String homeName = args[0];
+        String homeName = Arrays.toString(args);
         PersistentDataContainer container = player.getPersistentDataContainer();
         Map<String, String> homes = container.get(new NamespacedKey(plugin, "custom_homes"), DataType.asMap(DataType.STRING, DataType.STRING));
         if (homes == null) {
