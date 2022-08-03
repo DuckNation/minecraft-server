@@ -6,10 +6,13 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.minecraft.network.protocol.game.ClientboundSetPlayerTeamPacket;
+import net.minecraft.util.Tuple;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -20,10 +23,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
+import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.packetsToSend;
 
 public class Utils {
 
@@ -160,5 +162,14 @@ public class Utils {
         as.setPersistent(false);
 
         return as;
+    }
+
+    public static void sendTeamPackets() {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            for (Map.Entry<UUID, Tuple<ClientboundSetPlayerTeamPacket, ClientboundSetPlayerTeamPacket>> entry : packetsToSend.entrySet()) {
+                ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getA());
+                ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getB());
+            }
+        }
     }
 }

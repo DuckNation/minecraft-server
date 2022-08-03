@@ -1,6 +1,7 @@
 package io.github.haappi.ducksmp.Cosemetics.NameTag;
 
 import io.github.haappi.ducksmp.DuckSMP;
+import io.github.haappi.ducksmp.utils.Utils;
 import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -12,7 +13,6 @@ import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_19_R1.scoreboard.CraftScoreboard;
 import org.bukkit.craftbukkit.v1_19_R1.scoreboard.CraftScoreboardManager;
 import org.bukkit.entity.Player;
@@ -95,12 +95,7 @@ public class Common implements Listener {
 
         chatColors.put(player.getUniqueId(), NamedTextColor.nearestTo(TextColor.color(color.getColor())));
 
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            for (Map.Entry<UUID, Tuple<ClientboundSetPlayerTeamPacket, ClientboundSetPlayerTeamPacket>> entry : packetsToSend.entrySet()) {
-                ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getA());
-                ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getB());
-            }
-        }
+        Utils.sendTeamPackets();
 
     }
 
@@ -142,12 +137,7 @@ public class Common implements Listener {
                 teamPacket(event.getPlayer(), String.valueOf(System.currentTimeMillis()), prefix, color);
             }
 
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                for (Map.Entry<UUID, Tuple<ClientboundSetPlayerTeamPacket, ClientboundSetPlayerTeamPacket>> entry : packetsToSend.entrySet()) {
-                    ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getA());
-                    ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getB());
-                }
-            }
+            Utils.sendTeamPackets();
         }, 20 * 3L);
     }
 

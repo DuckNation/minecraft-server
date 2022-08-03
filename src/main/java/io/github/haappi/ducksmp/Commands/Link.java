@@ -3,6 +3,7 @@ package io.github.haappi.ducksmp.Commands;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import io.github.haappi.ducksmp.DuckSMP;
+import io.github.haappi.ducksmp.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bson.Document;
@@ -56,6 +57,8 @@ public class Link extends BukkitCommand {
             player.getPersistentDataContainer().remove(new NamespacedKey(instance, "custom_color"));
             chatColors.remove(player.getUniqueId());
             packetsToSend.remove(player.getUniqueId());
+
+            Utils.sendTeamPackets();
         });
     }
 
