@@ -123,7 +123,7 @@ public class Messages implements Listener {
                 String playerUUID = message.getString("uuid");
                 String message2 = message.getString("message");
                 if (playerUUID != null) {
-                    Player p = Bukkit.getPlayer(playerUUID);
+                    Player p = Bukkit.getPlayer(UUID.fromString(playerUUID));
                     if (p != null) {
                         p.sendMessage(miniMessage.deserialize(message2));
                     }

@@ -10,16 +10,21 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.CachedServerIcon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static io.github.haappi.ducksmp.Commands.Link.setPDCLink;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.chatColors;
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.getFormattedPrefix;
 import static io.github.haappi.ducksmp.PacketInjector.injectPlayer;
@@ -120,6 +125,9 @@ public class JoinLeave implements Listener {
         }
         if (player.getUniqueId().toString().replaceAll("-", "").equalsIgnoreCase("1ca6d48fc4f4438781f79158a209d60d")) {
             event.joinMessage(null);
+        }
+        if (player.getPersistentDataContainer().get(new NamespacedKey(plugin, "ip"), PersistentDataType.STRING) == null) {
+            setPDCLink(player, (byte) 0);
         }
         Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> saveStuffInDB(player));
     }
