@@ -80,62 +80,36 @@ public class JoinLeave implements Listener {
                     )
                     .build());
         } else if (event.getPlayer().isOp()) {
-            event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
-                    .append(
-                            Component.text("[", NamedTextColor.GREEN),
-                            sourceDisplayName.color(NamedTextColor.GREEN),
-                            Component.text("] ", NamedTextColor.GREEN),
-                            Component.text()
-                                    .color(NamedTextColor.WHITE)
-                                    .append(message)
-                                    .build()
-                    )
-                    .build());
+            event.renderer((source, sourceDisplayName, message, viewer) -> getRendering(sourceDisplayName, message, NamedTextColor.GREEN, NamedTextColor.WHITE));
         } else {
             if (event.getPlayer().getPersistentDataContainer().has(new NamespacedKey(plugin, "linked"))) {
                 byte key = event.getPlayer().getPersistentDataContainer().get(new NamespacedKey(plugin, "linked"), PersistentDataType.BYTE);
                 if (key == 1) {
-                    event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
-                            .append(
-                                    Component.text("[", NamedTextColor.YELLOW),
-                                    sourceDisplayName.color(NamedTextColor.YELLOW),
-                                    Component.text("] ", NamedTextColor.YELLOW),
-                                    Component.text()
-                                            .color(NamedTextColor.WHITE)
-                                            .append(message)
-                                            .build()
-                            )
-                            .build());
+                    event.renderer((source, sourceDisplayName, message, viewer) -> getRendering(sourceDisplayName, message, NamedTextColor.YELLOW, NamedTextColor.WHITE));
                 } else {
-                    event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
-                            .append(
-                                    Component.text("[", NamedTextColor.GRAY),
-                                    sourceDisplayName.color(NamedTextColor.GRAY),
-                                    Component.text("] ", NamedTextColor.GRAY),
-                                    Component.text()
-                                            .color(NamedTextColor.GRAY)
-                                            .append(message)
-                                            .build()
-                            )
-                            .build());
+                    event.renderer((source, sourceDisplayName, message, viewer) -> getRendering(sourceDisplayName, message, NamedTextColor.GRAY, NamedTextColor.GRAY));
                 }
             } else {
-                event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
-                        .append(
-                                Component.text("[", NamedTextColor.GRAY),
-                                sourceDisplayName.color(NamedTextColor.GRAY),
-                                Component.text("] ", NamedTextColor.GRAY),
-                                Component.text()
-                                        .color(NamedTextColor.GRAY)
-                                        .append(message)
-                                        .build()
-                        )
-                        .build());
+                event.renderer((source, sourceDisplayName, message, viewer) -> getRendering(sourceDisplayName, message, NamedTextColor.GRAY, NamedTextColor.GRAY));
             }
 
         }
     }
 
+
+    private Component getRendering(Component sourceDisplayName, Component message, NamedTextColor nameColor, NamedTextColor messageColor) {
+        return Component.text()
+                .append(
+                        Component.text("[", nameColor),
+                        sourceDisplayName.color(nameColor),
+                        Component.text("] ", nameColor),
+                        Component.text()
+                                .color(messageColor)
+                                .append(message)
+                                .build()
+                )
+                .build();
+    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
