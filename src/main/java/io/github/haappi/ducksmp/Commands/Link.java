@@ -46,7 +46,12 @@ public class Link extends BukkitCommand {
     }
 
     public static void setPDCLink(Player player, byte b) {
-        Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> player.getPersistentDataContainer().set(new NamespacedKey(DuckSMP.getInstance(), "linked"), PersistentDataType.BYTE, b));
+        final DuckSMP instance = DuckSMP.getInstance();
+        Bukkit.getScheduler().runTask(instance, () -> {
+            player.getPersistentDataContainer().set(new NamespacedKey(DuckSMP.getInstance(), "linked"), PersistentDataType.BYTE, b);
+            player.getPersistentDataContainer().remove(new NamespacedKey(instance, "custom_prefix"));
+            player.getPersistentDataContainer().remove(new NamespacedKey(instance, "custom_color"));
+        });
     }
 
     @Override
