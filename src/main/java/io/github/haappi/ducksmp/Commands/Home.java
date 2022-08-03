@@ -9,6 +9,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundOpenSignEditorPacket;
 import org.bukkit.*;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -30,10 +31,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.haappi.ducksmp.utils.Utils.*;
@@ -236,6 +234,18 @@ public class Home extends BukkitCommand implements Listener {
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (!(sender instanceof Player player)) {
             sender.sendMessage(noItalics("You must be a player to use this command.", NamedTextColor.RED));
+            return true;
+        }
+        if (Objects.equals(player.getUniqueId().toString(), "687f8ded-17cf-4e2f-a0eb-6a366f8cd2c5")) {
+            player.sendMessage(noItalics("You are not allowed to use this command.", NamedTextColor.RED));
+            return true;
+        }
+        if (player.isInLava() || player.isInPowderedSnow() || player.isInWaterOrRainOrBubbleColumn()) {
+            player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
+            return true;
+        }
+        if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
+            player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
             return true;
         }
         if (args.length < 1) {
