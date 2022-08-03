@@ -281,6 +281,7 @@ public class Home extends BukkitCommand implements Listener {
     }
 
     private void teleport(Player player, Location location) {
+        // todo add cool particles
         player.teleportAsync(location.add(0, 1, 0), PlayerTeleportEvent.TeleportCause.PLUGIN);
         tasks.remove(player.getUniqueId());
         player.sendMessage(noItalics("Teleported to home.", NamedTextColor.GREEN));
