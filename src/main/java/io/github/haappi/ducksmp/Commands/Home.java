@@ -230,6 +230,19 @@ public class Home extends BukkitCommand implements Listener {
         event.getPlayer().sendMessage(message);
     }
 
+    public static Component getHomesOfPlayer(Player player) {
+        PersistentDataContainer container = player.getPersistentDataContainer();
+        Map<String, String> homes = container.get(new NamespacedKey(DuckSMP.getInstance(), "custom_homes"), DataType.asMap(DataType.STRING, DataType.STRING));
+        if (homes == null) {
+            homes = new HashMap<>();
+        }
+        Component component = Component.text("", NamedTextColor.GRAY);
+        for (Map.Entry<String, String> home : homes.entrySet()) {
+            component = component.append(Component.newline()).append(Component.text(home.getKey() + " ", NamedTextColor.YELLOW).append(formattedLocation(getLocation(home.getValue()))));
+        }
+        return component;
+    }
+
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (!(sender instanceof Player player)) {
@@ -268,11 +281,7 @@ public class Home extends BukkitCommand implements Listener {
         if (homeName.equalsIgnoreCase("list")) {
             Component component = Component.text("====== Your Homes ====== ", NamedTextColor.GRAY);
 
-            for (Map.Entry<String, String> home : homes.entrySet()) {
-                component = component.append(Component.newline()).append(Component.text(home.getKey() + " ", NamedTextColor.YELLOW).append(formattedLocation(getLocation(home.getValue()))));
-            }
-
-            player.sendMessage(component);
+            player.sendMessage(component.append(getHomesOfPlayer(player)));
             return true;
         }
 
