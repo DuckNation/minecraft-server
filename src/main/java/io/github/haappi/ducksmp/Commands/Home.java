@@ -197,9 +197,7 @@ public class Home extends BukkitCommand implements Listener {
                 .title("Home Name")
                 .input("Home Name", "Enter the name of your home here.");
 
-        form.closedOrInvalidResultHandler(response -> {
-            Home.callback("", pickingName.remove(player.getUniqueId()), player);
-        });
+        form.closedOrInvalidResultHandler(response -> Home.callback("", pickingName.remove(player.getUniqueId()), player));
 
         form.validResultHandler(response -> {
             String responseInput = response.asInput();
@@ -343,7 +341,9 @@ public class Home extends BukkitCommand implements Listener {
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
-        Bukkit.getScheduler().cancelTask(tasks.remove(event.getPlayer().getUniqueId()));
+        if (tasks.containsKey(event.getPlayer().getUniqueId())) {
+            Bukkit.getScheduler().cancelTask(tasks.remove(event.getPlayer().getUniqueId()));
+        }
     }
 
     private void teleport(Player player, Location location) {
