@@ -72,24 +72,25 @@ public class Common implements Listener {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static void setStuff(Player player, String prefix, ChatFormatting color) {
+    public static void setStuff(Player player, final String prefix, ChatFormatting color) {
         PersistentDataContainer container = player.getPersistentDataContainer();
-        container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING,
-                prefix.replaceAll("§0", "")
-                        .replaceAll("§F", "")
-                        .replaceAll("§f", "")
-                        .replaceAll("§l", "")
-                        .replaceAll("§m", "")
-                        .replaceAll("§n", "")
-                        .replaceAll("§o", "")
-                        .replaceAll("§L", "")
-                        .replaceAll("§M", "")
-                        .replaceAll("§N", "")
-                        .replaceAll("§O", "")
-                        .replaceAll("§k", "")
-                        .replaceAll("§K", "")
-                        .substring(0, 15)
-        );
+        String _prefix = prefix.replaceAll("§0", "")
+                .replaceAll("§F", "")
+                .replaceAll("§f", "")
+                .replaceAll("§l", "")
+                .replaceAll("§m", "")
+                .replaceAll("§n", "")
+                .replaceAll("§o", "")
+                .replaceAll("§L", "")
+                .replaceAll("§M", "")
+                .replaceAll("§N", "")
+                .replaceAll("§O", "")
+                .replaceAll("§k", "")
+                .replaceAll("§K", "");
+        if (prefix.length() > 16) {
+            _prefix = prefix.substring(0, 16);
+        }
+        container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_prefix"), PersistentDataType.STRING, _prefix);
         container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_color"), PersistentDataType.INTEGER, color.getId());
 
         chatColors.put(player.getUniqueId(), NamedTextColor.nearestTo(TextColor.color(color.getColor())));
