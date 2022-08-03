@@ -203,7 +203,7 @@ public class Utils {
             player.sendMessage(noItalics("You can't do this in combat!", NamedTextColor.RED));
             return false;
         }
-        if (player.isInLava() || player.isInPowderedSnow() || player.isInWaterOrRainOrBubbleColumn()) {
+        if (player.isInLava() || player.isInPowderedSnow() || player.isInWaterOrBubbleColumn()) {
             player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
             return false;
         }
