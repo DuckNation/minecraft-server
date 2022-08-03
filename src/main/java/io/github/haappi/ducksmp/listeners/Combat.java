@@ -36,6 +36,9 @@ public class Combat implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent event) {
+        if (event.getReason() != PlayerQuitEvent.QuitReason.DISCONNECTED) {
+            return; // Prevent /kick from killing people
+        }
         if (timers.containsKey(event.getPlayer().getUniqueId())) {
             event.getPlayer().setHealth(0);
             timers.remove(event.getPlayer().getUniqueId());
@@ -66,6 +69,11 @@ public class Combat implements Listener {
         }
     }
 
+    /**
+     * Checks to see if a Player is in combat. If they aren't, false is returned. If they are, true is returned.
+     * @param player The Player to check.
+     * @return boolean Whether they can run a command or not.
+     */
     public static boolean canUseCommand(Player player) {
         return !timers.containsKey(player.getUniqueId());
     }
