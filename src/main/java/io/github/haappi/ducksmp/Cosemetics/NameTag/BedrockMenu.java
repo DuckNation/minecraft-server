@@ -58,14 +58,4 @@ public class BedrockMenu {
         });
         FloodgateApi.getInstance().getPlayer(player.getUniqueId()).sendForm(form.build());
     }
-
-    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        if (sender instanceof Player player) {
-            if (!FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
-                return true;
-            }
-            form(player);
-        }
-        return true;
-    }
 }
