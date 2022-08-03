@@ -268,6 +268,9 @@ public class Messages implements Listener {
             public void run() {
                 if (countdown.get() == 0) {
                     Bukkit.getServer().savePlayers();
+                    Bukkit.getOnlinePlayers().forEach(player -> {
+                        player.kick(Component.text("you got boobed off"));
+                    });
                     Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart");
                     cancel();
                 }
