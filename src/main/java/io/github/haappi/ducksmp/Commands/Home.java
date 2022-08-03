@@ -3,11 +3,9 @@ package io.github.haappi.ducksmp.Commands;
 import com.jeff_media.customblockdata.CustomBlockData;
 import com.jeff_media.customblockdata.events.CustomBlockDataMoveEvent;
 import com.jeff_media.morepersistentdatatypes.DataType;
-import io.github.haappi.ducksmp.Cosemetics.NameTag.Common;
 import io.github.haappi.ducksmp.DuckSMP;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundOpenSignEditorPacket;
 import org.bukkit.*;
@@ -34,16 +32,12 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.geysermc.cumulus.form.CustomForm;
 import org.geysermc.floodgate.api.FloodgateApi;
-import org.geysermc.floodgate.api.player.FloodgatePlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.colorMapping;
-import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.setStuff;
 import static io.github.haappi.ducksmp.listeners.Combat.canUseCommand;
-import static io.github.haappi.ducksmp.listeners.Combat.timers;
 import static io.github.haappi.ducksmp.utils.Utils.*;
 
 public class Home extends BukkitCommand implements Listener {
@@ -191,10 +185,11 @@ public class Home extends BukkitCommand implements Listener {
     }
 
     private void setNameOfHome(Player player, Location blockLocation) {
+        pickingName.put(player.getUniqueId(), blockLocation);
         if (FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
             bedrockForm(player);
         } else {
-            javaForm(player, blockLocation);
+            javaForm(player);
         }
     }
 
@@ -217,8 +212,7 @@ public class Home extends BukkitCommand implements Listener {
         FloodgateApi.getInstance().getPlayer(player.getUniqueId()).sendForm(form.build());
     }
 
-    private void javaForm(Player player, Location blockLocation) {
-        pickingName.put(player.getUniqueId(), blockLocation);
+    private void javaForm(Player player) {
         BlockData oldBlock = player.getLocation().getBlock().getBlockData();
         player.sendBlockChange(player.getLocation(), Material.ACACIA_SIGN.createBlockData());
         ClientboundOpenSignEditorPacket packet = new ClientboundOpenSignEditorPacket(BlockPos.of(BlockPos.asLong(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ())));
