@@ -112,6 +112,28 @@ public class Utils {
         }
     }
 
+    public static String formatLocation(Location location) {
+        return String.format("%s,%s,%s,%s", location.getWorld().getUID(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
+    }
+
+    public static Location getLocation(String location) {
+        String[] split = location.split(",");
+        return new Location(Bukkit.getWorld(UUID.fromString(split[0])), Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]));
+    }
+
+    public static Component formattedLocation(Location location) {
+        return Component.text(location.getWorld().getName(), NamedTextColor.GOLD).append(Component.text(" ", NamedTextColor.GOLD))
+                .append(Component.text(location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ(), NamedTextColor.GOLD));
+    }
+
+    public static void loadChunks(Location starting, int radius) {
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                starting.getWorld().getChunkAtAsync(starting.getBlockX() + (x * 16), starting.getBlockZ() + (z * 16));
+            }
+        }
+    }
+
     public static @NotNull ItemStack getHeart(int count, Player owner) {
         ItemStack thing = new ItemStack(Material.NETHER_STAR, count);
         ItemMeta meta = thing.getItemMeta();
