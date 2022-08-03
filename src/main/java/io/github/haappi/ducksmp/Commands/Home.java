@@ -115,6 +115,11 @@ public class Home extends BukkitCommand implements Listener {
             Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> player.getWorld().dropItem(blockLocation, getHome(1)));
             return;
         }
+        if (homeName.contains(",")) {
+            player.sendMessage(noItalics("Home name cannot contain commas", NamedTextColor.RED));
+            Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> player.getWorld().dropItem(blockLocation, getHome(1)));
+            return;
+        }
 
         Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> {
             PersistentDataContainer container = player.getPersistentDataContainer();
@@ -243,7 +248,7 @@ public class Home extends BukkitCommand implements Listener {
         }
         cooldowns.put(player.getUniqueId(), System.currentTimeMillis() + 20000);
 
-        String homeName = Arrays.toString(args);
+        String homeName = Arrays.toString(args).replace("[", "").replace("]", "").replace(",", "");
         PersistentDataContainer container = player.getPersistentDataContainer();
         Map<String, String> homes = container.get(new NamespacedKey(plugin, "custom_homes"), DataType.asMap(DataType.STRING, DataType.STRING));
         if (homes == null) {
