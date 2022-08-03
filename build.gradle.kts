@@ -63,14 +63,13 @@ tasks {
 
 
 
-//    shadowJar {
-//        // helper function to relocate a package into our package
-//        fun reloc(pkg: String) = relocate(pkg, "io.papermc.paperweight.testplugin.dependency.$pkg")
-//
-//        // relocate cloud and it's transitive dependencies
-//        reloc("cloud.commandframework")
-//        reloc("io.leangen.geantyref")
-//    }
+    shadowJar {
+        // helper function to relocate a package into our package
+        fun reloc(pkg: String) = relocate(pkg, "io.github.haappi.duckSMP.dependency.$pkg")
+
+        reloc("com.jeff_media.morepersistentdatatypes")
+        reloc("com.jeff_media.customblockdata")
+    }
 
     /*
     reobfJar {
