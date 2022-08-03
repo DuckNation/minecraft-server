@@ -16,6 +16,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
+import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.chatColors;
+import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.packetsToSend;
+
 public class Link extends BukkitCommand {
 
     private final DuckSMP plugin;
@@ -51,6 +54,8 @@ public class Link extends BukkitCommand {
             player.getPersistentDataContainer().set(new NamespacedKey(DuckSMP.getInstance(), "linked"), PersistentDataType.BYTE, b);
             player.getPersistentDataContainer().remove(new NamespacedKey(instance, "custom_prefix"));
             player.getPersistentDataContainer().remove(new NamespacedKey(instance, "custom_color"));
+            chatColors.remove(player.getUniqueId());
+            packetsToSend.remove(player.getUniqueId());
         });
     }
 
