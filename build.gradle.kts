@@ -31,6 +31,7 @@ dependencies {
     implementation("org.mongodb:mongodb-driver-sync:4.6.0")
     implementation("com.googlecode.json-simple:json-simple:1.1.1")
     implementation("com.jeff_media:CustomBlockData:2.1.0")
+    implementation("com.jeff_media:MorePersistentDataTypes:2.3.1")
 //    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 //    testImplementation("com.github.seeseemelk:MockBukkit-v1.18:2.22.2")
 }
