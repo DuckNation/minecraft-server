@@ -125,8 +125,8 @@ public class Messages implements Listener {
                 String message2 = message.getString("message");
                 if (playerUUID != null) {
                     Player p = Bukkit.getPlayer(UUID.fromString(playerUUID));
-                    setPDCLink(p, (byte) 1);
                     if (p != null) {
+                        setPDCLink(p, (byte) 1);
                         p.sendMessage(miniMessage.deserialize(message2));
                     }
                 }
