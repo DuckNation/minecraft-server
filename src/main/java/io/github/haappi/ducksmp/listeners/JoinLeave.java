@@ -91,20 +91,51 @@ public class JoinLeave implements Listener {
                                     .build()
                     )
                     .build());
-        } else { // todo make non-linked players gray
-            event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
-                    .append(
-                            Component.text("[", NamedTextColor.YELLOW),
-                            sourceDisplayName.color(NamedTextColor.YELLOW),
-                            Component.text("] ", NamedTextColor.YELLOW),
-                            Component.text()
-                                    .color(NamedTextColor.WHITE)
-                                    .append(message)
-                                    .build()
-                    )
-                    .build());
+        } else {
+            if (event.getPlayer().getPersistentDataContainer().has(new NamespacedKey(plugin, "linked"))) {
+                byte key = event.getPlayer().getPersistentDataContainer().get(new NamespacedKey(plugin, "linked"), PersistentDataType.BYTE);
+                if (key == 1) {
+                    event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
+                            .append(
+                                    Component.text("[", NamedTextColor.YELLOW),
+                                    sourceDisplayName.color(NamedTextColor.YELLOW),
+                                    Component.text("] ", NamedTextColor.YELLOW),
+                                    Component.text()
+                                            .color(NamedTextColor.WHITE)
+                                            .append(message)
+                                            .build()
+                            )
+                            .build());
+                } else {
+                    event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
+                            .append(
+                                    Component.text("[", NamedTextColor.GRAY),
+                                    sourceDisplayName.color(NamedTextColor.GRAY),
+                                    Component.text("] ", NamedTextColor.GRAY),
+                                    Component.text()
+                                            .color(NamedTextColor.GRAY)
+                                            .append(message)
+                                            .build()
+                            )
+                            .build());
+                }
+            } else {
+                event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
+                        .append(
+                                Component.text("[", NamedTextColor.GRAY),
+                                sourceDisplayName.color(NamedTextColor.GRAY),
+                                Component.text("] ", NamedTextColor.GRAY),
+                                Component.text()
+                                        .color(NamedTextColor.GRAY)
+                                        .append(message)
+                                        .build()
+                        )
+                        .build());
+            }
+
         }
     }
+
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -126,7 +157,7 @@ public class JoinLeave implements Listener {
         if (player.getUniqueId().toString().replaceAll("-", "").equalsIgnoreCase("1ca6d48fc4f4438781f79158a209d60d")) {
             event.joinMessage(null);
         }
-        if (player.getPersistentDataContainer().get(new NamespacedKey(plugin, "ip"), PersistentDataType.STRING) == null) {
+        if (!player.getPersistentDataContainer().has(new NamespacedKey(plugin, "linked"), PersistentDataType.BYTE)) {
             setPDCLink(player, (byte) 0);
         }
         Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> saveStuffInDB(player));
