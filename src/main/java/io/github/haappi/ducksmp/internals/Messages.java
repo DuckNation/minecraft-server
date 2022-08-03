@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
+import static io.github.haappi.ducksmp.Commands.Link.setPDCLink;
 import static io.github.haappi.ducksmp.DuckSMP.getMongoClient;
 import static io.github.haappi.ducksmp.DuckSMP.isDisabled;
 import static io.github.haappi.ducksmp.utils.Utils.getCountdown;
@@ -124,6 +125,7 @@ public class Messages implements Listener {
                 String message2 = message.getString("message");
                 if (playerUUID != null) {
                     Player p = Bukkit.getPlayer(UUID.fromString(playerUUID));
+                    setPDCLink(p, (byte) 1);
                     if (p != null) {
                         p.sendMessage(miniMessage.deserialize(message2));
                     }
