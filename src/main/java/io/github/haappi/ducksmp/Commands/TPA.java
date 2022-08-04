@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -94,7 +95,7 @@ public class TPA extends BukkitCommand implements Listener {
                     player.sendMessage(Component.text("You cannot teleport to players in different worlds", NamedTextColor.RED));
                     return true;
                 }
-                if (target.getAddress() == player.getAddress()) {
+                if (Objects.equals(target.getAddress(), player.getAddress())) {
                     player.sendMessage(Component.text("You can't TPA to that person! Same network connection?", NamedTextColor.RED));
                     return true;
                 }
