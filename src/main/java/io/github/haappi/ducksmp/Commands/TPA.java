@@ -64,13 +64,9 @@ public class TPA extends BukkitCommand implements Listener {
 
 
         switch (args[0].toLowerCase()) {
-            case "accept":
-                handleAccept(player, args);
-                break;
-            case "deny":
-                handleDeny(player, args);
-                break;
-            default:
+            case "accept" -> handleAccept(player, args);
+            case "deny" -> handleDeny(player, args);
+            default -> {
                 if (cooldowns.getOrDefault(player.getUniqueId(), 0L) > System.currentTimeMillis()) {
                     sender.sendMessage(Component.text("You must wait " + (cooldowns.get(player.getUniqueId()) - System.currentTimeMillis()) / 1000 + " seconds before using this command again.", NamedTextColor.RED));
                     return true;
@@ -85,10 +81,10 @@ public class TPA extends BukkitCommand implements Listener {
                     player.sendMessage(Component.text("Player not found", NamedTextColor.RED));
                     return true;
                 }
-//                if (target.getUniqueId() == player.getUniqueId()) {
-//                    player.sendMessage(Component.text("You cannot teleport to yourself", NamedTextColor.RED));
-//                    return true;
-//                }
+                if (target.getUniqueId() == player.getUniqueId()) {
+                    player.sendMessage(Component.text("You cannot teleport to yourself", NamedTextColor.RED));
+                    return true;
+                }
                 if (target.getWorld().getUID() != player.getWorld().getUID()) {
                     player.sendMessage(Component.text("You cannot teleport to players in different worlds", NamedTextColor.RED));
                     return true;
@@ -98,6 +94,7 @@ public class TPA extends BukkitCommand implements Listener {
                 target.sendMessage(Component.text(player.getName(), NamedTextColor.GOLD).append(Component.text(" wants to teleport to you", NamedTextColor.GREEN)));
                 target.sendMessage(Component.text("Type ", NamedTextColor.GRAY).append(getAccept(player.getName())).append(Component.text(" to accept or ", NamedTextColor.GRAY).append(getDeny(player.getName())).append(Component.text(" to deny", NamedTextColor.GRAY))));
                 player.sendMessage(Component.text("Request sent to ", NamedTextColor.GREEN).append(Component.text(target.getName(), NamedTextColor.GOLD)));
+            }
         }
         return true;
     }
