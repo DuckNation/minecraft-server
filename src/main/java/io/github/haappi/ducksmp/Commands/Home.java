@@ -259,7 +259,7 @@ public class Home extends BukkitCommand implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onTap(PlayerInteractEvent event) {
-        if (!(event.getAction() == Action.LEFT_CLICK_BLOCK)) {
+        if ((event.getAction() == Action.LEFT_CLICK_AIR) || (event.getAction() == Action.RIGHT_CLICK_AIR) || (event.getAction() == Action.PHYSICAL)) {
             return;
         }
         if (event.getClickedBlock() == null) {
