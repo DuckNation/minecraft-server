@@ -95,10 +95,6 @@ public class TPA extends BukkitCommand implements Listener {
                     player.sendMessage(Component.text("You cannot teleport to players in different worlds", NamedTextColor.RED));
                     return true;
                 }
-                if (Objects.equals(target.getAddress(), player.getAddress())) {
-                    player.sendMessage(Component.text("You can't TPA to that person! Same network connection?", NamedTextColor.RED));
-                    return true;
-                }
                 tpaRequests.put(player.getUniqueId(), target.getUniqueId());
                 requestExpiry.put(player.getUniqueId(), System.currentTimeMillis() + (1000 * 15)); // 15 seconds
                 target.sendMessage(Component.text(player.getName(), NamedTextColor.GOLD).append(Component.text(" wants to teleport to you", NamedTextColor.GREEN)));
