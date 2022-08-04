@@ -46,7 +46,7 @@ public class Netherite implements Listener {
     }
 
 
-//    @EventHandler
+    //    @EventHandler
     public void craftItem(SmithItemEvent event) {
         SmithingInventory inv = event.getInventory();
         for (ItemStack stack : inv.getStorageContents()) {
@@ -68,7 +68,7 @@ public class Netherite implements Listener {
     }
 
 
-//    @EventHandler
+    //    @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player player) {
             if (event.getEntity() instanceof Player) {

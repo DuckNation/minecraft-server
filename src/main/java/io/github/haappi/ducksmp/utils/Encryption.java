@@ -31,7 +31,7 @@ public class Encryption {
             e.printStackTrace();
         }
         return null;
-    }    private static SecretKeySpec secretKey = setKey();
+    }
 
     public static SecretKeySpec setKey() {
         MessageDigest sha;
@@ -60,7 +60,7 @@ public class Encryption {
             e.printStackTrace();
             return null;
         }
-    }
+    }    private static SecretKeySpec secretKey = setKey();
 
 
 

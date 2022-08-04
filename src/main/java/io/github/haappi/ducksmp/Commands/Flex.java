@@ -17,12 +17,12 @@ import java.util.UUID;
 
 public class Flex extends BukkitCommand {
 
+    private final HashMap<UUID, Long> cooldown = new HashMap<>();
+
     public Flex(String name) {
         super(name);
         setAliases(List.of("brag"));
     }
-
-    private final HashMap<UUID, Long> cooldown = new HashMap<>();
 
     private String toNumeral(int x) {
         return switch (x) {

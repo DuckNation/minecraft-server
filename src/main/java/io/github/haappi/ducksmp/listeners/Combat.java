@@ -16,9 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Combat implements Listener {
 
-    private final DuckSMP plugin;
-
     public static final ConcurrentHashMap<UUID, Long> timers = new ConcurrentHashMap<>();
+    private final DuckSMP plugin;
 
     public Combat() {
         this.plugin = DuckSMP.getInstance();
@@ -32,6 +31,16 @@ public class Combat implements Listener {
                 }
             }
         }), 0, 20);
+    }
+
+    /**
+     * Checks to see if a Player is in combat. If they aren't, false is returned. If they are, true is returned.
+     *
+     * @param player The Player to check.
+     * @return boolean Whether they can run a command or not.
+     */
+    public static boolean canUseCommand(Player player) {
+        return !timers.containsKey(player.getUniqueId());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -67,15 +76,6 @@ public class Combat implements Listener {
                 timers.put(victim.getUniqueId(), System.currentTimeMillis() + 15000); // 15 seconds
             }
         }
-    }
-
-    /**
-     * Checks to see if a Player is in combat. If they aren't, false is returned. If they are, true is returned.
-     * @param player The Player to check.
-     * @return boolean Whether they can run a command or not.
-     */
-    public static boolean canUseCommand(Player player) {
-        return !timers.containsKey(player.getUniqueId());
     }
 
 }

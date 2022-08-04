@@ -13,7 +13,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -33,7 +33,10 @@ import org.geysermc.cumulus.form.CustomForm;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.haappi.ducksmp.utils.Utils.*;
@@ -152,6 +155,19 @@ public class Home extends BukkitCommand implements Listener {
 
     }
 
+    public static Component getHomesOfPlayer(Player player) {
+        PersistentDataContainer container = player.getPersistentDataContainer();
+        Map<String, String> homes = container.get(new NamespacedKey(DuckSMP.getInstance(), "custom_homes"), DataType.asMap(DataType.STRING, DataType.STRING));
+        if (homes == null) {
+            homes = new HashMap<>();
+        }
+        Component component = Component.text("", NamedTextColor.GRAY);
+        for (Map.Entry<String, String> home : homes.entrySet()) {
+            component = component.append(Component.newline()).append(Component.text(home.getKey() + " ", NamedTextColor.YELLOW).append(formattedLocation(getLocation(home.getValue()))));
+        }
+        return component;
+    }
+
     private ShapedRecipe homeRecipe(Material bedType) {
         NamespacedKey key = new NamespacedKey(plugin, "home_recipe_" + bedType.name().toLowerCase());
 
@@ -262,19 +278,6 @@ public class Home extends BukkitCommand implements Listener {
             message = Component.text("This home belongs to ", NamedTextColor.GRAY).append(Component.text("" + player.getName(), NamedTextColor.GOLD)).append(Component.text(".", NamedTextColor.GRAY)).append(Component.text(" Its name is ", NamedTextColor.GRAY)).append(Component.text("" + data.split(";")[1], NamedTextColor.GOLD)).append(Component.text(".", NamedTextColor.GRAY));
         }
         event.getPlayer().sendMessage(message);
-    }
-
-    public static Component getHomesOfPlayer(Player player) {
-        PersistentDataContainer container = player.getPersistentDataContainer();
-        Map<String, String> homes = container.get(new NamespacedKey(DuckSMP.getInstance(), "custom_homes"), DataType.asMap(DataType.STRING, DataType.STRING));
-        if (homes == null) {
-            homes = new HashMap<>();
-        }
-        Component component = Component.text("", NamedTextColor.GRAY);
-        for (Map.Entry<String, String> home : homes.entrySet()) {
-            component = component.append(Component.newline()).append(Component.text(home.getKey() + " ", NamedTextColor.YELLOW).append(formattedLocation(getLocation(home.getValue()))));
-        }
-        return component;
     }
 
     @Override
