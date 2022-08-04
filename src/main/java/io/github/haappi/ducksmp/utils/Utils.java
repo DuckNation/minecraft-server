@@ -204,15 +204,15 @@ public class Utils {
             return false;
         }
         if (player.isInLava() || player.isInPowderedSnow() || player.isInWaterOrBubbleColumn()) {
-            player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
+            player.sendMessage(noItalics("Hmmmm, it looks like you're in a ...liquid of some sort... I can't allow you to use this command right now.", NamedTextColor.RED));
             return false;
         }
         if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
-            player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
+            player.sendMessage(noItalics("Hmmmm, it looks like you're in the air. I can't allow you to use this command right now.", NamedTextColor.RED));
             return false;
         }
         if (player.getNearbyEntities(10, 10, 10).stream().anyMatch(entity -> entity instanceof Monster)) {
-            player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
+            player.sendMessage(noItalics("Hmmmm, it looks like there are mobs near you. I can't allow you to use this command right now.", NamedTextColor.RED));
             return false;
         }
         if (player.isInsideVehicle()) {
