@@ -8,7 +8,8 @@ FLAGS="-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+Un
 
 while true; do
     echo "Starting server..."
-    ${JAVA} -Xmx${RAM} -Xms${RAM} "${FLAGS}" -jar ${JAR}  --nogui
+     # shellcheck disable=SC2086
+    ${JAVA} -Xmx${RAM} -Xms${RAM} ${FLAGS} -jar ${JAR}  --nogui
     for i in 3 2 1; do
         printf 'Server restarting in %s... (press CTRL-C to exit)\n' "${i}"
         sleep 1
