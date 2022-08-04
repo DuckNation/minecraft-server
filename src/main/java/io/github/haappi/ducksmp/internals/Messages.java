@@ -132,7 +132,7 @@ public class Messages implements Listener {
                 }
                 break;
             case "release":
-                downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
+//                downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
 
                 Bukkit.getLogger().info("Downloaded new release of DuckSMP! Hash: " + message.getString("sha"));
                 Bukkit.getOnlinePlayers().forEach(player -> {
@@ -145,7 +145,7 @@ public class Messages implements Listener {
                 restartID = Bukkit.getScheduler().runTaskLater(plugin, () -> doCountdown("Server will restart in ", this.plugin, 10), 20 * 60 * 60L); // Restart after 1 hour
                 break;
             case "critical_release":
-                downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
+//                downloadPluginUpdate(message.get("file", org.bson.types.Binary.class), message.getString("sha"));
 
                 Bukkit.getLogger().severe("Downloaded critical release of DuckSMP! Hash: " + message.getString("sha"));
                 Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Component.text("An urgent version of Duck SMP has been released. Server will restart in 10 seconds.", NamedTextColor.RED).append(Component.text(" Hash " + Messages.commitHash, NamedTextColor.YELLOW))));
