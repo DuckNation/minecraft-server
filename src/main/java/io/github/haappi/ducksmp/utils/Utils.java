@@ -215,6 +215,10 @@ public class Utils {
             player.sendMessage(noItalics("Hmmmm, it looks like you're in a rather sticky situation. I can't allow you to use this command right now.", NamedTextColor.RED));
             return false;
         }
+        if (player.isInsideVehicle()) {
+            player.sendMessage(noItalics("Hmmmm, it looks like you're in a vehicle.. I can't allow you to use this command right now.", NamedTextColor.RED));
+            return false;
+        }
         return true;
     }
 }

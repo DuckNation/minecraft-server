@@ -12,22 +12,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.haappi.ducksmp.utils.Utils.canRunAway;
 
 public class TPA extends BukkitCommand implements Listener {
 
-    private final DuckSMP plugin;
-
     public static final ConcurrentHashMap<UUID, UUID> tpaRequests = new ConcurrentHashMap<>();
     public static final ConcurrentHashMap<UUID, Long> requestExpiry = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<UUID, Long> cooldowns = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<UUID, Integer> tasks = new ConcurrentHashMap<>();
+    private final DuckSMP plugin;
+
     public TPA(String name) {
         super(name);
         this.plugin = DuckSMP.getInstance();
@@ -72,7 +75,7 @@ public class TPA extends BukkitCommand implements Listener {
                     sender.sendMessage(Component.text("You must wait " + (cooldowns.get(player.getUniqueId()) - System.currentTimeMillis()) / 1000 + " seconds before using this command again.", NamedTextColor.RED));
                     return true;
                 }
-//                cooldowns.put(player.getUniqueId(), System.currentTimeMillis() + (1000 * 30)); // 30 seconds cooldown
+                cooldowns.put(player.getUniqueId(), System.currentTimeMillis() + (1000 * 30)); // 30 seconds cooldown
                 if (tpaRequests.containsKey(player.getUniqueId())) {
                     player.sendMessage(Component.text("You already have an outgoing request", NamedTextColor.RED));
                     return true;
@@ -82,10 +85,14 @@ public class TPA extends BukkitCommand implements Listener {
                     player.sendMessage(Component.text("Player not found", NamedTextColor.RED));
                     return true;
                 }
-//                if (target.getUniqueId() == player.getUniqueId()) { // todo oi implement me
+//                if (target.getUniqueId() == player.getUniqueId()) {
 //                    player.sendMessage(Component.text("You cannot teleport to yourself", NamedTextColor.RED));
 //                    return true;
 //                }
+                if (target.getWorld().getUID() != player.getWorld().getUID()) {
+                    player.sendMessage(Component.text("You cannot teleport to players in different worlds", NamedTextColor.RED));
+                    return true;
+                }
                 tpaRequests.put(player.getUniqueId(), target.getUniqueId());
                 requestExpiry.put(player.getUniqueId(), System.currentTimeMillis() + (1000 * 15)); // 15 seconds
                 target.sendMessage(Component.text(player.getName(), NamedTextColor.GOLD).append(Component.text(" wants to teleport to you", NamedTextColor.GREEN)));
@@ -93,6 +100,25 @@ public class TPA extends BukkitCommand implements Listener {
                 player.sendMessage(Component.text("Request sent to ", NamedTextColor.GREEN).append(Component.text(target.getName(), NamedTextColor.GOLD)));
         }
         return true;
+    }
+
+    @EventHandler
+    public void onTeleport(PlayerTeleportEvent event) {
+        if (tasks.containsKey(event.getPlayer().getUniqueId())) {
+            int taskID = tasks.get(event.getPlayer().getUniqueId());
+            Bukkit.getScheduler().cancelTask(tasks.get(event.getPlayer().getUniqueId()));
+            UUID uuid = getKeyFromValue(tasks, taskID);
+            if (uuid != null) {
+                tasks.remove(uuid);
+                Player target = Bukkit.getPlayer(uuid);
+                if (target != null) {
+                    target.sendMessage(Component.text("Teleport request expired. ", NamedTextColor.GRAY).append(Component.text(event.getPlayer().getName(), NamedTextColor.GOLD)).append(Component.text(" teleported!", NamedTextColor.GRAY)));
+                }
+            }
+            event.getPlayer().sendMessage(Component.text("Teleport request expired. You teleported!", NamedTextColor.GRAY));
+            requestExpiry.remove(event.getPlayer().getUniqueId());
+            tpaRequests.remove(event.getPlayer().getUniqueId());
+        }
     }
 
     @EventHandler
@@ -137,13 +163,7 @@ public class TPA extends BukkitCommand implements Listener {
                 player.sendMessage(Component.text("Player not found", NamedTextColor.RED));
                 return;
             }
-            int taskID = Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
-                performTpa(target, player); // So i managed to make it backwards lol
-            }, 20 * 10L).getTaskId(); // 10 seconds
-            tasks.put(player.getUniqueId(), taskID);
-            tasks.put(target.getUniqueId(), taskID);
-            target.sendMessage(Component.text("Teleporting to " + player.getName() + ". ", NamedTextColor.GREEN).append(Component.text("Don't move for 10 seconds", NamedTextColor.RED)));
-            player.sendMessage(Component.text(target.getName() + " is teleporting to you. ", NamedTextColor.GREEN).append(Component.text("Don't move for 10 seconds", NamedTextColor.RED)));
+            setupTPA(player, target);
         } else {
             // The target requested a specific person
             Player target = Bukkit.getPlayer(args[1]);
@@ -152,17 +172,23 @@ public class TPA extends BukkitCommand implements Listener {
                 return;
             }
             if (tpaRequests.get(target.getUniqueId()) != player.getUniqueId()) {
-                player.sendMessage(Component.text( target.getName() + " hasn't sent a teleport request to you!", NamedTextColor.RED));
+                player.sendMessage(Component.text(target.getName() + " hasn't sent a teleport request to you!", NamedTextColor.RED));
                 return;
             }
-            int taskID = Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
-                performTpa(target, player); // So i managed to make it backwards lol
-            }, 20 * 10L).getTaskId(); // 10 seconds
-            tasks.put(player.getUniqueId(), taskID);
-            tasks.put(target.getUniqueId(), taskID);
-            target.sendMessage(Component.text("Teleporting to " + player.getName() + ". ", NamedTextColor.GREEN).append(Component.text("Don't move for 10 seconds", NamedTextColor.RED)));
-            player.sendMessage(Component.text(target.getName() + " is teleporting to you. ", NamedTextColor.GREEN).append(Component.text("Don't move for 10 seconds", NamedTextColor.RED)));
+            setupTPA(player, target);
         }
+    }
+
+    private void setupTPA(Player player, Player target) {
+        int taskID = Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+            performTpa(target, player); // So i managed to make it backwards lol
+        }, 20 * 10L).getTaskId(); // 10 seconds
+        tasks.put(player.getUniqueId(), taskID);
+        tasks.put(target.getUniqueId(), taskID);
+        tpaRequests.remove(target.getUniqueId());  // Person who made the request originally
+        requestExpiry.remove(target.getUniqueId()); // Person who made the request originally
+        target.sendMessage(Component.text("Teleporting to " + player.getName() + ". ", NamedTextColor.GREEN).append(Component.text("Don't move for 10 seconds", NamedTextColor.RED)));
+        player.sendMessage(Component.text(target.getName() + " is teleporting to you. ", NamedTextColor.GREEN).append(Component.text("Don't move for 10 seconds", NamedTextColor.RED)));
     }
 
     private void handleDeny(Player player, String[] args) {
@@ -197,7 +223,7 @@ public class TPA extends BukkitCommand implements Listener {
                 return;
             }
             if (tpaRequests.get(target.getUniqueId()) != player.getUniqueId()) {
-                player.sendMessage(Component.text( target.getName() + " hasn't sent a teleport request to you!", NamedTextColor.RED));
+                player.sendMessage(Component.text(target.getName() + " hasn't sent a teleport request to you!", NamedTextColor.RED));
                 return;
             }
             tpaRequests.remove(target.getUniqueId());
@@ -207,8 +233,8 @@ public class TPA extends BukkitCommand implements Listener {
         }
     }
 
-    private @Nullable UUID getKeyFromValue(Map<?, ?> hm, Object value){
-        for(Object o : hm.keySet()){
+    private @Nullable UUID getKeyFromValue(Map<?, ?> hm, Object value) {
+        for (Object o : hm.keySet()) {
             if (hm.get(o).equals(value)) {
                 return (UUID) o;
             }

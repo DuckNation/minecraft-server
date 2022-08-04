@@ -357,4 +357,12 @@ public class Home extends BukkitCommand implements Listener {
             event.getPlayer().sendMessage(Component.text("You moved! Teleport cancelled.", NamedTextColor.RED));
         }
     }
+
+    @EventHandler
+    public void onTeleport(PlayerTeleportEvent event) {
+        if (tasks.containsKey(event.getPlayer().getUniqueId())) {
+            Bukkit.getScheduler().cancelTask(tasks.remove(event.getPlayer().getUniqueId()));
+            event.getPlayer().sendMessage(Component.text("You teleported! Teleport cancelled.", NamedTextColor.RED));
+        }
+    }
 }
