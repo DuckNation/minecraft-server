@@ -131,6 +131,7 @@ public class JoinLeave implements Listener {
         if (!player.getPersistentDataContainer().has(new NamespacedKey(plugin, "linked"), PersistentDataType.BYTE)) {
             setPDCLink(player, (byte) 0);
         }
+        player.setNoDamageTicks(20 * 3); // no damage for 3 seconds
         Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> saveStuffInDB(player));
     }
 
