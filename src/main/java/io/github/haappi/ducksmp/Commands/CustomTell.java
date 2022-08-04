@@ -29,23 +29,21 @@ public class CustomTell extends BukkitCommand implements Listener {
         Bukkit.getScheduler().runTaskTimer(DuckSMP.getInstance(), recentlyMessaged::clear, 300L, 20 * 60 * 10); // 10 minutes
     }
 
-    public static void doTell(@NonNull Player sender, @Nullable Player receiver, @NonNull String message) {
+    public static void doTell(@NonNull CommandSender sender, @Nullable Player receiver, @NonNull String message) {
         if (receiver == null || enabledPlayers.contains(receiver.getUniqueId())) {
             sender.sendMessage(Component.text("Player not found.", NamedTextColor.RED));
             return;
         }
         receiver.sendMessage(Component.text("From ", NamedTextColor.GRAY).append(Component.text(sender.getName(), NamedTextColor.YELLOW)).append(Component.text(": " + message, NamedTextColor.GRAY)));
-        recentlyMessaged.put(receiver.getUniqueId(), sender.getUniqueId());
-        recentlyMessaged.put(sender.getUniqueId(), receiver.getUniqueId());
+        if (sender instanceof Player player) {
+            recentlyMessaged.put(receiver.getUniqueId(), player.getUniqueId());
+            recentlyMessaged.put(player.getUniqueId(), receiver.getUniqueId());
+        }
         sender.sendMessage(Component.text("To ", NamedTextColor.GRAY).append(Component.text(receiver.getName(), NamedTextColor.YELLOW)).append(Component.text(": " + message, NamedTextColor.GRAY)));
     }
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("You need to be a player to use this command.", NamedTextColor.RED));
-            return true;
-        }
         if (args.length < 2) {
             sender.sendMessage(Component.text("Usage: /tell <player> <message>", NamedTextColor.RED));
             return true;
@@ -56,7 +54,7 @@ public class CustomTell extends BukkitCommand implements Listener {
             sb.append(args[i]);
             sb.append(" ");
         }
-        doTell(player, p, sb.toString());
+        doTell(sender, p, sb.toString());
         return true;
     }
 }
