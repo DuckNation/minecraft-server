@@ -127,8 +127,8 @@ public class Home extends BukkitCommand implements Listener {
             if (homes == null) {
                 homes = new HashMap<>();
             }
-            if (homes.size() > 5) {
-                player.sendMessage(noItalics("You can only have 5 homes.", NamedTextColor.RED));
+            if (homes.size() > 7) {
+                player.sendMessage(noItalics("You can only have 7 homes.", NamedTextColor.RED));
                 Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> player.getWorld().dropItem(blockLocation, getHome(1)));
                 return;
             }
