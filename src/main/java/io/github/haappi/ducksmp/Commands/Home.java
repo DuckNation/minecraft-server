@@ -330,7 +330,12 @@ public class Home extends BukkitCommand implements Listener {
         }
 
         player.sendMessage(noItalics("Teleporting to home " + homeName + ".", NamedTextColor.GREEN).append(Component.text(" Don't move for 10 seconds.", NamedTextColor.RED)));
-        tasks.put(player.getUniqueId(), Bukkit.getScheduler().runTaskLater(plugin, () -> teleport(player, location), 20L * 10).getTaskId()); // 10 seconds
+        Bukkit.getScheduler().runTaskLater(plugin, () ->
+                tasks.put(player.getUniqueId(),
+                        Bukkit.getScheduler().runTaskLater(plugin, () ->
+                                teleport(player, location), 20L * 8
+                        ).getTaskId()
+                ), 20L * 2); // Grant 2 second leeway for the player to move.
         loadChunks(location, 6);
 
         return true;

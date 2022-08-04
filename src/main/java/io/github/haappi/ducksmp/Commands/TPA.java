@@ -177,11 +177,14 @@ public class TPA extends BukkitCommand implements Listener {
     }
 
     private void setupTPA(Player player, Player target) {
-        int taskID = Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
-            performTpa(target, player); // So i managed to make it backwards lol
-        }, 20 * 10L).getTaskId(); // 10 seconds
-        tasks.put(player.getUniqueId(), taskID);
-        tasks.put(target.getUniqueId(), taskID);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            int taskID = Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+                performTpa(target, player); // Managed to code it backwards & I'm too lazy to fix it.
+            }, 20 * 8L).getTaskId();
+            tasks.put(player.getUniqueId(), taskID);
+            tasks.put(target.getUniqueId(), taskID);
+        }, 20L * 2L); // 2 seconds leeway to move around.
+
         tpaRequests.remove(target.getUniqueId());  // Person who made the request originally
         requestExpiry.remove(target.getUniqueId()); // Person who made the request originally
         target.sendMessage(Component.text("Teleporting to " + player.getName() + ". ", NamedTextColor.GREEN).append(Component.text("Don't move for 10 seconds", NamedTextColor.RED)));
