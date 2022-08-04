@@ -68,6 +68,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new JoinLeave();
 
         new Combat();
+        new AntiEnd();
 
         registerNewCommand(new Signup("signup"));
         registerNewCommand(new StopRestart("stoprestart"));
