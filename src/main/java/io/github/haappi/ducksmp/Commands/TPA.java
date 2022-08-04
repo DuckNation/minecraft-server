@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,10 +42,14 @@ public class TPA extends BukkitCommand implements Listener {
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> requestExpiry.forEach((uuid, time) -> {
             if (System.currentTimeMillis() > time) {
                 requestExpiry.remove(uuid);
-                tpaRequests.remove(uuid);
+                UUID target = tpaRequests.remove(uuid);
                 Player p = Bukkit.getPlayer(uuid);
                 if (p != null) {
-                    p.sendMessage(Component.text("Teleport request expired.", NamedTextColor.GRAY));
+                    p.sendMessage(Component.text("Outgoing teleport request expired.", NamedTextColor.GRAY));
+                }
+                Player t = Bukkit.getPlayer(target);
+                if (t != null) {
+                    t.sendMessage(Component.text("Incoming teleport request expired.", NamedTextColor.GRAY));
                 }
             }
         }), 0, 20);
@@ -124,8 +129,8 @@ public class TPA extends BukkitCommand implements Listener {
             return;
         }
         if (tasks.containsKey(event.getPlayer().getUniqueId())) {
-            int taskID = tasks.get(event.getPlayer().getUniqueId());
-            Bukkit.getScheduler().cancelTask(tasks.get(event.getPlayer().getUniqueId()));
+            int taskID = tasks.remove(event.getPlayer().getUniqueId());
+            Bukkit.getScheduler().cancelTask(taskID);
             UUID uuid = getKeyFromValue(tasks, taskID);
             if (uuid != null) {
                 tasks.remove(uuid);
@@ -135,6 +140,24 @@ public class TPA extends BukkitCommand implements Listener {
                 }
             }
             event.getPlayer().sendMessage(Component.text("Teleport request expired. You moved!", NamedTextColor.GRAY));
+            requestExpiry.remove(event.getPlayer().getUniqueId());
+            tpaRequests.remove(event.getPlayer().getUniqueId());
+        }
+    }
+
+    @EventHandler
+    public void onLeave(PlayerQuitEvent event) {
+        if (tasks.containsKey(event.getPlayer().getUniqueId())) {
+            int taskID = tasks.remove(event.getPlayer().getUniqueId());
+            Bukkit.getScheduler().cancelTask(taskID);
+            UUID uuid = getKeyFromValue(tasks, taskID);
+            if (uuid != null) {
+                tasks.remove(uuid);
+                Player target = Bukkit.getPlayer(uuid);
+                if (target != null) {
+                    target.sendMessage(Component.text("Teleport request expired. ", NamedTextColor.GRAY).append(Component.text(event.getPlayer().getName(), NamedTextColor.GOLD)).append(Component.text(" logged off!", NamedTextColor.GRAY)));
+                }
+            }
             requestExpiry.remove(event.getPlayer().getUniqueId());
             tpaRequests.remove(event.getPlayer().getUniqueId());
         }
