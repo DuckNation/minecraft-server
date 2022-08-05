@@ -28,7 +28,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.packetsToSend;
-import static io.github.haappi.ducksmp.listeners.Combat.canUseCommand;
+import static io.github.haappi.ducksmp.Listeners.Combat.canUseCommand;
 
 public class Utils {
 

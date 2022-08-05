@@ -10,7 +10,7 @@ import io.github.haappi.ducksmp.Cosemetics.NameTag.SetPrefix;
 import io.github.haappi.ducksmp.LifeSteal.ArmorStandPlayer;
 import io.github.haappi.ducksmp.LifeSteal.Signup;
 import io.github.haappi.ducksmp.internals.Messages;
-import io.github.haappi.ducksmp.listeners.*;
+import io.github.haappi.ducksmp.Listeners.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;

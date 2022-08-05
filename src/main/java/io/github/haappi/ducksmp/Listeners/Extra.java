@@ -1,4 +1,4 @@
-package io.github.haappi.ducksmp.listeners;
+package io.github.haappi.ducksmp.Listeners;
 
 import io.github.haappi.ducksmp.DuckSMP;
 import io.github.haappi.ducksmp.LifeSteal.Listeners;

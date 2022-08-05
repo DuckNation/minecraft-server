@@ -1,6 +1,6 @@
 package io.github.haappi.ducksmp.Commands;
 
-import io.github.haappi.ducksmp.listeners.TotemHandler;
+import io.github.haappi.ducksmp.Listeners.TotemHandler;
 import io.github.haappi.ducksmp.utils.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static io.github.haappi.ducksmp.listeners.TotemHandler.mobs;
+import static io.github.haappi.ducksmp.Listeners.TotemHandler.mobs;
 
 public class ChangeMob extends BukkitCommand {
 

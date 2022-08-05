@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static io.github.haappi.ducksmp.listeners.Combat.timers;
+import static io.github.haappi.ducksmp.Listeners.Combat.timers;
 
 public class ClearCombat extends BukkitCommand {
     public ClearCombat(String name) {

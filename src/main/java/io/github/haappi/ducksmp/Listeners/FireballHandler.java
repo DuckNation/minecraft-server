@@ -1,4 +1,4 @@
-package io.github.haappi.ducksmp.listeners;
+package io.github.haappi.ducksmp.Listeners;
 
 import io.github.haappi.ducksmp.DuckSMP;
 import net.kyori.adventure.text.format.NamedTextColor;

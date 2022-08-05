@@ -1,4 +1,4 @@
-package io.github.haappi.ducksmp.listeners;
+package io.github.haappi.ducksmp.Listeners;
 
 import io.github.haappi.ducksmp.DuckSMP;
 import net.kyori.adventure.text.Component;
@@ -60,6 +60,9 @@ public class GlobalDeathHandler implements Listener {
 
             int itemAmount = items.length;
 
+            if (itemAmount == 0) {
+                return;
+            }
 
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 block1.setType(Material.CHEST);

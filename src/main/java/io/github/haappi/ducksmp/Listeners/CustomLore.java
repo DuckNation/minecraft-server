@@ -1,4 +1,4 @@
-package io.github.haappi.ducksmp.listeners;
+package io.github.haappi.ducksmp.Listeners;
 
 import com.destroystokyo.paper.event.inventory.PrepareResultEvent;
 import io.github.haappi.ducksmp.DuckSMP;
