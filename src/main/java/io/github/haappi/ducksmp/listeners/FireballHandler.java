@@ -25,9 +25,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 import static io.github.haappi.ducksmp.utils.Utils.chain;
 import static io.github.haappi.ducksmp.utils.Utils.noItalics;
@@ -35,6 +33,17 @@ import static io.github.haappi.ducksmp.utils.Utils.noItalics;
 public class FireballHandler implements Listener {
     private final DuckSMP plugin;
     private final HashMap<UUID, Long> cooldowns = new HashMap<>();
+    private final List<Material> blockedBlocks = Arrays.asList(
+            Material.END_PORTAL,
+            Material.END_PORTAL_FRAME,
+            Material.END_GATEWAY,
+            Material.END_ROD,
+            Material.NETHER_PORTAL,
+            Material.TRAPPED_CHEST,
+            Material.CHEST,
+            Material.LAVA,
+            Material.WATER
+    );
 
     public FireballHandler() {
         this.plugin = DuckSMP.getInstance();
@@ -143,7 +152,7 @@ public class FireballHandler implements Listener {
         if (block == null) {
             return;
         }
-        if (block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST) {
+        if (blockedBlocks.contains(block.getType())) {
             return; // no bounce on chests :( I like to save the NBT data
         }
         if (block.getType() == Material.TNT) {
