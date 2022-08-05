@@ -60,9 +60,9 @@ public class Encryption {
             e.printStackTrace();
             return null;
         }
-    }    private static SecretKeySpec secretKey = setKey();
+    }
 
-
+    private static SecretKeySpec secretKey = setKey();
 
 
 }
