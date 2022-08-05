@@ -113,7 +113,7 @@ public class FireballHandler implements Listener {
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 40, 0));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 1));
 
-        cooldowns.put(player.getUniqueId(), System.currentTimeMillis() + 400);
+        cooldowns.put(player.getUniqueId(), System.currentTimeMillis() + 500);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -122,7 +122,7 @@ public class FireballHandler implements Listener {
             return;
         }
         if (event.getDamager() instanceof Fireball) {
-            event.setDamage(event.getDamage() + (int) (Math.random() * 4));
+            event.setDamage(event.getDamage() + (int) (Math.random() * 2));
         }
     }
 
@@ -134,7 +134,7 @@ public class FireballHandler implements Listener {
         event.blockList().forEach(this::bounceBlock);
     }
 
-    private void bounceBlock(Block block) {
+    private void bounceBlock(Block block) { // todo make this actually go in the direction of the explosion
         Entity fb;
         if (block == null) {
             return;
