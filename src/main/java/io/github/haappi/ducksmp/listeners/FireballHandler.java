@@ -72,9 +72,6 @@ public class FireballHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInteract(PlayerInteractEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         if (cooldowns.containsKey(event.getPlayer().getUniqueId())) {
             if (cooldowns.get(event.getPlayer().getUniqueId()) > System.currentTimeMillis()) {
                 return;
@@ -112,9 +109,9 @@ public class FireballHandler implements Listener {
         }.runTaskTimer(plugin, 0L, 2L);
 
         fireball.setVelocity(player.getEyeLocation().getDirection().multiply(1.5));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 1));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 40, 1));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 2));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 0));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 40, 0));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 1));
 
         cooldowns.put(player.getUniqueId(), System.currentTimeMillis() + 400);
     }
