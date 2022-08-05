@@ -25,7 +25,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
@@ -100,24 +99,25 @@ public class FireballHandler implements Listener {
         player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
 
         Fireball fireball = player.getWorld().spawn(player.getEyeLocation(), Fireball.class);
+        fireball.setShooter(player);
         fireball.setYield(2);
 
         new BukkitRunnable() {
             public void run() {
                 if (!fireball.isDead()) {
-                    fireball.getWorld().spawnParticle(Particle.TOTEM, fireball.getLocation(), 5);
+                    fireball.getWorld().spawnParticle(Particle.TOTEM, fireball.getLocation(), 6);
                 } else {
                     this.cancel();
                 }
             }
         }.runTaskTimer(plugin, 0L, 2L);
 
-        fireball.setVelocity(player.getEyeLocation().getDirection().multiply(1.5));
+        fireball.setVelocity(player.getEyeLocation().getDirection().multiply(1.3));
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 0));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 40, 0));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 1));
 
-        cooldowns.put(player.getUniqueId(), System.currentTimeMillis() + 500);
+        cooldowns.put(player.getUniqueId(), System.currentTimeMillis() + 420);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -142,6 +142,9 @@ public class FireballHandler implements Listener {
         Entity fb;
         if (block == null) {
             return;
+        }
+        if (block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST) {
+            return; // no bounce on chests :( I like to save the NBT data
         }
         if (block.getType() == Material.TNT) {
             fb = block.getWorld().spawn(block.getLocation().add(0, 1, 0), TNTPrimed.class);
