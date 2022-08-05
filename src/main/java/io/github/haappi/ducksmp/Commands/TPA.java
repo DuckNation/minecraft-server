@@ -94,7 +94,7 @@ public class TPA extends BukkitCommand implements Listener {
                 if (target.getWorld().getUID() != player.getWorld().getUID()) {
                     player.sendMessage(Component.text("You cannot teleport to players in different worlds", NamedTextColor.RED));
                     return true;
-                }
+                } // todo some sort of way to prevent alts from tping to each other.
                 tpaRequests.put(player.getUniqueId(), target.getUniqueId());
                 requestExpiry.put(player.getUniqueId(), System.currentTimeMillis() + (1000 * 15)); // 15 seconds
                 target.sendMessage(Component.text(player.getName(), NamedTextColor.GOLD).append(Component.text(" wants to teleport to you", NamedTextColor.GREEN)));

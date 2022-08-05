@@ -70,6 +70,8 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new Combat();
         new AntiEnd();
 
+        new FireballHandler();
+
         registerNewCommand(new Signup("signup"));
         registerNewCommand(new StopRestart("stoprestart"));
         registerNewCommand(new NightVision("nv"));
@@ -86,7 +88,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         registerNewCommand(new Flex("flex"));
         registerNewCommand(new Link("link"));
         registerNewCommand(new Unlink("unlink"));
-        registerNewCommand(new ClearCombat("ClearCombat"));
+        registerNewCommand(new ClearCombat("clearcombat"));
         registerNewCommand(new TPA("tpa"));
     }
 
