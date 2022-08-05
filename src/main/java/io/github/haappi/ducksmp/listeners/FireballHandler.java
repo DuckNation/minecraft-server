@@ -25,9 +25,12 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static io.github.haappi.ducksmp.utils.Utils.chain;
 import static io.github.haappi.ducksmp.utils.Utils.noItalics;
 
 public class FireballHandler implements Listener {
@@ -45,6 +48,7 @@ public class FireballHandler implements Listener {
         ItemStack fireball = new ItemStack(Material.FIRE_CHARGE, 16);
         ItemMeta fireballMeta = fireball.getItemMeta();
         fireballMeta.displayName(noItalics("Fireball", NamedTextColor.RED));
+        fireballMeta.lore(Collections.singletonList(chain(noItalics("Right click", NamedTextColor.GOLD), noItalics(" to throw a fireball.", NamedTextColor.GREEN))));
         fireballMeta.getPersistentDataContainer().set(new org.bukkit.NamespacedKey(plugin, "fireball"), PersistentDataType.INTEGER, 1);
         fireball.setItemMeta(fireballMeta);
         return fireball;
