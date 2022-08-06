@@ -68,7 +68,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new JoinLeave();
 
         new Combat();
-        new AntiEnd();
+//        new AntiEnd();
         new BetterTeleport();
         new FireballHandler();
 
