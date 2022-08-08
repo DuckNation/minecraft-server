@@ -165,7 +165,7 @@ public class Messages implements Listener {
                 });
                 restartNeeded = true;
                 if (Bukkit.getOnlinePlayers().isEmpty())
-                    Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
+                    Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "stop"));
                 restartWarning(60, true);
                 restartID = Bukkit.getScheduler().runTaskLater(plugin, () -> doCountdown("Server will restart in ", this.plugin, 10), 20 * 60 * 60L); // Restart after 1 hour
                 break;
