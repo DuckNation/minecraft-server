@@ -211,7 +211,7 @@ public class Utils {
             player.sendMessage(noItalics("Hmmmm, it looks like you're in the air. I can't allow you to use this command right now.", NamedTextColor.RED));
             return false;
         }
-        if (player.getNearbyEntities(10, 10, 10).stream().anyMatch(entity -> entity instanceof Monster)) {
+        if (player.getNearbyEntities(5, 5, 5).stream().anyMatch(entity -> entity instanceof Monster)) {
             player.sendMessage(noItalics("Hmmmm, it looks like there are mobs near you. I can't allow you to use this command right now.", NamedTextColor.RED));
             return false;
         }

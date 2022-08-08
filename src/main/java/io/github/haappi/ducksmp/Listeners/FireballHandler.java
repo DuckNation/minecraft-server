@@ -122,7 +122,7 @@ public class FireballHandler implements Listener {
         }.runTaskTimer(plugin, 0L, 2L);
 
         fireball.setVelocity(player.getEyeLocation().getDirection().multiply(1.3));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 0));
+        // player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 0));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 40, 0));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 1));
 
