@@ -95,6 +95,8 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         registerNewCommand(new TPA("tpa"));
         unRegisterBukkitCommand("restart");
         registerNewCommand(new Restart("restart"));
+        unRegisterBukkitCommand("ban");
+        registerNewCommand(new Ban("ban"));
     }
 
 
