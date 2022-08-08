@@ -11,6 +11,7 @@ import io.github.haappi.ducksmp.LifeSteal.ArmorStandPlayer;
 import io.github.haappi.ducksmp.LifeSteal.Signup;
 import io.github.haappi.ducksmp.Internals.Messages;
 import io.github.haappi.ducksmp.Listeners.*;
+import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,6 +31,9 @@ public final class DuckSMP extends JavaPlugin implements Listener {
     public static boolean isDisabled = false;
     private static DuckSMP instance;
     private MongoClient mongoClient;
+
+    public static boolean showRestartBar = false;
+    public static BossBar restartBar;
 
     public static DuckSMP getInstance() {
         return instance;
@@ -90,6 +94,8 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         registerNewCommand(new Unlink("unlink"));
         registerNewCommand(new ClearCombat("clearcombat"));
         registerNewCommand(new TPA("tpa"));
+        unRegisterBukkitCommand("restart");
+        registerNewCommand(new Restart("restart"));
     }
 
 

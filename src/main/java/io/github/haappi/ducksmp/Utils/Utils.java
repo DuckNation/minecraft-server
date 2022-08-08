@@ -1,6 +1,7 @@
 package io.github.haappi.ducksmp.Utils;
 
 import io.github.haappi.ducksmp.DuckSMP;
+import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -21,13 +22,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.github.haappi.ducksmp.Cosmetics.NameTag.Common.packetsToSend;
+import static io.github.haappi.ducksmp.Internals.Messages.doCountdown;
 import static io.github.haappi.ducksmp.Listeners.Combat.canUseCommand;
 
 public class Utils {
@@ -220,5 +224,109 @@ public class Utils {
             return false;
         }
         return true;
+    }
+
+    public static void restartWarning(int time, boolean minutes) {
+        String appended;
+        if (minutes) {
+            appended = " minutes. ";
+        } else {
+            appended = " seconds. ";
+        }
+        if ((time == 5) && minutes) {
+            DuckSMP.showRestartBar = true;
+            DuckSMP.restartBar = BossBar.bossBar(chain(Component.text("Server restarts in ", NamedTextColor.GREEN), Component.text("5:00")), 1f, BossBar.Color.GREEN, BossBar.Overlay.NOTCHED_10);
+        }
+        Component message = chain(Component.text("[!] ", NamedTextColor.YELLOW), Component.text("Server will be restarting in ", NamedTextColor.GREEN), Component.text(time + appended, NamedTextColor.AQUA).append(Component.text("[!]", NamedTextColor.YELLOW)));
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (DuckSMP.showRestartBar) {
+                player.showBossBar(DuckSMP.restartBar);
+            }
+            player.sendMessage(message);
+        }
+
+        if (DuckSMP.showRestartBar) {
+            stuff(300);
+        }
+
+        if (time == 60 && minutes) {
+            Bukkit.getScheduler().runTaskLater(DuckSMP.getInstance(), () -> restartWarning(30, true), 20 * 60 * 30); // 30 minutes
+        } else if (time == 30 && minutes) {
+            Bukkit.getScheduler().runTaskLater(DuckSMP.getInstance(), () -> restartWarning(10, true), 20 * 60 * 20); // Runs after 20 minutes
+        } else if (time == 10 && minutes) {
+            Bukkit.getScheduler().runTaskLater(DuckSMP.getInstance(), () -> restartWarning(5, true), 20 * 60 * 5); // 5 minutes
+        }
+    }
+
+    private static void stuff(int time) {
+        AtomicInteger countdown = new AtomicInteger(time);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                int time = countdown.getAndDecrement();
+                updateBossBar(time, DuckSMP.restartBar);
+                if (time <= 10) {
+                    doCountdown("Server will restart in ", DuckSMP.getInstance(), time);
+                    cancel();
+                    Component message = Component.text("Server is restarting...", NamedTextColor.RED);
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        p.kick(message);
+                    }
+                    Bukkit.getServer().shutdown();
+                }
+            }
+        }.runTaskTimer(DuckSMP.getInstance(), 0, 20);
+    }
+
+    public static int updateBossBar(int seconds, BossBar bossBar) {
+        NamedTextColor color;
+        if (seconds > 240) { // 3 minutes & 20 seconds
+            color = NamedTextColor.GREEN;
+        } else if (seconds > 150) { //
+            color = NamedTextColor.AQUA;
+        } else if (seconds > 80) {
+            color = NamedTextColor.YELLOW;
+        } else if (seconds > 20) {
+            color = NamedTextColor.RED;
+        } else {
+            color = NamedTextColor.DARK_RED;
+        }
+
+        String thing;
+
+        if (seconds % 60 < 10) {
+            thing = "0" + seconds % 60;
+        } else {
+            thing = "" + seconds % 60;
+        }
+
+        String time = (seconds / 60) + ":" + thing;
+
+        final Component text = chain(Component.text("Server restarts in ", NamedTextColor.GREEN), Component.text(time, color));
+
+        bossBar.name(text);
+        float progress = seconds / (5 * 60f);
+        int holder = Math.round(progress);
+        if (holder > 1) {
+            bossBar.progress(1);
+        } else if (holder < 0) {
+            bossBar.progress(0);
+        } else {
+            bossBar.progress(progress);
+            bossBar.color(getBossBarColor(color));
+        }
+
+        return seconds - 1;
+    }
+
+    private static BossBar.Color getBossBarColor(NamedTextColor color) {
+        if (NamedTextColor.AQUA.equals(color)) {
+            return BossBar.Color.BLUE;
+        } else if (NamedTextColor.YELLOW.equals(color)) {
+            return BossBar.Color.YELLOW;
+        } else if (NamedTextColor.RED.equals(color) || NamedTextColor.DARK_RED.equals(color)) {
+            return BossBar.Color.RED;
+        }
+        return BossBar.Color.GREEN;
     }
 }

@@ -133,6 +133,10 @@ public class JoinLeave implements Listener {
         }
         player.setNoDamageTicks(20 * 3); // no damage for 3 seconds
         Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> saveStuffInDB(player));
+
+        if (DuckSMP.showRestartBar) {
+            player.showBossBar(DuckSMP.restartBar);
+        }
     }
 
     @SuppressWarnings("ConstantConditions")

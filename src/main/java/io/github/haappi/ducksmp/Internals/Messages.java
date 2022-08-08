@@ -29,8 +29,7 @@ import java.util.stream.Stream;
 import static io.github.haappi.ducksmp.Commands.Link.setPDCLink;
 import static io.github.haappi.ducksmp.DuckSMP.getMongoClient;
 import static io.github.haappi.ducksmp.DuckSMP.isDisabled;
-import static io.github.haappi.ducksmp.Utils.Utils.getCountdown;
-import static io.github.haappi.ducksmp.Utils.Utils.miniMessage;
+import static io.github.haappi.ducksmp.Utils.Utils.*;
 
 public class Messages implements Listener {
 
@@ -142,6 +141,7 @@ public class Messages implements Listener {
                 restartNeeded = true;
                 if (Bukkit.getOnlinePlayers().isEmpty())
                     Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart"));
+                restartWarning(60, true);
                 restartID = Bukkit.getScheduler().runTaskLater(plugin, () -> doCountdown("Server will restart in ", this.plugin, 10), 20 * 60 * 60L); // Restart after 1 hour
                 break;
             case "critical_release":
@@ -272,7 +272,7 @@ public class Messages implements Listener {
     }
 
     @SuppressWarnings("SameParameterValue")
-    private void doCountdown(String message, DuckSMP plugin, Integer timerLength) {
+    public static void doCountdown(String message, DuckSMP plugin, Integer timerLength) {
         AtomicInteger countdown = new AtomicInteger(timerLength);
 
         new BukkitRunnable() {
@@ -280,16 +280,15 @@ public class Messages implements Listener {
             public void run() {
                 if (countdown.get() == 0) {
                     Bukkit.getServer().savePlayers();
-                    Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.kick(Component.text("you got boobed off"));
-                    });
-                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart");
+                    Component message = Component.text("Server is restarting...", NamedTextColor.RED);
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        p.kick(message);
+                    }
                     cancel();
                 }
                 Component actionBar = Component.text(message, NamedTextColor.AQUA).append(getCountdown(countdown.get()));
                 Component subTitle = Component.text("");
                 for (Player p : Bukkit.getOnlinePlayers()) {
-//                    p.sendActionBar(actionBar);
                     p.showTitle(Title.title(actionBar, subTitle));
                     p.sendMessage(actionBar);
                 }
