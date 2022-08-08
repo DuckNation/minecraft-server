@@ -55,11 +55,21 @@ public class LoreUtils {
         }
 
         for (Enchantment enchantment : item.getEnchantments().keySet()) {
-            lore.add(noItalics(WordUtils.capitalizeFully(enchantment.getKey().getKey().toLowerCase().replace("_", " ")), NamedTextColor.GRAY).append(noItalics(Component.text(" " + meta.getEnchantLevel(enchantment), NamedTextColor.AQUA))));
+            lore.add(getLoreForEnchant(enchantment, meta.getEnchantLevel(enchantment)));
         }
 
         meta.lore(lore);
         item.setItemMeta(meta);
+    }
+
+    private static Component getLoreForEnchant(Enchantment enchantment, int level) {
+        if (enchantment.equals(Enchantment.VANISHING_CURSE)) {
+            return noItalics(WordUtils.capitalizeFully("Curse of Vanishing"), NamedTextColor.RED);
+        }
+        if (enchantment.equals(Enchantment.BINDING_CURSE)) {
+            return noItalics(WordUtils.capitalizeFully("Curse of Binding"), NamedTextColor.RED);
+        }
+        return noItalics(WordUtils.capitalizeFully(enchantment.getKey().getKey().toLowerCase().replace("_", " ")), NamedTextColor.GRAY).append(noItalics(Component.text(" " + level, NamedTextColor.AQUA)));
     }
 
 
