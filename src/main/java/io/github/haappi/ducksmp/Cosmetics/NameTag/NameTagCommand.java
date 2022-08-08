@@ -1,4 +1,4 @@
-package io.github.haappi.ducksmp.Cosemetics.NameTag;
+package io.github.haappi.ducksmp.Cosmetics.NameTag;
 
 import io.github.haappi.ducksmp.DuckSMP;
 import net.kyori.adventure.text.Component;
@@ -13,8 +13,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static io.github.haappi.ducksmp.Cosemetics.NameTag.BedrockMenu.form;
-import static io.github.haappi.ducksmp.Cosemetics.NameTag.JavaMenu.menu;
+import static io.github.haappi.ducksmp.Cosmetics.NameTag.BedrockMenu.form;
+import static io.github.haappi.ducksmp.Cosmetics.NameTag.JavaMenu.menu;
 
 public class NameTagCommand extends BukkitCommand {
 

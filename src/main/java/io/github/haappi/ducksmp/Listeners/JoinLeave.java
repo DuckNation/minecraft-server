@@ -22,12 +22,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.haappi.ducksmp.Commands.Link.setPDCLink;
-import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.chatColors;
-import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.getFormattedPrefix;
+import static io.github.haappi.ducksmp.Cosmetics.NameTag.Common.chatColors;
+import static io.github.haappi.ducksmp.Cosmetics.NameTag.Common.getFormattedPrefix;
 import static io.github.haappi.ducksmp.PacketInjector.injectPlayer;
 import static io.github.haappi.ducksmp.PacketInjector.removePlayer;
-import static io.github.haappi.ducksmp.utils.Encryption.encrypt;
-import static io.github.haappi.ducksmp.utils.Utils.miniMessage;
+import static io.github.haappi.ducksmp.Utils.Encryption.encrypt;
+import static io.github.haappi.ducksmp.Utils.Utils.miniMessage;
 
 public class JoinLeave implements Listener {
 

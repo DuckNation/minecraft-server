@@ -1,4 +1,4 @@
-package io.github.haappi.ducksmp.utils;
+package io.github.haappi.ducksmp.Utils;
 
 import io.github.haappi.ducksmp.DuckSMP;
 import net.kyori.adventure.text.Component;
@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Field;
 import java.util.*;
 
-import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.packetsToSend;
+import static io.github.haappi.ducksmp.Cosmetics.NameTag.Common.packetsToSend;
 import static io.github.haappi.ducksmp.Listeners.Combat.canUseCommand;
 
 public class Utils {

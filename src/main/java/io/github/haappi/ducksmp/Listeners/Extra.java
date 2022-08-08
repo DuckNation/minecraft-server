@@ -2,7 +2,7 @@ package io.github.haappi.ducksmp.Listeners;
 
 import io.github.haappi.ducksmp.DuckSMP;
 import io.github.haappi.ducksmp.LifeSteal.Listeners;
-import io.github.haappi.ducksmp.utils.CustomHolder;
+import io.github.haappi.ducksmp.Utils.CustomHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.world.item.ArmorItem;

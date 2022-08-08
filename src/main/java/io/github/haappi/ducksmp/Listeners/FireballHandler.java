@@ -27,8 +27,8 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-import static io.github.haappi.ducksmp.utils.Utils.chain;
-import static io.github.haappi.ducksmp.utils.Utils.noItalics;
+import static io.github.haappi.ducksmp.Utils.Utils.chain;
+import static io.github.haappi.ducksmp.Utils.Utils.noItalics;
 
 public class FireballHandler implements Listener {
     private final DuckSMP plugin;

@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static io.github.haappi.ducksmp.utils.Utils.*;
+import static io.github.haappi.ducksmp.Utils.Utils.*;
 
 public class Home extends BukkitCommand implements Listener {
     private static final HashMap<UUID, Integer> tasks = new HashMap<>();

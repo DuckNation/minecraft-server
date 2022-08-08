@@ -3,7 +3,7 @@ package io.github.haappi.ducksmp.Commands;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import io.github.haappi.ducksmp.DuckSMP;
-import io.github.haappi.ducksmp.utils.Utils;
+import io.github.haappi.ducksmp.Utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bson.Document;
@@ -17,8 +17,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.chatColors;
-import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.packetsToSend;
+import static io.github.haappi.ducksmp.Cosmetics.NameTag.Common.chatColors;
+import static io.github.haappi.ducksmp.Cosmetics.NameTag.Common.packetsToSend;
 
 public class Link extends BukkitCommand {
 

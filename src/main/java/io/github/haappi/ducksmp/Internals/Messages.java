@@ -1,4 +1,4 @@
-package io.github.haappi.ducksmp.internals;
+package io.github.haappi.ducksmp.Internals;
 
 import com.mongodb.CursorType;
 import com.mongodb.client.MongoCollection;
@@ -29,8 +29,8 @@ import java.util.stream.Stream;
 import static io.github.haappi.ducksmp.Commands.Link.setPDCLink;
 import static io.github.haappi.ducksmp.DuckSMP.getMongoClient;
 import static io.github.haappi.ducksmp.DuckSMP.isDisabled;
-import static io.github.haappi.ducksmp.utils.Utils.getCountdown;
-import static io.github.haappi.ducksmp.utils.Utils.miniMessage;
+import static io.github.haappi.ducksmp.Utils.Utils.getCountdown;
+import static io.github.haappi.ducksmp.Utils.Utils.miniMessage;
 
 public class Messages implements Listener {
 

@@ -1,4 +1,4 @@
-package io.github.haappi.ducksmp.Cosemetics.NameTag;
+package io.github.haappi.ducksmp.Cosmetics.NameTag;
 
 import io.github.haappi.ducksmp.DuckSMP;
 import net.kyori.adventure.text.Component;
@@ -14,8 +14,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.colorMapping;
-import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.setStuff;
+import static io.github.haappi.ducksmp.Cosmetics.NameTag.Common.colorMapping;
+import static io.github.haappi.ducksmp.Cosmetics.NameTag.Common.setStuff;
 
 public class BedrockMenu {
 

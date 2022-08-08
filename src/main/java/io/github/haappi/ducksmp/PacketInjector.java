@@ -1,7 +1,7 @@
 package io.github.haappi.ducksmp;
 
 import io.github.haappi.ducksmp.Commands.Home;
-import io.github.haappi.ducksmp.Cosemetics.NameTag.JavaMenu;
+import io.github.haappi.ducksmp.Cosmetics.NameTag.JavaMenu;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;

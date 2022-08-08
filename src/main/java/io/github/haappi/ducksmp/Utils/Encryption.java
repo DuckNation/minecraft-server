@@ -1,4 +1,4 @@
-package io.github.haappi.ducksmp.utils;
+package io.github.haappi.ducksmp.Utils;
 
 import io.github.haappi.ducksmp.DuckSMP;
 import org.bukkit.Bukkit;

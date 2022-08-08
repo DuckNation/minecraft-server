@@ -1,7 +1,7 @@
 package io.github.haappi.ducksmp.LifeSteal;
 
 import io.github.haappi.ducksmp.DuckSMP;
-import io.github.haappi.ducksmp.utils.Utils;
+import io.github.haappi.ducksmp.Utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -30,8 +30,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-import static io.github.haappi.ducksmp.utils.GUIUtils.sendOptInForm;
-import static io.github.haappi.ducksmp.utils.Utils.*;
+import static io.github.haappi.ducksmp.Utils.GUIUtils.sendOptInForm;
+import static io.github.haappi.ducksmp.Utils.Utils.*;
 
 public class Listeners implements Listener {
 

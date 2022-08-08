@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import static io.github.haappi.ducksmp.utils.Utils.noItalics;
+import static io.github.haappi.ducksmp.Utils.Utils.noItalics;
 
 public class CustomLore implements Listener {
 

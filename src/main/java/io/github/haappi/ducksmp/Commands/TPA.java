@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static io.github.haappi.ducksmp.utils.Utils.canRunAway;
+import static io.github.haappi.ducksmp.Utils.Utils.canRunAway;
 
 public class TPA extends BukkitCommand implements Listener {
 

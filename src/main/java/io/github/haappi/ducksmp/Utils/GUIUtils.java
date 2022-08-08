@@ -1,4 +1,4 @@
-package io.github.haappi.ducksmp.utils;
+package io.github.haappi.ducksmp.Utils;
 
 import io.github.haappi.ducksmp.DuckSMP;
 import net.kyori.adventure.text.Component;
@@ -20,8 +20,8 @@ import org.geysermc.floodgate.api.player.FloodgatePlayer;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static io.github.haappi.ducksmp.utils.Utils.chain;
-import static io.github.haappi.ducksmp.utils.Utils.noItalics;
+import static io.github.haappi.ducksmp.Utils.Utils.chain;
+import static io.github.haappi.ducksmp.Utils.Utils.noItalics;
 
 
 public class GUIUtils implements Listener {

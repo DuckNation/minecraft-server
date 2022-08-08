@@ -1,7 +1,7 @@
 package io.github.haappi.ducksmp.Commands;
 
 import io.github.haappi.ducksmp.Listeners.TotemHandler;
-import io.github.haappi.ducksmp.utils.Utils;
+import io.github.haappi.ducksmp.Utils.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.jetbrains.annotations.NotNull;

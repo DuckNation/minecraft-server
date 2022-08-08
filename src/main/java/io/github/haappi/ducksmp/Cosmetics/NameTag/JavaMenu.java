@@ -1,4 +1,4 @@
-package io.github.haappi.ducksmp.Cosemetics.NameTag;
+package io.github.haappi.ducksmp.Cosmetics.NameTag;
 
 import io.github.haappi.ducksmp.DuckSMP;
 import net.kyori.adventure.inventory.Book;
@@ -23,8 +23,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.colorMapping;
-import static io.github.haappi.ducksmp.Cosemetics.NameTag.Common.setStuff;
+import static io.github.haappi.ducksmp.Cosmetics.NameTag.Common.colorMapping;
+import static io.github.haappi.ducksmp.Cosmetics.NameTag.Common.setStuff;
 import static io.github.haappi.ducksmp.DuckSMP.secretKey;
 
 public class JavaMenu {

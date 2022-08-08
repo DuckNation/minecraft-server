@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-import static io.github.haappi.ducksmp.utils.GUIUtils.sendOptInForm;
+import static io.github.haappi.ducksmp.Utils.GUIUtils.sendOptInForm;
 
 public class Signup extends BukkitCommand {
 

@@ -1,7 +1,7 @@
-package io.github.haappi.ducksmp.Cosemetics.NameTag;
+package io.github.haappi.ducksmp.Cosmetics.NameTag;
 
 import io.github.haappi.ducksmp.DuckSMP;
-import io.github.haappi.ducksmp.utils.Utils;
+import io.github.haappi.ducksmp.Utils.Utils;
 import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

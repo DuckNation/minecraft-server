@@ -8,8 +8,8 @@ import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static io.github.haappi.ducksmp.internals.Messages.restartID;
-import static io.github.haappi.ducksmp.internals.Messages.restartNeeded;
+import static io.github.haappi.ducksmp.Internals.Messages.restartID;
+import static io.github.haappi.ducksmp.Internals.Messages.restartNeeded;
 
 public class StopRestart extends BukkitCommand {
 

@@ -1,4 +1,4 @@
-package io.github.haappi.ducksmp.utils;
+package io.github.haappi.ducksmp.Utils;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
