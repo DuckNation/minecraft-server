@@ -28,7 +28,7 @@ dependencies {
 //    implementation("junit:junit:4.13.2")
     paperDevBundle("$version-R0.1-SNAPSHOT")
     compileOnly("org.geysermc.floodgate:api:2.2.0-SNAPSHOT")
-    implementation("org.mongodb:mongodb-driver-sync:4.6.0")
+    implementation("org.mongodb:mongodb-driver-sync:4.7.1")
     implementation("com.googlecode.json-simple:json-simple:1.1.1")
     implementation("com.jeff_media:CustomBlockData:2.1.0")
     implementation("com.jeff_media:MorePersistentDataTypes:2.3.1")
