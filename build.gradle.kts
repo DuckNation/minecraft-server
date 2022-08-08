@@ -11,7 +11,7 @@ version = "0.1"
 var mainClassName = "io.github.haappi.ducksmp.DuckSMP"
 val shade = configurations.create("shade")
 
-var version = "1.19.1"
+var version = "1.19.2"
 
 repositories {
     mavenCentral()
