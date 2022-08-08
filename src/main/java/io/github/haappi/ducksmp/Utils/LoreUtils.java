@@ -62,4 +62,15 @@ public class LoreUtils {
         item.setItemMeta(meta);
     }
 
+
+    public static ArrayList<Component> applyPDCLore(NamespacedKey key, ArrayList<Component> to) {
+        switch (key.getKey()) {
+            case "custom_home":
+                break;
+            default:
+                break; // todo
+        }
+
+        return to;
+    }
 }
