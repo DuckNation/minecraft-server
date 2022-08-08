@@ -7,9 +7,9 @@ import io.github.haappi.ducksmp.Commands.*;
 import io.github.haappi.ducksmp.Cosmetics.NameTag.Common;
 import io.github.haappi.ducksmp.Cosmetics.NameTag.NameTagCommand;
 import io.github.haappi.ducksmp.Cosmetics.NameTag.SetPrefix;
+import io.github.haappi.ducksmp.Internals.Messages;
 import io.github.haappi.ducksmp.LifeSteal.ArmorStandPlayer;
 import io.github.haappi.ducksmp.LifeSteal.Signup;
-import io.github.haappi.ducksmp.Internals.Messages;
 import io.github.haappi.ducksmp.Listeners.*;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.Bukkit;
@@ -29,11 +29,10 @@ public final class DuckSMP extends JavaPlugin implements Listener {
     public static ArrayList<Integer> taskIds = new ArrayList<>();
     public static String secretKey;
     public static boolean isDisabled = false;
-    private static DuckSMP instance;
-    private MongoClient mongoClient;
-
     public static boolean showRestartBar = false;
     public static BossBar restartBar;
+    private static DuckSMP instance;
+    private MongoClient mongoClient;
 
     public static DuckSMP getInstance() {
         return instance;

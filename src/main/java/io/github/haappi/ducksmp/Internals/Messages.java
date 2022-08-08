@@ -65,6 +65,32 @@ public class Messages implements Listener {
         runAsyncTask();
     }
 
+    @SuppressWarnings("SameParameterValue")
+    public static void doCountdown(String message, DuckSMP plugin, Integer timerLength) {
+        AtomicInteger countdown = new AtomicInteger(timerLength);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (countdown.get() == 0) {
+                    Bukkit.getServer().savePlayers();
+                    Component message = Component.text("Server is restarting...", NamedTextColor.RED);
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        p.kick(message);
+                    }
+                    cancel();
+                }
+                Component actionBar = Component.text(message, NamedTextColor.AQUA).append(getCountdown(countdown.get()));
+                Component subTitle = Component.text("");
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    p.showTitle(Title.title(actionBar, subTitle));
+                    p.sendMessage(actionBar);
+                }
+                countdown.getAndDecrement();
+            }
+        }.runTaskTimer(plugin, 0, 20);
+    }
+
     private void runAsyncTask() {
         Document finalDoc = new Document();
         MongoCollection<Document> collection = DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages");
@@ -93,7 +119,6 @@ public class Messages implements Listener {
         }, 60L);
 
     }
-
 
     @EventHandler
     public void playerQuit(PlayerQuitEvent event) {
@@ -269,32 +294,6 @@ public class Messages implements Listener {
         }
 
         editFileData(binary, "plugins/DuckSMP-" + Messages.commitHash + ".jar");
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    public static void doCountdown(String message, DuckSMP plugin, Integer timerLength) {
-        AtomicInteger countdown = new AtomicInteger(timerLength);
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (countdown.get() == 0) {
-                    Bukkit.getServer().savePlayers();
-                    Component message = Component.text("Server is restarting...", NamedTextColor.RED);
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        p.kick(message);
-                    }
-                    cancel();
-                }
-                Component actionBar = Component.text(message, NamedTextColor.AQUA).append(getCountdown(countdown.get()));
-                Component subTitle = Component.text("");
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    p.showTitle(Title.title(actionBar, subTitle));
-                    p.sendMessage(actionBar);
-                }
-                countdown.getAndDecrement();
-            }
-        }.runTaskTimer(plugin, 0, 20);
     }
 
 }
