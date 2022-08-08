@@ -14,8 +14,6 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 
-import static io.github.haappi.ducksmp.Utils.Utils.noItalics;
-
 public class CustomLore implements Listener {
 
     private final DuckSMP plugin;
