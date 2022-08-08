@@ -268,11 +268,6 @@ public class Utils {
                 if (time <= 10) {
                     doCountdown("Server will restart in ", DuckSMP.getInstance(), time);
                     cancel();
-                    Component message = Component.text("Server is restarting...", NamedTextColor.RED);
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        p.kick(message);
-                    }
-                    Bukkit.getServer().shutdown();
                 }
             }
         }.runTaskTimer(DuckSMP.getInstance(), 0, 20);
