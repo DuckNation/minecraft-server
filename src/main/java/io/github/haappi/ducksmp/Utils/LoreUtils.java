@@ -26,29 +26,29 @@ public class LoreUtils {
         if (!meta.hasItemFlag(ItemFlag.HIDE_ENCHANTS)) {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
-        List<Component> lore;
-        if (!meta.hasLore()) {
-            lore = new ArrayList<>();
-            meta.lore(lore);
-        } else {
-            lore = meta.lore();
-        }
+        List<Component> lore = new ArrayList<>();
+//        if (!meta.hasLore()) {
+//            lore = new ArrayList<>();
+//            meta.lore(lore);
+//        } else {
+//            lore = meta.lore();
+//        }
         Component enchant = noItalics("    ", NamedTextColor.YELLOW);
 
         boolean toAdd = true;
 
-        for (Iterator<Component> it = lore.iterator(); it.hasNext(); ) {
-            Component _lore = it.next();
-            if (_lore.equals(enchant)) {
-                // remove everything after this in the List
-                while (it.hasNext()) {
-                    it.next();
-                    it.remove();
-                }
-                toAdd = false;
-                // lore.subList(lore.indexOf(_lore), lore.size()).clear(); // If you're not using an Iterator, you can use this instead of the above code.
-            }
-        }
+//        for (Iterator<Component> it = lore.iterator(); it.hasNext(); ) {
+//            Component _lore = it.next();
+//            if (_lore.equals(enchant)) {
+//                // remove everything after this in the List
+//                while (it.hasNext()) {
+//                    it.next();
+//                    it.remove();
+//                }
+//                toAdd = false;
+//                // lore.subList(lore.indexOf(_lore), lore.size()).clear(); // If you're not using an Iterator, you can use this instead of the above code.
+//            }
+//        }
 
         if (toAdd) {
             lore.add(enchant);
