@@ -139,13 +139,13 @@ public class FireballHandler implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onExplosion(EntityExplodeEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-        event.blockList().forEach(this::bounceBlock);
-    }
+//    @EventHandler(priority = EventPriority.HIGHEST)
+//    public void onExplosion(EntityExplodeEvent event) {
+//        if (event.isCancelled()) {
+//            return;
+//        }
+//        event.blockList().forEach(this::bounceBlock);
+//    }
 
     private void bounceBlock(Block block) { // todo make this actually go in the direction of the explosion
         Entity fb;
