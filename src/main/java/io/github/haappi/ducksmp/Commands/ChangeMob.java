@@ -45,16 +45,23 @@ public class ChangeMob extends BukkitCommand {
         }
         sender.sendMessage(Component.text("Random mob set to ", NamedTextColor.GOLD)
                 .append(Component.text(TotemHandler.randomMob.name(), NamedTextColor.AQUA)));
+
+        updateInDiscord();
+
+        return true;
+    }
+
+    public static void updateInDiscord() {
         insertEmptyDocumentIfNeeded();
 
         MongoCollection<Document> collection = DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages");
         Document doc = new Document();
         doc.put("type", "change_mob");
-        doc.put("message", "Random mob set to " + TotemHandler.randomMob.name());
+        doc.put("message", "The random totem mob is now: " + TotemHandler.randomMob.name());
         doc.put("mobName", TotemHandler.randomMob.name());
         doc.put("bound", "clientbound");
+        doc.put("ack", 0);
 
         collection.insertOne(doc);
-        return true;
     }
 }
