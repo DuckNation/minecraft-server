@@ -28,7 +28,7 @@ public class StatHandler implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    private boolean cantBeUsedForStats(Material item) {
+    public static boolean cantBeUsedForStats(Material item) {
         String name = item.toString().toLowerCase();
         return !name.contains("shovel") &&
                 !name.contains("pickaxe") &&
@@ -37,7 +37,7 @@ public class StatHandler implements Listener {
                 !name.contains("hoe") &&
                 !name.contains("shears") &&
                 !name.contains("bow") &&
-                !name.contains("fishing rod") &&
+                !name.contains("fishing_rod") &&
                 !name.contains("trident") &&
                 !name.contains("boots") &&
                 !name.contains("leggings") &&
@@ -45,7 +45,7 @@ public class StatHandler implements Listener {
                 !name.contains("helmet");
     }
 
-    private ItemMeta getItemMeta(ItemStack itemStack) {
+    public static ItemMeta getItemMeta(ItemStack itemStack) {
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (itemMeta == null) {
             itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
@@ -55,6 +55,20 @@ public class StatHandler implements Listener {
 
     private double getRounded(double input) {
         return Double.parseDouble(df.format(input));
+    }
+
+    public static void removeStatsFromItem(ItemStack itemStack) {
+        ItemMeta itemMeta = getItemMeta(itemStack);
+        PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
+
+        DuckSMP instance = DuckSMP.getInstance();
+
+        pdc.remove(new NamespacedKey(instance, "blocks_broken"));
+        pdc.remove(new NamespacedKey(instance, "damage_dealt"));
+        pdc.remove(new NamespacedKey(instance, "players_killed"));
+        pdc.remove(new NamespacedKey(instance, "mobs_killed"));
+
+        itemStack.setItemMeta(itemMeta);
     }
 
     /**

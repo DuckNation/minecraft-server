@@ -11,8 +11,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.inventory.ItemStack;
+
+import static io.github.haappi.ducksmp.Listeners.StatHandler.cantBeUsedForStats;
+import static io.github.haappi.ducksmp.Listeners.StatHandler.removeStatsFromItem;
 
 public class CustomLore implements Listener {
 
@@ -21,6 +26,22 @@ public class CustomLore implements Listener {
     public CustomLore() {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
+
+    @EventHandler
+    public void onInventoryOpen(InventoryOpenEvent event) {
+        Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+            for (ItemStack item : event.getInventory().getContents()) {
+                if (item == null) {
+                    return;
+                }
+                System.out.println(item.getType());
+                if (cantBeUsedForStats(item.getType())) {
+                    removeStatsFromItem(item);
+                }
+            }
+        }, 1L);
+
     }
 
     @EventHandler
@@ -42,6 +63,9 @@ public class CustomLore implements Listener {
     public void onItemDrop(ItemSpawnEvent event) {
         if (event.getEntity().getItemStack().getType() == Material.AIR) {
             return;
+        }
+        if (cantBeUsedForStats(event.getEntity().getItemStack().getType())) {
+            removeStatsFromItem(event.getEntity().getItemStack());
         }
         LoreUtils.applyEnchantsToLore(event.getEntity().getItemStack());
     }
