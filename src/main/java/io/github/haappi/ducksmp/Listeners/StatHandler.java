@@ -16,9 +16,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.text.DecimalFormat;
+
 public class StatHandler implements Listener {
 
     private final DuckSMP plugin;
+    private final DecimalFormat df = new DecimalFormat("0.00");
 
     public StatHandler() {
         this.plugin = DuckSMP.getInstance();
@@ -50,6 +53,10 @@ public class StatHandler implements Listener {
         return itemMeta;
     }
 
+    private double getRounded(double input) {
+        return Double.parseDouble(df.format(input));
+    }
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         if (cantBeUsedForStats(event.getPlayer().getInventory().getItemInMainHand().getType())) {
@@ -64,9 +71,6 @@ public class StatHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof Player) {
-            return;
-        }
         if (event.getDamager() instanceof Player player) {
             if (cantBeUsedForStats(player.getInventory().getItemInMainHand().getType())) {
                 return;
@@ -75,30 +79,11 @@ public class StatHandler implements Listener {
             PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
 
             NamespacedKey key = new NamespacedKey(plugin, "damage_dealt");
-            pdc.set(key, PersistentDataType.DOUBLE, pdc.getOrDefault(key, PersistentDataType.DOUBLE, 0.0) + event.getFinalDamage());
+            pdc.set(key, PersistentDataType.DOUBLE, getRounded(pdc.getOrDefault(key, PersistentDataType.DOUBLE, 0.0) + event.getFinalDamage()));
 
            player.getInventory().getItemInMainHand().setItemMeta(itemMeta);
         }
 
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
-            return;
-        }
-        if (event.getDamager() instanceof Player player) {
-            if (cantBeUsedForStats(player.getInventory().getItemInMainHand().getType())) {
-                return;
-            }
-            ItemMeta itemMeta = getItemMeta(player.getInventory().getItemInMainHand());
-
-            PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
-            NamespacedKey key = new NamespacedKey(plugin, "player_damage_dealt");
-
-            pdc.set(key, PersistentDataType.DOUBLE, pdc.getOrDefault(key, PersistentDataType.DOUBLE, 0.0) + event.getFinalDamage());
-           player.getInventory().getItemInMainHand().setItemMeta(itemMeta);
-        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
