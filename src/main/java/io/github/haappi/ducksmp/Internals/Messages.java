@@ -78,6 +78,7 @@ public class Messages implements Listener {
                     for (Player p : Bukkit.getOnlinePlayers()) {
                         p.kick(message);
                     }
+                    Bukkit.getServer().shutdown();
                     cancel();
                 }
                 Component actionBar = Component.text(message, NamedTextColor.AQUA).append(getCountdown(countdown.get()));
@@ -100,7 +101,7 @@ public class Messages implements Listener {
         if (isDisabled) {
             return;
         }
-        this.insertEmptyDocumentIfNeeded();
+        insertEmptyDocumentIfNeeded();
         Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
             try {
                 for (Document message : collection.find(finalDoc).projection(finalDoc).cursorType(CursorType.TailableAwait)) {
