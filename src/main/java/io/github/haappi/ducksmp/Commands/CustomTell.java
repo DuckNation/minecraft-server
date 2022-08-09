@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import static io.github.haappi.ducksmp.Commands.Vanish.enabledPlayers;
+import static io.github.haappi.ducksmp.Listeners.AntiSpam.mutedPlayers;
 
 public class CustomTell extends BukkitCommand implements Listener {
 
@@ -34,11 +35,17 @@ public class CustomTell extends BukkitCommand implements Listener {
             sender.sendMessage(Component.text("Player not found.", NamedTextColor.RED));
             return;
         }
-        receiver.sendMessage(Component.text("From ", NamedTextColor.GRAY).append(Component.text(sender.getName(), NamedTextColor.YELLOW)).append(Component.text(": " + message, NamedTextColor.GRAY)));
+
         if (sender instanceof Player player) {
+            if (mutedPlayers.contains(player.getUniqueId())) {
+                player.sendMessage(Component.text("You are muted.", NamedTextColor.RED));
+                return;
+            }
+
             recentlyMessaged.put(receiver.getUniqueId(), player.getUniqueId());
             recentlyMessaged.put(player.getUniqueId(), receiver.getUniqueId());
         }
+        receiver.sendMessage(Component.text("From ", NamedTextColor.GRAY).append(Component.text(sender.getName(), NamedTextColor.YELLOW)).append(Component.text(": " + message, NamedTextColor.GRAY)));
         sender.sendMessage(Component.text("To ", NamedTextColor.GRAY).append(Component.text(receiver.getName(), NamedTextColor.YELLOW)).append(Component.text(": " + message, NamedTextColor.GRAY)));
     }
 
