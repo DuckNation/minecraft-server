@@ -7,9 +7,11 @@ import io.github.haappi.ducksmp.Utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -43,8 +45,11 @@ public class ChangeMob extends BukkitCommand {
                 return true;
             }
         }
-        sender.sendMessage(Component.text("Random mob set to ", NamedTextColor.GOLD)
-                .append(Component.text(TotemHandler.randomMob.name(), NamedTextColor.AQUA)));
+        final Component newMobMessage = Component.text("Random mob set to ", NamedTextColor.GOLD)
+                .append(Component.text(TotemHandler.randomMob.name(), NamedTextColor.AQUA));
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.sendMessage(newMobMessage);
+        }
 
         updateInDiscord();
 
