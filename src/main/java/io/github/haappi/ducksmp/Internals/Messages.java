@@ -123,11 +123,11 @@ public class Messages implements Listener {
     @EventHandler
     public void playerQuit(PlayerQuitEvent event) {
         if ((Bukkit.getOnlinePlayers().size() <= 1) && (restartNeeded)) {
-            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart");
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "stop");
         }
     }
 
-    private void insertEmptyDocumentIfNeeded() {
+    public static void insertEmptyDocumentIfNeeded() {
         MongoCollection<Document> collection = DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages");
         Document doc = new Document();
         if (collection.find(doc).first() == null) {
