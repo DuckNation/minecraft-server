@@ -1,6 +1,5 @@
 package io.github.haappi.ducksmp.Utils;
 
-import com.google.gson.JsonParseException;
 import io.github.haappi.ducksmp.Listeners.StatHandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -15,7 +14,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
 
 import static io.github.haappi.ducksmp.Commands.Home.isHome;
 import static io.github.haappi.ducksmp.Listeners.FireballHandler.isFireBall;
