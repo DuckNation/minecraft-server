@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import static io.github.haappi.ducksmp.Listeners.StatHandler.cantBeUsedForStats;
 import static io.github.haappi.ducksmp.Listeners.StatHandler.removeStatsFromItem;
+import static io.github.haappi.ducksmp.Utils.LoreUtils.applyEnchantsToLore;
 
 public class CustomLore implements Listener {
 
@@ -35,10 +36,10 @@ public class CustomLore implements Listener {
                 if (item == null) {
                     return;
                 }
-                System.out.println(item.getType());
                 if (cantBeUsedForStats(item.getType())) {
                     removeStatsFromItem(item);
                 }
+                applyEnchantsToLore(item);
             }
         }, 1L);
 
@@ -56,7 +57,7 @@ public class CustomLore implements Listener {
         if (event.getItem().getType() == Material.AIR) {
             return;
         }
-        LoreUtils.applyEnchantsToLore(event.getItem());
+        applyEnchantsToLore(event.getItem());
     }
 
     @EventHandler
@@ -67,12 +68,12 @@ public class CustomLore implements Listener {
         if (cantBeUsedForStats(event.getEntity().getItemStack().getType())) {
             removeStatsFromItem(event.getEntity().getItemStack());
         }
-        LoreUtils.applyEnchantsToLore(event.getEntity().getItemStack());
+        applyEnchantsToLore(event.getEntity().getItemStack());
     }
 
     @EventHandler
     public void onEnchant(EnchantItemEvent event) {
-        LoreUtils.applyEnchantsToLore(event.getItem());
+        applyEnchantsToLore(event.getItem());
     }
 
     @EventHandler
@@ -80,6 +81,6 @@ public class CustomLore implements Listener {
         if (event.getResult() == null) {
             return;
         }
-        LoreUtils.applyEnchantsToLore(event.getResult());
+        applyEnchantsToLore(event.getResult());
     }
 }

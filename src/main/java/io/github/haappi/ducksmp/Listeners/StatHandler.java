@@ -1,6 +1,8 @@
 package io.github.haappi.ducksmp.Listeners;
 
 import io.github.haappi.ducksmp.DuckSMP;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -17,6 +19,10 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
+import static io.github.haappi.ducksmp.Utils.Utils.chain;
+import static io.github.haappi.ducksmp.Utils.Utils.noItalics;
 
 public class StatHandler implements Listener {
 
@@ -26,6 +32,22 @@ public class StatHandler implements Listener {
     public StatHandler() {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
+
+    public enum Stat {
+        BLOCKS_BROKEN("blocks_broken"),
+        DAMAGE_DEALT("damage_dealt"),
+        MOBS_KILLED("mobs_killed"),
+        PLAYERS_KILLED("players_killed");
+
+        private final String text;
+
+        Stat(String text) {
+            this.text = text;
+        }
+        public String toString() {
+            return text;
+        }
     }
 
     public static boolean cantBeUsedForStats(Material item) {
@@ -115,16 +137,34 @@ public class StatHandler implements Listener {
         stack.setItemMeta(itemMeta);
     }
 
+    /**
+     * Get stats for the supplied itemstack. If the itemstack is not a stat item, or it doesn't have stats, this returns null.
+     * @param stack The itemstack to get the stats of.
+     * @param nameToShow The name of the stat to show on the lore.
+     * @param internalName The name of the stat to get.
+     * @return The stats of the itemstack.
+     */
+    public static Component getStatsForItem(ItemStack stack, String nameToShow, String internalName, PersistentDataType type) {
+        ItemMeta meta = getItemMeta(stack);
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        DuckSMP instance = DuckSMP.getInstance();
+        NamespacedKey key = new NamespacedKey(instance, internalName);
+        if (!pdc.has(key)) {
+            return null;
+        }
+        return chain(noItalics(nameToShow, NamedTextColor.AQUA), noItalics(": ", NamedTextColor.GRAY), noItalics(NumberFormat.getIntegerInstance().format(pdc.get(key, type)), NamedTextColor.GOLD));
+    }
+
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        incrementStat(event.getPlayer().getInventory().getItemInMainHand(), "blocks_broken");
+        incrementStat(event.getPlayer().getInventory().getItemInMainHand(), String.valueOf(Stat.BLOCKS_BROKEN));
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onDamage(EntityDamageByEntityEvent event) {
          if (event.getDamager() instanceof Player player) {
-            incrementStat(player.getInventory().getItemInMainHand(), "damage_dealt", event.getFinalDamage());
+            incrementStat(player.getInventory().getItemInMainHand(), Stat.DAMAGE_DEALT.toString(), event.getFinalDamage());
         }
     }
 
@@ -132,12 +172,12 @@ public class StatHandler implements Listener {
     public void onEntityDeath(EntityDeathEvent event) {
         if (event.getEntity() instanceof Player victim) {
             if (victim.getKiller() != null) {
-                incrementStat(victim.getKiller().getInventory().getItemInMainHand(), "players_killed");
+                incrementStat(victim.getKiller().getInventory().getItemInMainHand(), Stat.PLAYERS_KILLED.toString());
             }
         }
         if (event.getEntity().getKiller() != null) {
             Player player = event.getEntity().getKiller();
-            incrementStat(player.getInventory().getItemInMainHand(), "mobs_killed");
+            incrementStat(player.getInventory().getItemInMainHand(), Stat.MOBS_KILLED.toString());
         }
     }
 

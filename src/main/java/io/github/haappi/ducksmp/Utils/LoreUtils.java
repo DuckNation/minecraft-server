@@ -1,5 +1,6 @@
 package io.github.haappi.ducksmp.Utils;
 
+import io.github.haappi.ducksmp.Listeners.StatHandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.apache.commons.lang.WordUtils;
@@ -9,12 +10,14 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import static io.github.haappi.ducksmp.Listeners.StatHandler.getItemMeta;
+import static io.github.haappi.ducksmp.Listeners.StatHandler.getStatsForItem;
 import static io.github.haappi.ducksmp.Utils.Utils.noItalics;
 
 public class LoreUtils {
@@ -22,7 +25,7 @@ public class LoreUtils {
         if (item.getType() == Material.TOTEM_OF_UNDYING) {
             return;
         } // todo make it add the persistent data types to the item
-        @NotNull ItemMeta meta = item.getItemMeta();
+        @NotNull ItemMeta meta = getItemMeta(item);
         if (!meta.hasItemFlag(ItemFlag.HIDE_ENCHANTS)) {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
@@ -49,6 +52,11 @@ public class LoreUtils {
 //                // lore.subList(lore.indexOf(_lore), lore.size()).clear(); // If you're not using an Iterator, you can use this instead of the above code.
 //            }
 //        }
+
+        lore.add(getStatsForItem(item, "Blocks Broken", String.valueOf(StatHandler.Stat.BLOCKS_BROKEN), PersistentDataType.INTEGER));
+        lore.add(getStatsForItem(item, "Mobs Killed", String.valueOf(StatHandler.Stat.MOBS_KILLED), PersistentDataType.INTEGER));
+        lore.add(getStatsForItem(item, "Players Killed", String.valueOf(StatHandler.Stat.PLAYERS_KILLED), PersistentDataType.INTEGER));
+        lore.add(getStatsForItem(item, "Damage Dealt", String.valueOf(StatHandler.Stat.DAMAGE_DEALT), PersistentDataType.DOUBLE));
 
         if (toAdd) {
             lore.add(enchant);
