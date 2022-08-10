@@ -48,6 +48,21 @@ public class CustomLore implements Listener {
             }
         }, 1L);
 
+        Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+            for (ItemStack item : event.getPlayer().getInventory().getContents()) {
+                if (item == null) {
+                    return;
+                }
+                if (item.getType() == Material.AIR) {
+                    return;
+                }
+                if (cantBeUsedForStats(item.getType())) {
+                    removeStatsFromItem(item);
+                }
+                 applyEnchantsToLore(item);
+            }
+        }, 1L);
+
     }
 
     @SuppressWarnings("deprecation")

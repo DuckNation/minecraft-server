@@ -28,6 +28,9 @@ public class LoreUtils {
         if (item == null) {
             return;
         }
+        if (item.getType() == Material.AIR) {
+            return;
+        }
         if (item.getType() == Material.TOTEM_OF_UNDYING) {
             return;
         }
@@ -85,17 +88,5 @@ public class LoreUtils {
             return noItalics(WordUtils.capitalizeFully("Curse of Binding"), NamedTextColor.RED);
         }
         return noItalics(WordUtils.capitalizeFully(enchantment.getKey().getKey().toLowerCase().replace("_", " ")), NamedTextColor.GRAY).append(noItalics(Component.text(" " + level, NamedTextColor.AQUA)));
-    }
-
-
-    public static ArrayList<Component> applyPDCLore(NamespacedKey key, ArrayList<Component> to) {
-        switch (key.getKey()) {
-            case "custom_home":
-                break;
-            default:
-                break; // todo
-        }
-
-        return to;
     }
 }
