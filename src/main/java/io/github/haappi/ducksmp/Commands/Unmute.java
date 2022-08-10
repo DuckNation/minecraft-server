@@ -15,7 +15,7 @@ public class Unmute extends BukkitCommand {
     public Unmute(String name) {
         super(name);
         this.description = "Unmutes a player";
-        this.usageMessage = "/unmute <player>";
+        this.usageMessage = "/ " + name + " <player>";
     }
 
     @Override
