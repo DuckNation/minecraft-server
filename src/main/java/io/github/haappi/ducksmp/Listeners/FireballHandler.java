@@ -27,6 +27,7 @@ import org.bukkit.util.Vector;
 import java.util.*;
 
 import static io.github.haappi.ducksmp.Listeners.StatHandler.getItemMeta;
+import static io.github.haappi.ducksmp.Listeners.StatHandler.getStatsForItem;
 import static io.github.haappi.ducksmp.Utils.Utils.chain;
 import static io.github.haappi.ducksmp.Utils.Utils.noItalics;
 
@@ -106,7 +107,8 @@ public class FireballHandler implements Listener {
             return;
         }
         ItemStack item = event.getItem();
-        if (item.getItemMeta().getPersistentDataContainer().getOrDefault(new org.bukkit.NamespacedKey(plugin, "fireball"), PersistentDataType.INTEGER, 0) == 0) {
+        ItemMeta meta = getItemMeta(item);
+        if (meta.getPersistentDataContainer().getOrDefault(new org.bukkit.NamespacedKey(plugin, "fireball"), PersistentDataType.INTEGER, 0) == 0) {
             return;
         }
         Player player = event.getPlayer();

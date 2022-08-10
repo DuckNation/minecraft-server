@@ -88,7 +88,7 @@ public class GlobalDeathHandler implements Listener {
             stand.customName(noItalics(player.getName() + "'s grave", NamedTextColor.RED));
             stand.setCustomNameVisible(true);
             stand.setGlowing(true);
-            stand.setGravity(false);
+            stand.setGravity(true);
             stand.setVisible(true);
 
             final String base64Items = itemStackArrayToBase64(event.getDrops().toArray(new ItemStack[0]));
