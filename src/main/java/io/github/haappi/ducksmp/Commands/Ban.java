@@ -9,6 +9,11 @@ import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static java.lang.String.join;
+
 public class Ban extends BukkitCommand {
     public Ban(@NotNull String name) {
         super(name);
@@ -28,8 +33,10 @@ public class Ban extends BukkitCommand {
         }
         String player = args[0];
         String reason = "Banned by an operator.";
+        List<String> _reason = new java.util.ArrayList<>(Arrays.stream(args).toList());
+        _reason.remove(0);
         if (args.length > 1) {
-            reason = args[1];
+            reason = join(" ", _reason);
         }
 
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
