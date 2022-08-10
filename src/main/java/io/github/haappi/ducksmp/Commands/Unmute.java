@@ -30,11 +30,11 @@ public class Unmute extends BukkitCommand {
         }
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
         if (!mutedPlayers.contains(player.getUniqueId())) {
-            sender.sendMessage(Component.text("Player is not muted", NamedTextColor.RED));
+            sender.sendMessage(Component.text(player.getName() + " is not muted", NamedTextColor.RED));
             return true;
         }
         mutedPlayers.remove(player.getUniqueId());
-        sender.sendMessage(Component.text("Player unmuted", NamedTextColor.GREEN));
+        Bukkit.getOnlinePlayers().forEach(_player -> _player.sendMessage(Component.text(player.getName() + " unmuted", NamedTextColor.GREEN)));
         return true;
     }
 }
