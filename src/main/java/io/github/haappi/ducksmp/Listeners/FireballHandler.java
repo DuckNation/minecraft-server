@@ -55,7 +55,8 @@ public class FireballHandler implements Listener {
         ItemStack fireball = new ItemStack(Material.FIRE_CHARGE, 16);
         ItemMeta fireballMeta = fireball.getItemMeta();
         fireballMeta.displayName(noItalics("Fireball", NamedTextColor.RED));
-        fireballMeta.lore(Collections.singletonList(chain(noItalics("Right click", NamedTextColor.GOLD), noItalics(" to throw a fireball.", NamedTextColor.GREEN))));
+        Component enchant = noItalics("    ", NamedTextColor.YELLOW);
+        fireballMeta.lore(Collections.singletonList(chain(noItalics("Right click", NamedTextColor.GOLD), noItalics(" to throw a fireball.", NamedTextColor.GREEN), enchant)));
         fireballMeta.getPersistentDataContainer().set(new org.bukkit.NamespacedKey(plugin, "fireball"), PersistentDataType.INTEGER, 1);
         fireball.setItemMeta(fireballMeta);
         return fireball;
