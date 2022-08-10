@@ -76,7 +76,8 @@ public class Home extends BukkitCommand implements Listener {
         ItemStack item = new ItemStack(Material.MAGENTA_GLAZED_TERRACOTTA, count);
         ItemMeta meta = item.getItemMeta();
         meta.displayName(noItalics("Custom Home", NamedTextColor.GOLD));
-        meta.lore(Arrays.asList(noItalics(""), chain(noItalics("Place this to add a ", NamedTextColor.GRAY), noItalics("home", NamedTextColor.AQUA), noItalics(".", NamedTextColor.GRAY))));
+        Component enchant = noItalics("    ", NamedTextColor.YELLOW);
+        meta.lore(Arrays.asList(noItalics(""), chain(noItalics("Place this to add a ", NamedTextColor.GRAY), noItalics("home", NamedTextColor.AQUA), noItalics(".", NamedTextColor.GRAY), enchant)));
         meta.getPersistentDataContainer().set(new NamespacedKey(DuckSMP.getInstance(), "custom_home"), PersistentDataType.STRING, "home");
         item.setItemMeta(meta);
 
