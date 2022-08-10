@@ -30,28 +30,28 @@ public class LoreUtils {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
         List<Component> lore = new ArrayList<>();
-//        if (!meta.hasLore()) {
-//            lore = new ArrayList<>();
-//            meta.lore(lore);
-//        } else {
-//            lore = meta.lore();
-//        }
+       if (!meta.hasLore()) {
+            lore = new ArrayList<>();
+            meta.lore(lore);
+        } else {
+            lore = meta.lore();
+        }
         Component enchant = noItalics("    ", NamedTextColor.YELLOW);
 
         boolean toAdd = true;
 
-//        for (Iterator<Component> it = lore.iterator(); it.hasNext(); ) {
-//            Component _lore = it.next();
-//            if (_lore.equals(enchant)) {
-//                // remove everything after this in the List
-//                while (it.hasNext()) {
-//                    it.next();
-//                    it.remove();
-//                }
-//                toAdd = false;
-//                // lore.subList(lore.indexOf(_lore), lore.size()).clear(); // If you're not using an Iterator, you can use this instead of the above code.
-//            }
-//        }
+        for (Iterator<Component> it = lore.iterator(); it.hasNext(); ) {
+            Component _lore = it.next();
+            if (_lore.equals(enchant)) {
+               // remove everything after this in the List
+               while (it.hasNext()) {
+                    it.next();
+                    it.remove();
+               }
+                toAdd = false;
+                // lore.subList(lore.indexOf(_lore), lore.size()).clear(); // If you're not using an Iterator, you can use this instead of the above code.
+           }
+        }
 
         lore.add(getStatsForItem(item, "Blocks Broken", String.valueOf(StatHandler.Stat.BLOCKS_BROKEN), PersistentDataType.INTEGER));
         lore.add(getStatsForItem(item, "Mobs Killed", String.valueOf(StatHandler.Stat.MOBS_KILLED), PersistentDataType.INTEGER));
