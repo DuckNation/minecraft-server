@@ -43,7 +43,6 @@ public class LoreUtils {
             lore.add(chain(noItalics("Right click", NamedTextColor.GOLD), noItalics(" to throw a fireball.", NamedTextColor.GREEN)));
         }
 
-        Component enchant = noItalics("    ", NamedTextColor.YELLOW);
 
 //        boolean toAdd = true;
 
@@ -64,10 +63,11 @@ public class LoreUtils {
         lore.add(getStatsForItem(item, "Mobs Killed", String.valueOf(StatHandler.Stat.MOBS_KILLED), PersistentDataType.INTEGER));
         lore.add(getStatsForItem(item, "Players Killed", String.valueOf(StatHandler.Stat.PLAYERS_KILLED), PersistentDataType.INTEGER));
         lore.add(getStatsForItem(item, "Damage Dealt", String.valueOf(StatHandler.Stat.DAMAGE_DEALT), PersistentDataType.DOUBLE));
+        lore.add(getStatsForItem(item, "Treasure Found", String.valueOf(StatHandler.Stat.TREASURE_CAUGHT), PersistentDataType.INTEGER));
 
-//        if (toAdd) {
-        lore.add(enchant);
-//        }
+        if (item.getEnchantments().size() != 0) {
+            lore.add(noItalics("    ", NamedTextColor.YELLOW));
+        }
 
         for (Enchantment enchantment : item.getEnchantments().keySet()) {
             lore.add(getLoreForEnchant(enchantment, meta.getEnchantLevel(enchantment)));

@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -66,10 +67,11 @@ public class StatHandler implements Listener {
 
         DuckSMP instance = DuckSMP.getInstance();
 
-        pdc.remove(new NamespacedKey(instance, "blocks_broken"));
-        pdc.remove(new NamespacedKey(instance, "damage_dealt"));
-        pdc.remove(new NamespacedKey(instance, "players_killed"));
-        pdc.remove(new NamespacedKey(instance, "mobs_killed"));
+        pdc.remove(new NamespacedKey(instance, String.valueOf(Stat.BLOCKS_BROKEN)));
+        pdc.remove(new NamespacedKey(instance, String.valueOf(Stat.DAMAGE_DEALT)));
+        pdc.remove(new NamespacedKey(instance, String.valueOf(Stat.PLAYERS_KILLED)));
+        pdc.remove(new NamespacedKey(instance, String.valueOf(Stat.MOBS_KILLED)));
+        pdc.remove(new NamespacedKey(instance, String.valueOf(Stat.TREASURE_CAUGHT)));
 
         itemStack.setItemMeta(itemMeta);
     }
@@ -166,11 +168,21 @@ public class StatHandler implements Listener {
         }
     }
 
+    @EventHandler
+    public void onRod(PlayerFishEvent event) {
+        if (event.getState() == PlayerFishEvent.State.CAUGHT_ENTITY) {
+            incrementStat(event.getPlayer().getInventory().getItemInMainHand(), Stat.TREASURE_CAUGHT.toString());
+        } else if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
+            incrementStat(event.getPlayer().getInventory().getItemInMainHand(), Stat.TREASURE_CAUGHT.toString());
+        }
+    }
+
     public enum Stat {
         BLOCKS_BROKEN("blocks_broken"),
         DAMAGE_DEALT("damage_dealt"),
         MOBS_KILLED("mobs_killed"),
-        PLAYERS_KILLED("players_killed");
+        PLAYERS_KILLED("players_killed"),
+        TREASURE_CAUGHT("treasure_caught");
 
         private final String text;
 
