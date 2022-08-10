@@ -38,7 +38,7 @@ public class CustomLore implements Listener {
                 if (cantBeUsedForStats(item.getType())) {
                     removeStatsFromItem(item);
                 }
-                applyEnchantsToLore(item);
+                // applyEnchantsToLore(item);
             }
         }, 1L);
 
