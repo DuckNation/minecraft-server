@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -51,7 +52,7 @@ public class StatHandler implements Listener {
                 !name.contains("helmet");
     }
 
-    public static ItemMeta getItemMeta(ItemStack itemStack) {
+    public static @NotNull ItemMeta getItemMeta(@NotNull ItemStack itemStack) {
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (itemMeta == null) {
             itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());

@@ -24,9 +24,11 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+import static io.github.haappi.ducksmp.Listeners.StatHandler.getItemMeta;
 import static io.github.haappi.ducksmp.Utils.Utils.chain;
 import static io.github.haappi.ducksmp.Utils.Utils.noItalics;
 
@@ -56,11 +58,15 @@ public class FireballHandler implements Listener {
         ItemStack fireball = new ItemStack(Material.FIRE_CHARGE, 16);
         ItemMeta fireballMeta = fireball.getItemMeta();
         fireballMeta.displayName(noItalics("Fireball", NamedTextColor.RED));
-        Component enchant = noItalics("    ", NamedTextColor.YELLOW);
-        fireballMeta.lore(Collections.singletonList(chain(noItalics("Right click", NamedTextColor.GOLD), noItalics(" to throw a fireball.", NamedTextColor.GREEN), enchant)));
+        fireballMeta.lore(Collections.singletonList(chain(noItalics("Right click", NamedTextColor.GOLD), noItalics(" to throw a fireball.", NamedTextColor.GREEN))));
         fireballMeta.getPersistentDataContainer().set(new org.bukkit.NamespacedKey(plugin, "fireball"), PersistentDataType.INTEGER, 1);
         fireball.setItemMeta(fireballMeta);
         return fireball;
+    }
+
+    public static boolean isFireBall(ItemStack stack) {
+        ItemMeta meta = getItemMeta(stack);
+        return meta.getPersistentDataContainer().has(new org.bukkit.NamespacedKey(DuckSMP.getInstance(), "fireball"), PersistentDataType.INTEGER);
     }
 
     private ShapelessRecipe fireballRecipe() {

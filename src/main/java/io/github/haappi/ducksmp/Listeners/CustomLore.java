@@ -6,11 +6,15 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
@@ -35,6 +39,9 @@ public class CustomLore implements Listener {
                 if (item == null) {
                     return;
                 }
+                if (item.getType() == Material.AIR) {
+                    return;
+                }
                 if (cantBeUsedForStats(item.getType())) {
                     removeStatsFromItem(item);
                 }
@@ -44,6 +51,7 @@ public class CustomLore implements Listener {
 
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         if (event.getMessage().contains("enchant") && event.getMessage().contains("cant see")) {
@@ -57,6 +65,13 @@ public class CustomLore implements Listener {
             return;
         }
         applyEnchantsToLore(event.getItem());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onCraft(InventoryClickEvent event) {
+        if (event.getSlotType() == InventoryType.SlotType.RESULT) {
+            applyEnchantsToLore(event.getCurrentItem());
+        }
     }
 
     @EventHandler

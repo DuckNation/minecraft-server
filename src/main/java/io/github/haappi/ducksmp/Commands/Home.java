@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static io.github.haappi.ducksmp.Listeners.StatHandler.getItemMeta;
 import static io.github.haappi.ducksmp.Utils.Utils.*;
 
 public class Home extends BukkitCommand implements Listener {
@@ -76,12 +77,16 @@ public class Home extends BukkitCommand implements Listener {
         ItemStack item = new ItemStack(Material.MAGENTA_GLAZED_TERRACOTTA, count);
         ItemMeta meta = item.getItemMeta();
         meta.displayName(noItalics("Custom Home", NamedTextColor.GOLD));
-        Component enchant = noItalics("    ", NamedTextColor.YELLOW);
-        meta.lore(Arrays.asList(noItalics(""), chain(noItalics("Place this to add a ", NamedTextColor.GRAY), noItalics("home", NamedTextColor.AQUA), noItalics(".", NamedTextColor.GRAY), enchant)));
+        meta.lore(Arrays.asList(noItalics(""), chain(noItalics("Place this to add a ", NamedTextColor.GRAY), noItalics("home", NamedTextColor.AQUA), noItalics(".", NamedTextColor.GRAY))));
         meta.getPersistentDataContainer().set(new NamespacedKey(DuckSMP.getInstance(), "custom_home"), PersistentDataType.STRING, "home");
         item.setItemMeta(meta);
 
         return item;
+    }
+
+    public static boolean isHome(ItemStack stack) {
+        ItemMeta meta = getItemMeta(stack);
+        return meta.getPersistentDataContainer().has(new org.bukkit.NamespacedKey(DuckSMP.getInstance(), "custom_home"), PersistentDataType.STRING);
     }
 
     public static void callback(String homeName, Location blockLocation, Player player) {
