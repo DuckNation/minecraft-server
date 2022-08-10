@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Locale;
 
 import static io.github.haappi.ducksmp.Internals.Messages.insertEmptyDocumentIfNeeded;
 import static io.github.haappi.ducksmp.Listeners.TotemHandler.mobs;
@@ -27,6 +26,20 @@ public class ChangeMob extends BukkitCommand {
         setAliases(List.of("cm"));
         setDescription("Change the mob type of a totem");
         setUsage("/cm [mob]");
+    }
+
+    public static void updateInDiscord() {
+        insertEmptyDocumentIfNeeded();
+
+        MongoCollection<Document> collection = DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages");
+        Document doc = new Document();
+        doc.put("type", "change_mob");
+        doc.put("message", "The random totem mob is now: " + TotemHandler.randomMob.name());
+        doc.put("mobName", TotemHandler.randomMob.name());
+        doc.put("bound", "clientbound");
+        doc.put("ack", 0);
+
+        collection.insertOne(doc);
     }
 
     @Override
@@ -54,19 +67,5 @@ public class ChangeMob extends BukkitCommand {
         updateInDiscord();
 
         return true;
-    }
-
-    public static void updateInDiscord() {
-        insertEmptyDocumentIfNeeded();
-
-        MongoCollection<Document> collection = DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages");
-        Document doc = new Document();
-        doc.put("type", "change_mob");
-        doc.put("message", "The random totem mob is now: " + TotemHandler.randomMob.name());
-        doc.put("mobName", TotemHandler.randomMob.name());
-        doc.put("bound", "clientbound");
-        doc.put("ack", 0);
-
-        collection.insertOne(doc);
     }
 }

@@ -34,22 +34,6 @@ public class StatHandler implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    public enum Stat {
-        BLOCKS_BROKEN("blocks_broken"),
-        DAMAGE_DEALT("damage_dealt"),
-        MOBS_KILLED("mobs_killed"),
-        PLAYERS_KILLED("players_killed");
-
-        private final String text;
-
-        Stat(String text) {
-            this.text = text;
-        }
-        public String toString() {
-            return text;
-        }
-    }
-
     public static boolean cantBeUsedForStats(Material item) {
         String name = item.toString().toLowerCase();
         return !name.contains("shovel") &&
@@ -75,10 +59,6 @@ public class StatHandler implements Listener {
         return itemMeta;
     }
 
-    private double getRounded(double input) {
-        return Double.parseDouble(df.format(input));
-    }
-
     public static void removeStatsFromItem(ItemStack itemStack) {
         ItemMeta itemMeta = getItemMeta(itemStack);
         PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
@@ -94,11 +74,34 @@ public class StatHandler implements Listener {
     }
 
     /**
+     * Get stats for the supplied itemstack. If the itemstack is not a stat item, or it doesn't have stats, this returns null.
+     *
+     * @param stack        The itemstack to get the stats of.
+     * @param nameToShow   The name of the stat to show on the lore.
+     * @param internalName The name of the stat to get.
+     * @return The stats of the itemstack.
+     */
+    public static Component getStatsForItem(ItemStack stack, String nameToShow, String internalName, PersistentDataType type) {
+        ItemMeta meta = getItemMeta(stack);
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        DuckSMP instance = DuckSMP.getInstance();
+        NamespacedKey key = new NamespacedKey(instance, internalName);
+        if (!pdc.has(key)) {
+            return null;
+        }
+        return chain(noItalics(nameToShow, NamedTextColor.AQUA), noItalics(": ", NamedTextColor.GRAY), noItalics(NumberFormat.getIntegerInstance().format(pdc.get(key, type)), NamedTextColor.GOLD));
+    }
+
+    private double getRounded(double input) {
+        return Double.parseDouble(df.format(input));
+    }
+
+    /**
      * Automatically increments a stat. This handles all the boilerplate of checking for you, and doesn't do anything if it fails.
      * <p><b>This increases an integer value, not a double value.</b></p>
-
-     @param stack The itemstack to increment the stat of.
-     @param name The name of the stat to increment.
+     *
+     * @param stack The itemstack to increment the stat of.
+     * @param name  The name of the stat to increment.
      **/
     @SuppressWarnings("SameParameterValue")
     private void incrementStat(ItemStack stack, String name) {
@@ -118,9 +121,9 @@ public class StatHandler implements Listener {
     /**
      * Automatically increments a stat by the supplied double. This handles all the boilerplate of checking for you, and doesn't do anything if it fails.
      * <p><b>This increases a double value, not an integer value.</b></p>
-
-     @param stack The itemstack to increment the stat of.
-     @param name The name of the stat to increment.
+     *
+     * @param stack The itemstack to increment the stat of.
+     * @param name  The name of the stat to increment.
      **/
     @SuppressWarnings("SameParameterValue")
     private void incrementStat(ItemStack stack, String name, Double amount) {
@@ -137,25 +140,6 @@ public class StatHandler implements Listener {
         stack.setItemMeta(itemMeta);
     }
 
-    /**
-     * Get stats for the supplied itemstack. If the itemstack is not a stat item, or it doesn't have stats, this returns null.
-     * @param stack The itemstack to get the stats of.
-     * @param nameToShow The name of the stat to show on the lore.
-     * @param internalName The name of the stat to get.
-     * @return The stats of the itemstack.
-     */
-    public static Component getStatsForItem(ItemStack stack, String nameToShow, String internalName, PersistentDataType type) {
-        ItemMeta meta = getItemMeta(stack);
-        PersistentDataContainer pdc = meta.getPersistentDataContainer();
-        DuckSMP instance = DuckSMP.getInstance();
-        NamespacedKey key = new NamespacedKey(instance, internalName);
-        if (!pdc.has(key)) {
-            return null;
-        }
-        return chain(noItalics(nameToShow, NamedTextColor.AQUA), noItalics(": ", NamedTextColor.GRAY), noItalics(NumberFormat.getIntegerInstance().format(pdc.get(key, type)), NamedTextColor.GOLD));
-    }
-
-
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         incrementStat(event.getPlayer().getInventory().getItemInMainHand(), String.valueOf(Stat.BLOCKS_BROKEN));
@@ -163,7 +147,7 @@ public class StatHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onDamage(EntityDamageByEntityEvent event) {
-         if (event.getDamager() instanceof Player player) {
+        if (event.getDamager() instanceof Player player) {
             incrementStat(player.getInventory().getItemInMainHand(), Stat.DAMAGE_DEALT.toString(), event.getFinalDamage());
         }
     }
@@ -178,6 +162,23 @@ public class StatHandler implements Listener {
         if (event.getEntity().getKiller() != null) {
             Player player = event.getEntity().getKiller();
             incrementStat(player.getInventory().getItemInMainHand(), Stat.MOBS_KILLED.toString());
+        }
+    }
+
+    public enum Stat {
+        BLOCKS_BROKEN("blocks_broken"),
+        DAMAGE_DEALT("damage_dealt"),
+        MOBS_KILLED("mobs_killed"),
+        PLAYERS_KILLED("players_killed");
+
+        private final String text;
+
+        Stat(String text) {
+            this.text = text;
+        }
+
+        public String toString() {
+            return text;
         }
     }
 

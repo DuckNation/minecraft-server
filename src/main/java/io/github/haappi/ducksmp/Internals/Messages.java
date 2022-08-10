@@ -92,6 +92,16 @@ public class Messages implements Listener {
         }.runTaskTimer(plugin, 0, 20);
     }
 
+    public static void insertEmptyDocumentIfNeeded() {
+        MongoCollection<Document> collection = DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages");
+        Document doc = new Document();
+        if (collection.find(doc).first() == null) {
+            doc.put("type", "ignore");
+            doc.put("bound", "uranusbound");
+            collection.insertOne(doc);
+        }
+    }
+
     private void runAsyncTask() {
         Document finalDoc = new Document();
         MongoCollection<Document> collection = DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages");
@@ -125,16 +135,6 @@ public class Messages implements Listener {
     public void playerQuit(PlayerQuitEvent event) {
         if ((Bukkit.getOnlinePlayers().size() <= 1) && (restartNeeded)) {
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "stop");
-        }
-    }
-
-    public static void insertEmptyDocumentIfNeeded() {
-        MongoCollection<Document> collection = DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages");
-        Document doc = new Document();
-        if (collection.find(doc).first() == null) {
-            doc.put("type", "ignore");
-            doc.put("bound", "uranusbound");
-            collection.insertOne(doc);
         }
     }
 

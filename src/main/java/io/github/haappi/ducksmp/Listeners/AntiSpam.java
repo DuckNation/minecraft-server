@@ -9,18 +9,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class AntiSpam implements Listener {
 
-    private final DuckSMP plugin;
-
-    private final ConcurrentHashMap<UUID, Long> cooldowns = new ConcurrentHashMap<>();
     public static final ConcurrentLinkedQueue<UUID> mutedPlayers = new ConcurrentLinkedQueue<>();
+    private final DuckSMP plugin;
+    private final ConcurrentHashMap<UUID, Long> cooldowns = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Integer> warnings = new ConcurrentHashMap<>();
 
     public AntiSpam() {

@@ -2,7 +2,6 @@ package io.github.haappi.ducksmp.Listeners;
 
 import com.destroystokyo.paper.event.inventory.PrepareResultEvent;
 import io.github.haappi.ducksmp.DuckSMP;
-import io.github.haappi.ducksmp.Utils.LoreUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
