@@ -91,7 +91,7 @@ public class TotemHandler implements Listener {
                 if (randomNumber < 3) {
                     ItemStack item = new ItemStack(Material.TOTEM_OF_UNDYING, 1);
                     ItemMeta meta = item.getItemMeta();
-                    meta.lore(List.of(Component.text("Dropped from ", NamedTextColor.YELLOW).append(Component.text(randomMob.name(), NamedTextColor.GREEN)).decoration(TextDecoration.BOLD, false)));
+                    meta.lore(List.of(Utils.chain(Utils.noItalics("Dropped from", NamedTextColor.YELLOW), Utils.noItalics(": ", NamedTextColor.GRAY), Utils.noItalics(randomMob.name(), NamedTextColor.GREEN))));
                     item.setItemMeta(meta);
                     event.getDrops().add(item);
                 }
