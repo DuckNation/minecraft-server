@@ -133,7 +133,7 @@ public class Utils {
                 .append(Component.text(location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ(), NamedTextColor.GOLD));
     }
 
-    public static void loadChunks(Location starting, int radius) {
+    public static void loadChunksAsync(Location starting, int radius) {
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 starting.getWorld().getChunkAtAsync(starting.getBlockX() + (x * 16), starting.getBlockZ() + (z * 16));

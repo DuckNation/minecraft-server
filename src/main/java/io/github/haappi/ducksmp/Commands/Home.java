@@ -4,11 +4,13 @@ import com.jeff_media.customblockdata.CustomBlockData;
 import com.jeff_media.customblockdata.events.CustomBlockDataMoveEvent;
 import com.jeff_media.morepersistentdatatypes.DataType;
 import io.github.haappi.ducksmp.DuckSMP;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundOpenSignEditorPacket;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -20,10 +22,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -34,10 +34,8 @@ import org.geysermc.cumulus.form.CustomForm;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.haappi.ducksmp.Listeners.StatHandler.getItemMeta;
@@ -163,16 +161,21 @@ public class Home extends BukkitCommand implements Listener {
     }
 
     public static Component getHomesOfPlayer(Player player) {
-        PersistentDataContainer container = player.getPersistentDataContainer();
-        Map<String, String> homes = container.get(new NamespacedKey(DuckSMP.getInstance(), "custom_homes"), DataType.asMap(DataType.STRING, DataType.STRING));
-        if (homes == null) {
-            homes = new HashMap<>();
-        }
+        Map<String, String> homes = getHomeMapsOfPlayer(player);
         Component component = Component.text("", NamedTextColor.GRAY);
         for (Map.Entry<String, String> home : homes.entrySet()) {
             component = component.append(Component.newline()).append(Component.text(home.getKey() + " ", NamedTextColor.YELLOW).append(formattedLocation(getLocation(home.getValue()))));
         }
         return component;
+    }
+
+    public static Map<String, String> getHomeMapsOfPlayer(Player player) {
+        PersistentDataContainer container = player.getPersistentDataContainer();
+        Map<String, String> homes = container.get(new NamespacedKey(DuckSMP.getInstance(), "custom_homes"), DataType.asMap(DataType.STRING, DataType.STRING));
+        if (homes == null) {
+            homes = new HashMap<>();
+        }
+        return homes;
     }
 
     private ShapedRecipe homeRecipe(Material bedType) {
@@ -241,6 +244,69 @@ public class Home extends BukkitCommand implements Listener {
         player.sendBlockChange(player.getLocation(), oldBlock);
     }
 
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        Map<String, String> homes = getHomeMapsOfPlayer(player);
+
+        for (String home : homes.values()) {
+            Location location = getLocation(home);
+            if (location.getWorld().getBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ()).getType() == Material.MAGENTA_GLAZED_TERRACOTTA) {
+                forceLoadChunks(player, location, 4);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onLeave(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+
+        if (tasks.containsKey(event.getPlayer().getUniqueId())) {
+            Bukkit.getScheduler().cancelTask(tasks.remove(event.getPlayer().getUniqueId()));
+        }
+
+        Map<String, String> homes = getHomeMapsOfPlayer(player);
+
+        for (String home : homes.values()) {
+            Location location = getLocation(home);
+            if (location.getWorld().getBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ()).getType() == Material.MAGENTA_GLAZED_TERRACOTTA) {
+                forceUnloadChunks(location, 4);
+            }
+        }
+    }
+
+    private void forceLoadChunks(Audience player, Location starting, int radius) {
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                @NotNull CompletableFuture<Chunk> future = starting.getWorld().getChunkAtAsync(starting.getBlockX() + (x * 16), starting.getBlockZ() + (z * 16));
+                future.whenComplete((chunk, throwable) -> {
+                    if (throwable != null) {
+                        throwable.printStackTrace();
+                    } else {
+                        chunk.setForceLoaded(true);
+                        player.sendMessage(noItalics("Chunk " + chunk.getX() + "," + chunk.getZ() + " loaded.", NamedTextColor.GREEN));
+                    }
+                });
+            }
+        }
+    }
+
+    private void forceUnloadChunks(Location starting, int radius) {
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                @NotNull CompletableFuture<Chunk> future = starting.getWorld().getChunkAtAsync(starting.getBlockX() + (x * 16), starting.getBlockZ() + (z * 16));
+                future.whenComplete((chunk, throwable) -> {
+                    if (throwable != null) {
+                        throwable.printStackTrace();
+                    } else {
+                        chunk.setForceLoaded(false);
+                    }
+                });
+            }
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockMove(CustomBlockDataMoveEvent event) {
         event.setCancelled(true);
@@ -261,7 +327,29 @@ public class Home extends BukkitCommand implements Listener {
             event.getBlock().setType(Material.AIR);
             event.setDropItems(false);
             event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), getHome(1));
+
+            forceUnloadChunks(event.getBlock().getLocation(), 4);
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onExplosion(EntityExplodeEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+        List<Block> blocks = new ArrayList<>(event.blockList());
+        blocks.removeIf(block -> block.getType() != Material.MAGENTA_GLAZED_TERRACOTTA);
+        for (Block block : blocks) {
+            PersistentDataContainer customBlockData = new CustomBlockData(block, plugin);
+            String data = customBlockData.getOrDefault(new NamespacedKey(plugin, "owner"), PersistentDataType.STRING, "no_one");
+            if (!data.equals("no_one")) {
+                block.setType(Material.AIR);
+                block.getWorld().dropItem(block.getLocation(), getHome(1));
+
+//                forceUnloadChunks(event.getPlayer(), block.getLocation(), 4);
+            }
+        }
+
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -339,7 +427,7 @@ public class Home extends BukkitCommand implements Listener {
             return true;
         }
 
-        loadChunks(location, 6);
+        loadChunksAsync(location, 6);
         player.sendMessage(noItalics("Teleporting to home " + homeName + ".", NamedTextColor.GREEN).append(Component.text(" Don't move for 15 seconds.", NamedTextColor.RED)));
         Bukkit.getScheduler().runTaskLater(plugin, () ->
                 tasks.put(player.getUniqueId(),
@@ -349,13 +437,6 @@ public class Home extends BukkitCommand implements Listener {
                 ), 20L * 2); // Grant 2 second leeway for the player to move.
 
         return true;
-    }
-
-    @EventHandler
-    public void onLeave(PlayerQuitEvent event) {
-        if (tasks.containsKey(event.getPlayer().getUniqueId())) {
-            Bukkit.getScheduler().cancelTask(tasks.remove(event.getPlayer().getUniqueId()));
-        }
     }
 
     private void teleport(Player player, Location location) {
