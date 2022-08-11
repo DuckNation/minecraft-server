@@ -29,7 +29,7 @@ public class Villager implements Listener {
         Location loc = event.getEntity().getLocation();
         if (event.getEntity().getType() == EntityType.WARDEN) {
             if (event.getEntity().getPersistentDataContainer().has(new NamespacedKey(plugin, "vilager"), PersistentDataType.STRING)) {
-                for (int i = 0; i < random.nextInt(6, 9); i++) {
+                for (int i = 0; i < random.nextInt(3, 5); i++) {
                     loc.getWorld().spawnEntity(loc, EntityType.VILLAGER);
                 }
             }
