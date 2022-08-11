@@ -27,8 +27,8 @@ public class ArmorStandPlayer implements Listener {
 
     public ArmorStandPlayer() {
         this.plugin = DuckSMP.getInstance();
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this::armorStandTask, 500L, 2L);
+//        Bukkit.getPluginManager().registerEvents(this, plugin);
+//        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this::armorStandTask, 500L, 2L);
     }
 
     @SuppressWarnings("UnstableApiUsage")
