@@ -339,7 +339,7 @@ public class Home extends BukkitCommand implements Listener {
             return true;
         }
 
-        loadChunks(location, 8);
+        loadChunks(location, 6);
         player.sendMessage(noItalics("Teleporting to home " + homeName + ".", NamedTextColor.GREEN).append(Component.text(" Don't move for 15 seconds.", NamedTextColor.RED)));
         Bukkit.getScheduler().runTaskLater(plugin, () ->
                 tasks.put(player.getUniqueId(),
