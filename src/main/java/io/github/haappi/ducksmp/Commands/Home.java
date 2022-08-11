@@ -156,6 +156,8 @@ public class Home extends BukkitCommand implements Listener {
 
             container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_homes"), DataType.asMap(DataType.STRING, DataType.STRING), homes);
             player.sendMessage(noItalics("Home " + homeName + " created.", NamedTextColor.GREEN));
+
+            forceLoadChunks(blockLocation, 3);
         });
 
     }
@@ -253,7 +255,7 @@ public class Home extends BukkitCommand implements Listener {
         for (String home : homes.values()) {
             Location location = getLocation(home);
             if (location.getWorld().getBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ()).getType() == Material.MAGENTA_GLAZED_TERRACOTTA) {
-                forceLoadChunks(player, location, 4);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> forceLoadChunks(location, 3), 20 * 2);
             }
         }
     }
@@ -271,12 +273,12 @@ public class Home extends BukkitCommand implements Listener {
         for (String home : homes.values()) {
             Location location = getLocation(home);
             if (location.getWorld().getBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ()).getType() == Material.MAGENTA_GLAZED_TERRACOTTA) {
-                forceUnloadChunks(location, 4);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> forceUnloadChunks(location, 3), 20 * 2);
             }
         }
     }
 
-    private void forceLoadChunks(Audience player, Location starting, int radius) {
+    private static void forceLoadChunks(Location starting, int radius) {
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 @NotNull CompletableFuture<Chunk> future = starting.getWorld().getChunkAtAsync(starting.getBlockX() + (x * 16), starting.getBlockZ() + (z * 16));
@@ -285,7 +287,6 @@ public class Home extends BukkitCommand implements Listener {
                         throwable.printStackTrace();
                     } else {
                         chunk.setForceLoaded(true);
-                        player.sendMessage(noItalics("Chunk " + chunk.getX() + "," + chunk.getZ() + " loaded.", NamedTextColor.GREEN));
                     }
                 });
             }
@@ -328,7 +329,7 @@ public class Home extends BukkitCommand implements Listener {
             event.setDropItems(false);
             event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), getHome(1));
 
-            forceUnloadChunks(event.getBlock().getLocation(), 4);
+            forceUnloadChunks(event.getBlock().getLocation(), 3);
         }
     }
 
@@ -338,15 +339,17 @@ public class Home extends BukkitCommand implements Listener {
             return;
         }
         List<Block> blocks = new ArrayList<>(event.blockList());
-        blocks.removeIf(block -> block.getType() != Material.MAGENTA_GLAZED_TERRACOTTA);
+        event.blockList().removeIf(block -> block.getType() == Material.MAGENTA_GLAZED_TERRACOTTA);
         for (Block block : blocks) {
+            if (block.getType() != Material.MAGENTA_GLAZED_TERRACOTTA) {
+                continue;
+            }
             PersistentDataContainer customBlockData = new CustomBlockData(block, plugin);
             String data = customBlockData.getOrDefault(new NamespacedKey(plugin, "owner"), PersistentDataType.STRING, "no_one");
             if (!data.equals("no_one")) {
                 block.setType(Material.AIR);
                 block.getWorld().dropItem(block.getLocation(), getHome(1));
-
-//                forceUnloadChunks(event.getPlayer(), block.getLocation(), 4);
+                forceUnloadChunks(block.getLocation(), 3);
             }
         }
 
@@ -428,11 +431,11 @@ public class Home extends BukkitCommand implements Listener {
         }
 
         loadChunksAsync(location, 6);
-        player.sendMessage(noItalics("Teleporting to home " + homeName + ".", NamedTextColor.GREEN).append(Component.text(" Don't move for 15 seconds.", NamedTextColor.RED)));
+        player.sendMessage(noItalics("Teleporting to home " + homeName + ".", NamedTextColor.GREEN).append(Component.text(" Don't move for 10 seconds.", NamedTextColor.RED)));
         Bukkit.getScheduler().runTaskLater(plugin, () ->
                 tasks.put(player.getUniqueId(),
                         Bukkit.getScheduler().runTaskLater(plugin, () ->
-                                teleport(player, location), 20L * 13
+                                teleport(player, location), 20L * 8
                         ).getTaskId()
                 ), 20L * 2); // Grant 2 second leeway for the player to move.
 
