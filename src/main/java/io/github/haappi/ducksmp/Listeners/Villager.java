@@ -27,7 +27,7 @@ public class Villager implements Listener {
                 event.setCancelled(false);
                 final Component yay = Component.text("Yay! Someone managed to breed a villager without dying!!!").color(NamedTextColor.GREEN);
                 Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(yay));
-                for (int i = 0; i < random.nextInt(2, 7); i++) {
+                for (int i = 0; i < random.nextInt(6, 12); i++) {
                     event.getEntity().getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.VILLAGER, true);
                 }
             } else {
