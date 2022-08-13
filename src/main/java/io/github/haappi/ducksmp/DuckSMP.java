@@ -61,7 +61,6 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new StringRecipe();
         new Netherite();
 
-        new ArmorStandPlayer();
         new CustomLore();
         new AntiSpam();
 
@@ -77,7 +76,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new FireballHandler();
         new DiscordLink();
 
-        registerNewCommand(new Signup("signup"));
+//        registerNewCommand(new Signup("signup"));
         registerNewCommand(new StopRestart("stoprestart"));
         registerNewCommand(new NightVision("nv"));
         registerNewCommand(new Vanish("v"));
