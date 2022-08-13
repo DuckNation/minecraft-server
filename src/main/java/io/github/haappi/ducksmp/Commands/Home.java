@@ -279,6 +279,7 @@ public class Home extends BukkitCommand implements Listener {
     }
 
     private static void forceLoadChunks(Location starting, int radius) {
+        // maybe load chunks slowly adding a delay between each chunk
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 @NotNull CompletableFuture<Chunk> future = starting.getWorld().getChunkAtAsync(starting.getBlockX() + (x * 16), starting.getBlockZ() + (z * 16));

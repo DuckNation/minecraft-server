@@ -34,7 +34,7 @@ dependencies {
     implementation("com.jeff_media:MorePersistentDataTypes:2.3.1")
     compileOnly("net.luckperms:api:5.4")
 //    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-//    testImplementation("com.github.seeseemelk:MockBukkit-v1.18:2.22.2")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.18:2.85.2")
 }
 
 java {

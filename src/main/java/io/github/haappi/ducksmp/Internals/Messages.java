@@ -246,6 +246,9 @@ public class Messages implements Listener {
                     - Clientbound error if it didn't load
                  */
                 break; // handle config changes here
+            case "chat":
+                Bukkit.getOnlinePlayers().forEach(player -> player.sendRichMessage(message.getString("message")));
+                break;
             default:
                 Bukkit.getLogger().severe("Got type " + message.getString("type") + " but I don't know how to handle it.");
                 Bukkit.getLogger().severe(message.toJson());

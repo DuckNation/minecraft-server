@@ -7,6 +7,7 @@ import io.github.haappi.ducksmp.Commands.*;
 import io.github.haappi.ducksmp.Cosmetics.NameTag.Common;
 import io.github.haappi.ducksmp.Cosmetics.NameTag.NameTagCommand;
 import io.github.haappi.ducksmp.Cosmetics.NameTag.SetPrefix;
+import io.github.haappi.ducksmp.Internals.DiscordLink;
 import io.github.haappi.ducksmp.Internals.Messages;
 import io.github.haappi.ducksmp.LifeSteal.ArmorStandPlayer;
 import io.github.haappi.ducksmp.LifeSteal.Signup;
@@ -74,6 +75,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 //        new AntiEnd();
         new BetterTeleport();
         new FireballHandler();
+        new DiscordLink();
 
         registerNewCommand(new Signup("signup"));
         registerNewCommand(new StopRestart("stoprestart"));
