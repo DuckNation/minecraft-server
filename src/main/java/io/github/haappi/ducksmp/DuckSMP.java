@@ -126,7 +126,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
             this.getLogger().severe("A proper Mongo URI is required to run this plugin.");
             return false;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(this, () -> mongoClient = MongoClients.create(Objects.requireNonNull(config.getString("mongo-uri"))));
+        mongoClient = MongoClients.create(Objects.requireNonNull(config.getString("mongo-uri")));
         secretKey = config.getString("secretKey");
         return true;
     }
