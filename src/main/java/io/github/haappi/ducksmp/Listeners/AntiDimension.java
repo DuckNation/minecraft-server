@@ -6,11 +6,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-public class AntiEnd implements Listener {
+public class AntiDimension implements Listener {
 
     private final DuckSMP plugin;
 
-    public AntiEnd() {
+    public AntiDimension() {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -21,6 +21,9 @@ public class AntiEnd implements Listener {
             return;
         }
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
+            event.setCancelled(true);
+        }
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
             event.setCancelled(true);
         }
     }
