@@ -73,9 +73,11 @@ public class DiscordLink implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onQuit(PlayerQuitEvent event) {
         Document document = new Document();
-        String message = event.getPlayer().getName() + " left the game.";
+        String message;
         if (event.quitMessage() != null) {
             message = PaperAdventure.asPlain(event.quitMessage(), event.getPlayer().locale());
+        } else {
+            return;
         }
         document.put("message", message);
         uploadToMongo(event.getPlayer(), document, "quit");
@@ -84,9 +86,11 @@ public class DiscordLink implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event) {
         Document document = new Document();
-        String message = event.getPlayer().getName() + " joined the game!";
+        String message;
         if (event.joinMessage() != null) {
             message = PaperAdventure.asPlain(event.joinMessage(), event.getPlayer().locale());
+        } else {
+            return;
         }
         document.put("message", message);
         uploadToMongo(event.getPlayer(), document, "join");
