@@ -1,7 +1,6 @@
 package io.github.haappi.ducksmp.Listeners;
 
 import io.github.haappi.ducksmp.DuckSMP;
-import io.github.haappi.ducksmp.LifeSteal.Listeners;
 import io.github.haappi.ducksmp.Utils.CustomHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -16,7 +15,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -25,14 +23,14 @@ import org.geysermc.floodgate.api.FloodgateApi;
 public class Extra implements Listener {
 
     private final DuckSMP plugin;
-    private boolean hasListenerLoaded = false;
+//    private boolean hasListenerLoaded = false;
 
     public Extra() {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler
+//    @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getHolder() instanceof CustomHolder) {
             if (event.getCurrentItem() == null) {
@@ -57,13 +55,13 @@ public class Extra implements Listener {
 
     }
 
-    @EventHandler
-    public void onWorldLoad(WorldLoadEvent event) {
-        if (!hasListenerLoaded) {
-            new Listeners();
-            hasListenerLoaded = true;
-        }
-    }
+//    @EventHandler
+//    public void onWorldLoad(WorldLoadEvent event) {
+//        if (!hasListenerLoaded) {
+//            new Listeners();
+//            hasListenerLoaded = true;
+//        }
+//    }
 
     @EventHandler
     public void onCommandRun(PlayerCommandPreprocessEvent event) {
