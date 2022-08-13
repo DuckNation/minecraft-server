@@ -26,7 +26,7 @@ public class DiscordLink implements Listener {
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
             int size = Bukkit.getOnlinePlayers().size();
-            Document doc = new Document("message", String.format("**%s / %s** players online. Join at **smp.quack.tk**", size, Bukkit.getMaxPlayers()));
+            Document doc = new Document("message", String.format("**%s/%s** players online. Join at **smp.quack.tk**", size, Bukkit.getMaxPlayers()));
             ArrayList<String> players = new ArrayList<>();
             for (Player player : Bukkit.getOnlinePlayers()) {
                 players.add(player.getName());
