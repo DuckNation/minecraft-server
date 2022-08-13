@@ -9,8 +9,6 @@ import io.github.haappi.ducksmp.Cosmetics.NameTag.NameTagCommand;
 import io.github.haappi.ducksmp.Cosmetics.NameTag.SetPrefix;
 import io.github.haappi.ducksmp.Internals.DiscordLink;
 import io.github.haappi.ducksmp.Internals.Messages;
-import io.github.haappi.ducksmp.LifeSteal.ArmorStandPlayer;
-import io.github.haappi.ducksmp.LifeSteal.Signup;
 import io.github.haappi.ducksmp.Listeners.*;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.Bukkit;

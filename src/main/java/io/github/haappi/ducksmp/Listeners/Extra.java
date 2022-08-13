@@ -30,7 +30,7 @@ public class Extra implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-//    @EventHandler
+    //    @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getHolder() instanceof CustomHolder) {
             if (event.getCurrentItem() == null) {

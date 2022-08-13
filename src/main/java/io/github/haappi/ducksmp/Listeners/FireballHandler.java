@@ -27,7 +27,6 @@ import org.bukkit.util.Vector;
 import java.util.*;
 
 import static io.github.haappi.ducksmp.Listeners.StatHandler.getItemMeta;
-import static io.github.haappi.ducksmp.Listeners.StatHandler.getStatsForItem;
 import static io.github.haappi.ducksmp.Utils.Utils.chain;
 import static io.github.haappi.ducksmp.Utils.Utils.noItalics;
 

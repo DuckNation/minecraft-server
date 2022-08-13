@@ -4,7 +4,6 @@ import com.jeff_media.customblockdata.CustomBlockData;
 import com.jeff_media.customblockdata.events.CustomBlockDataMoveEvent;
 import com.jeff_media.morepersistentdatatypes.DataType;
 import io.github.haappi.ducksmp.DuckSMP;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.core.BlockPos;
@@ -180,6 +179,22 @@ public class Home extends BukkitCommand implements Listener {
         return homes;
     }
 
+    private static void forceLoadChunks(Location starting, int radius) {
+        // maybe load chunks slowly adding a delay between each chunk
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                @NotNull CompletableFuture<Chunk> future = starting.getWorld().getChunkAtAsync(starting.getBlockX() + (x * 16), starting.getBlockZ() + (z * 16));
+                future.whenComplete((chunk, throwable) -> {
+                    if (throwable != null) {
+                        throwable.printStackTrace();
+                    } else {
+                        chunk.setForceLoaded(true);
+                    }
+                });
+            }
+        }
+    }
+
     private ShapedRecipe homeRecipe(Material bedType) {
         NamespacedKey key = new NamespacedKey(plugin, "home_recipe_" + bedType.name().toLowerCase());
 
@@ -274,22 +289,6 @@ public class Home extends BukkitCommand implements Listener {
             Location location = getLocation(home);
             if (location.getWorld().getBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ()).getType() == Material.MAGENTA_GLAZED_TERRACOTTA) {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> forceUnloadChunks(location, 3), 20 * 2);
-            }
-        }
-    }
-
-    private static void forceLoadChunks(Location starting, int radius) {
-        // maybe load chunks slowly adding a delay between each chunk
-        for (int x = -radius; x <= radius; x++) {
-            for (int z = -radius; z <= radius; z++) {
-                @NotNull CompletableFuture<Chunk> future = starting.getWorld().getChunkAtAsync(starting.getBlockX() + (x * 16), starting.getBlockZ() + (z * 16));
-                future.whenComplete((chunk, throwable) -> {
-                    if (throwable != null) {
-                        throwable.printStackTrace();
-                    } else {
-                        chunk.setForceLoaded(true);
-                    }
-                });
             }
         }
     }
