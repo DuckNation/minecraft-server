@@ -1,6 +1,5 @@
 package io.github.haappi.ducksmp.Internals;
 
-import com.destroystokyo.paper.event.player.PlayerAdvancementCriterionGrantEvent;
 import io.github.haappi.ducksmp.DuckSMP;
 import io.papermc.paper.adventure.PaperAdventure;
 import io.papermc.paper.event.player.AsyncChatEvent;
@@ -14,7 +13,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRecipeDiscoverEvent;
+
+import java.util.ArrayList;
 
 public class DiscordLink implements Listener {
 
@@ -27,7 +27,11 @@ public class DiscordLink implements Listener {
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
             int size = Bukkit.getOnlinePlayers().size();
             Document doc = new Document("message", String.format("**%s / %s** players online. Join at **smp.quack.tk**", size, Bukkit.getMaxPlayers()));
-            doc.put("onlinePlayers", Bukkit.getOnlinePlayers().stream().map(Player::getName).toArray());
+            ArrayList<String> players = new ArrayList<>();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                players.add(player.getName());
+            }
+            doc.put("onlinePlayers", players);
             uploadToMongo(doc, "player_count");
         }, 20 * 10L, 20L * 60 * 10); // 10 minutes
     }
