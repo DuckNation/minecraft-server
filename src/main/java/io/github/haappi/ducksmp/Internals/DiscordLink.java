@@ -33,7 +33,7 @@ public class DiscordLink implements Listener {
             }
             doc.put("onlinePlayers", players);
             uploadToMongo(doc, "player_count");
-        }, 20 * 10L, 20L * 60 * 10); // 10 minutes
+        }, 20 * 15L, 20L * 60 * 10); // 10 minutes
     }
 
     private void uploadToMongo(Player player, Document document, String type) {
