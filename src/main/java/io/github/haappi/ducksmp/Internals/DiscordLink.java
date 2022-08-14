@@ -41,6 +41,10 @@ public class DiscordLink implements Listener {
         document.put("type", type);
         document.put("playerName", player.getName());
         document.put("playerUUID", player.getUniqueId().toString());
+        borkBorb(document);
+    }
+
+    private void borkBorb(Document document) {
         document.put("ack", 0);
         document.put("timestamp", System.currentTimeMillis() / 1000);
 
@@ -54,12 +58,7 @@ public class DiscordLink implements Listener {
     private void uploadToMongo(Document document, String type) {
         document.put("bound", "clientbound");
         document.put("type", type);
-        document.put("ack", 0);
-        document.put("timestamp", System.currentTimeMillis() / 1000);
-        if (document.getOrDefault("message", "").toString().length() > 512) {
-            document.put("message", document.getOrDefault("message", "").toString().substring(0, 512) + "...");
-        }
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages").insertOne(document));
+        borkBorb(document);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -75,7 +74,7 @@ public class DiscordLink implements Listener {
         Document document = new Document();
         String message;
         if (event.quitMessage() != null) {
-            message = PaperAdventure.asPlain(event.quitMessage(), event.getPlayer().locale());
+            message = "**" + PaperAdventure.asPlain(event.quitMessage(), event.getPlayer().locale()) + "**";
         } else {
             return;
         }
@@ -88,7 +87,7 @@ public class DiscordLink implements Listener {
         Document document = new Document();
         String message;
         if (event.joinMessage() != null) {
-            message = PaperAdventure.asPlain(event.joinMessage(), event.getPlayer().locale());
+            message = "**" + PaperAdventure.asPlain(event.joinMessage(), event.getPlayer().locale()) + "**";
         } else {
             return;
         }
