@@ -61,6 +61,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 
         new CustomLore();
         new AntiSpam();
+        new ChatFilter();
 
         new Common();
         new GlobalDeathHandler();

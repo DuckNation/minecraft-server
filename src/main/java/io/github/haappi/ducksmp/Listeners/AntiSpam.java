@@ -25,8 +25,9 @@ public class AntiSpam implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerChat(AsyncChatEvent event) {
+        if (event.isCancelled()) return;
         if (mutedPlayers.contains(event.getPlayer().getUniqueId())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Component.text("You are muted.", NamedTextColor.RED));
