@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import static io.github.haappi.ducksmp.Commands.Vanish.enabledPlayers;
 import static io.github.haappi.ducksmp.Listeners.AntiSpam.*;
+import static io.github.haappi.ducksmp.Listeners.ChatFilter.filterMessage;
 
 public class CustomTell extends BukkitCommand implements Listener {
 
@@ -59,8 +60,8 @@ public class CustomTell extends BukkitCommand implements Listener {
             recentlyMessaged.put(receiver.getUniqueId(), player.getUniqueId());
             recentlyMessaged.put(player.getUniqueId(), receiver.getUniqueId());
         }
-        receiver.sendMessage(Component.text("From ", NamedTextColor.GRAY).append(Component.text(sender.getName(), NamedTextColor.YELLOW)).append(Component.text(": " + message, NamedTextColor.GRAY)));
-        sender.sendMessage(Component.text("To ", NamedTextColor.GRAY).append(Component.text(receiver.getName(), NamedTextColor.YELLOW)).append(Component.text(": " + message, NamedTextColor.GRAY)));
+        receiver.sendMessage(Component.text("From ", NamedTextColor.GRAY).append(Component.text(sender.getName(), NamedTextColor.YELLOW)).append(Component.text(": " + filterMessage(message), NamedTextColor.GRAY)));
+        sender.sendMessage(Component.text("To ", NamedTextColor.GRAY).append(Component.text(receiver.getName(), NamedTextColor.YELLOW)).append(Component.text(": " + filterMessage(message), NamedTextColor.GRAY)));
     }
 
     @Override

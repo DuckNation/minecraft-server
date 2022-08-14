@@ -19,11 +19,12 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 
 public class ChatFilter implements Listener {
 
     private final DuckSMP plugin;
-    private final HashSet<String> blockedWords = new HashSet<>();
+    private static final HashSet<String> blockedWords = new HashSet<>();
 
     public ChatFilter() {
         // https://github.com/Flo0/WorkloadDistribution/tree/master/src/main/java/com/gestankbratwurst/scheduling/workloaddistribution
@@ -54,9 +55,7 @@ public class ChatFilter implements Listener {
         blockedWords.add("fuck");
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onMessage(AsyncChatEvent event) {
-        String message = PaperAdventure.asPlain(event.message(), event.getPlayer().locale());
+    public static String filterMessage(String message) {
         StringBuilder sb = new StringBuilder();
         for (String word : message.split(" ")) {
             if (blockedWords.contains(word.toLowerCase())) {
@@ -65,6 +64,21 @@ public class ChatFilter implements Listener {
                 sb.append(word).append(" ");
             }
         }
-        event.message(Component.text(sb.toString()));
+        return sb.toString();
+    }
+
+    public static String filterMessage(Component component) {
+        String message = PaperAdventure.asPlain(component, Locale.UK);
+        return filterMessage(message);
+    }
+
+    public static String filterMessage(Component component, Locale locale) {
+        String message = PaperAdventure.asPlain(component, locale);
+        return filterMessage(message);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onMessage(AsyncChatEvent event) {
+        event.message(Component.text(filterMessage(event.message(), event.getPlayer().locale())));
     }
 }
