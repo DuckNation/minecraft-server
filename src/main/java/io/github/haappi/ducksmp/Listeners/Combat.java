@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.UUID;
@@ -53,6 +54,17 @@ public class Combat implements Listener {
             timers.remove(event.getPlayer().getUniqueId());
             Component logged = Component.text(event.getPlayer().getName() + " has combat logged.", NamedTextColor.RED);
             Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(logged));
+        }
+    }
+
+    @EventHandler
+    public void onDeath(EntityDeathEvent event) {
+        if (event.getEntity().getKiller() != null) {
+            timers.remove(event.getEntity().getKiller().getUniqueId());
+            Player p = event.getEntity().getKiller();
+            if (p != null) {
+                p.sendMessage(Component.text("You are no longer in combat.", NamedTextColor.GRAY));
+            }
         }
     }
 
