@@ -32,7 +32,8 @@ dependencies {
     implementation("com.googlecode.json-simple:json-simple:1.1.1")
     implementation("com.jeff_media:CustomBlockData:2.1.0")
     implementation("com.jeff_media:MorePersistentDataTypes:2.3.1")
-    compileOnly("net.luckperms:api:5.4")
+    implementation("redis.clients:jedis:4.2.3")
+//    compileOnly("net.luckperms:api:5.4")
 //    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     testImplementation("com.github.seeseemelk:MockBukkit-v1.18:2.85.2")
 }

@@ -27,6 +27,9 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 
     public static ArrayList<Integer> taskIds = new ArrayList<>();
     public static String secretKey;
+    public static String redisHost;
+    public static int redisPort;
+    public static String redisPassword;
     public static boolean isDisabled = false;
     public static boolean showRestartBar = false;
     public static BossBar restartBar;
@@ -43,7 +46,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        if (!checkMongoConfig()) {
+        if (!checkConfig()) {
             Bukkit.getPluginManager().disablePlugin(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin(this.getName())));
             return;
         }
@@ -112,7 +115,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         this.mongoClient.getDatabase("duckMinecraft").createCollection("messages", new CreateCollectionOptions().capped(true).sizeInBytes(1024 * 1024 * 10)); // 10 MB
     }
 
-    private boolean checkMongoConfig() {
+    private boolean checkConfig() {
         FileConfiguration config = this.getConfig();
         if ((config.getString("mongo-uri") == null) ||
                 (Objects.requireNonNull(config.getString("mongo-uri")).equalsIgnoreCase("your-mongo-uri")) ||
@@ -121,6 +124,9 @@ public final class DuckSMP extends JavaPlugin implements Listener {
             config.addDefault("mongo-uri", "your-mongo-uri");
             config.addDefault("secretKey", "this-is-not-secure-until-you-set-it");
             config.addDefault("secretKeyIP", "this-is-not-secure-until-you-set-it");
+            config.addDefault("redis-host", "localhost");
+            config.addDefault("redis-port", 6379);
+            config.addDefault("redis-auth", "your-redis-auth");
             config.options().copyDefaults(true);
             this.saveConfig();
             this.getLogger().severe("A proper Mongo URI is required to run this plugin.");
@@ -128,6 +134,9 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         }
         mongoClient = MongoClients.create(Objects.requireNonNull(config.getString("mongo-uri")));
         secretKey = config.getString("secretKey");
+        redisHost = config.getString("redis-host");
+        redisPort = config.getInt("redis-port");
+        redisPassword = config.getString("redis-auth");
         return true;
     }
 
