@@ -41,8 +41,10 @@ public class LoreUtils {
             lore.add(chain(noItalics("Right click", NamedTextColor.GOLD), noItalics(" to throw a fireball.", NamedTextColor.GREEN)));
         }
 
-        meta.lore(lore);
-        item.setItemMeta(meta);
+        if (lore.size() != 0) {
+            meta.lore(lore);
+            item.setItemMeta(meta);
+        }
 
         if (cantBeUsedForStats(item.getType())) {
             return;

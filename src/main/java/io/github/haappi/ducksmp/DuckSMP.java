@@ -70,6 +70,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 
         new Combat();
         new AntiDimension();
+        new Elytra();
         new BetterTeleport();
         new FireballHandler();
         new DiscordLink();
