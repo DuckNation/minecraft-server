@@ -17,8 +17,8 @@ public class AntiSpam implements Listener {
 
     public static final ConcurrentLinkedQueue<UUID> mutedPlayers = new ConcurrentLinkedQueue<>();
     private final DuckSMP plugin;
-    private final ConcurrentHashMap<UUID, Long> cooldowns = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<UUID, Integer> warnings = new ConcurrentHashMap<>();
+    public static final ConcurrentHashMap<UUID, Long> cooldowns = new ConcurrentHashMap<>();
+    public static final ConcurrentHashMap<UUID, Integer> warnings = new ConcurrentHashMap<>();
 
     public AntiSpam() {
         plugin = DuckSMP.getInstance();

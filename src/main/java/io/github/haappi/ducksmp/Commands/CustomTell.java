@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import static io.github.haappi.ducksmp.Commands.Vanish.enabledPlayers;
-import static io.github.haappi.ducksmp.Listeners.AntiSpam.mutedPlayers;
+import static io.github.haappi.ducksmp.Listeners.AntiSpam.*;
 
 public class CustomTell extends BukkitCommand implements Listener {
 
@@ -35,8 +35,22 @@ public class CustomTell extends BukkitCommand implements Listener {
             sender.sendMessage(Component.text("Player not found.", NamedTextColor.RED));
             return;
         }
-
         if (sender instanceof Player player) {
+            if (cooldowns.containsKey(player.getUniqueId())) {
+                if (System.currentTimeMillis() - cooldowns.get(player.getUniqueId()) < 420) {
+                    player.sendMessage(Component.text("Stop spamming!", NamedTextColor.RED));
+                    warnings.put(player.getUniqueId(), warnings.getOrDefault(player.getUniqueId(), 1) + 1);
+                    cooldowns.put(player.getUniqueId(), System.currentTimeMillis()); // screw them for spamming
+
+                    if (warnings.get(player.getUniqueId()) > 3) {
+                        mutedPlayers.add(player.getUniqueId());
+                        player.sendMessage(Component.text("You have been muted for spamming.", NamedTextColor.RED));
+                        Bukkit.getOnlinePlayers().forEach(_player -> _player.sendMessage(Component.text("Player " + player + " has been muted for spamming! What a loser.", NamedTextColor.RED)));
+                    }
+                    return;
+                }
+            }
+
             if (mutedPlayers.contains(player.getUniqueId())) {
                 player.sendMessage(Component.text("You are muted.", NamedTextColor.RED));
                 return;
