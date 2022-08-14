@@ -77,14 +77,18 @@ public class GlobalDeathHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDeath(EntityDeathEvent event) {
         if (event.getEntity() instanceof Player player) {
-            AtomicReference<Chest> chestData1 = new AtomicReference<>();
-            AtomicReference<org.bukkit.block.data.type.Chest> chestData2 = new AtomicReference<>();
             player.getPersistentDataContainer().set(new NamespacedKey(plugin, "last_death_location"), PersistentDataType.STRING, getDeathPositionFormatted(player.getLocation()));
             Location playerPosition = player.getLocation().clone();
             playerPosition.add(random.nextInt(-50, 50), 0, random.nextInt(-50, 50));
             player.sendMessage(Component.text("Ah so yes. Ahem, my magical sources tell me that you died somewhere around ", NamedTextColor.AQUA).append(Component.text(getDeathPositionFormatted(playerPosition), NamedTextColor.GOLD)));
             player.sendMessage(chain(Component.text("But my fuzzy memory forgot where it was exactly so ermmmm, it's within like ", NamedTextColor.RED), Component.text("100 blocks", NamedTextColor.GOLD).decorate(TextDecoration.BOLD), Component.text(" or so!!! Hope this helps heh", NamedTextColor.RED)));
 
+            if (player.getKiller() != null) {
+                return; // Don't drop a chest if the player was killed by another player
+            }
+
+            AtomicReference<Chest> chestData1 = new AtomicReference<>();
+            AtomicReference<org.bukkit.block.data.type.Chest> chestData2 = new AtomicReference<>();
             AtomicReference<org.bukkit.block.Chest> bChest = new AtomicReference<>();
 
             Location loc = player.getLocation();
