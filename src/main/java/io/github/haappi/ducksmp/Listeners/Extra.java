@@ -1,33 +1,44 @@
 package io.github.haappi.ducksmp.Listeners;
 
 import io.github.haappi.ducksmp.DuckSMP;
-import io.github.haappi.ducksmp.Utils.CustomHolder;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.world.item.ArmorItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import org.geysermc.floodgate.api.FloodgateApi;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Extra implements Listener {
 
     private final DuckSMP plugin;
+    private final HashMap<String, String> claimPerms= new HashMap<>();
 //    private boolean hasListenerLoaded = false;
 
     public Extra() {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
+        claimPerms.put("tnt", "DENY");
+        claimPerms.put("ghast-fireball", "DENY");
+        claimPerms.put("wither-damage", "DENY");
+        claimPerms.put("chorus-fruit-teleport", "DENY");
+        claimPerms.put("other-explosion", "DENY");
+
+        claimPerms.put("fire-spread", "ALLOW");
+        claimPerms.put("lava-fire", "ALLOW");
+        claimPerms.put("pistons", "ALLOW");
+        claimPerms.put("enderman-grief", "ALLOW");
+        claimPerms.put("creeper-explosion", "ALLOW");
+        claimPerms.put("block-trampling", "ALLOW");
+        claimPerms.put("firework-damage", "ALLOW");
     }
 //
 //    //    @EventHandler
@@ -66,9 +77,23 @@ public class Extra implements Listener {
     @EventHandler
     public void onCommandRun(PlayerCommandPreprocessEvent event) {
         if (event.getMessage().contains("rg claim")) {
+            if (event.getMessage().split(" ").length != 3) {
+                return;
+            }
             String claimName = event.getMessage().split(" ")[2];
-            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), String.format("rg flag -w %s %s pvp -g everyone allow", event.getPlayer().getLocation().getWorld().getName(), claimName));
-            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), String.format("rg flag -w %s %s use -g everyone allow", event.getPlayer().getLocation().getWorld().getName(), claimName));
+            Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+                for (Map.Entry<String, String> perms : claimPerms.entrySet()) {
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
+                            String.format(
+                                    "rg flag -w \"%s\" %s -g all %s %s", // world, claim, flag, permission
+                                    event.getPlayer().getLocation().getWorld().getName(),
+                                    claimName,
+                                    perms.getKey(),
+                                    perms.getValue()
+                            )
+                    );
+                }
+            }, 60L);
         }
     }
 
