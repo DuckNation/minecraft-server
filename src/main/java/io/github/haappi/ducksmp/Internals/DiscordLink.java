@@ -51,6 +51,7 @@ public class DiscordLink implements Listener {
         if (document.getOrDefault("message", "").toString().length() > 512) {
             document.put("message", document.getOrDefault("message", "").toString().substring(0, 512) + "...");
         }
+        document.put("message", document.getOrDefault("message", "").toString().replaceAll("\\*", "\\\\*"));
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> DuckSMP.getMongoClient().getDatabase("duckMinecraft").getCollection("messages").insertOne(document));
     }
 
