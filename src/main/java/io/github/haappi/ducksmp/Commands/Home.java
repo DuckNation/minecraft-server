@@ -43,6 +43,7 @@ import static io.github.haappi.ducksmp.Utils.Utils.*;
 public class Home extends BukkitCommand implements Listener {
     private static final HashMap<UUID, Integer> tasks = new HashMap<>();
     private static final HashMap<UUID, Long> cooldowns = new HashMap<>();
+    private static final int forceLoadChunks = 2;
     public static ConcurrentHashMap<UUID, Location> pickingName = new ConcurrentHashMap<>();
     private final DuckSMP plugin;
 
@@ -134,8 +135,8 @@ public class Home extends BukkitCommand implements Listener {
             if (homes == null) {
                 homes = new HashMap<>();
             }
-            if (homes.size() > 7) {
-                player.sendMessage(noItalics("You can only have 7 homes.", NamedTextColor.RED));
+            if (homes.size() > 6) {
+                player.sendMessage(noItalics("You can only have 6 homes.", NamedTextColor.RED));
                 Bukkit.getScheduler().runTask(DuckSMP.getInstance(), () -> player.getWorld().dropItem(blockLocation, getHome(1)));
                 return;
             }
@@ -156,7 +157,7 @@ public class Home extends BukkitCommand implements Listener {
             container.set(new NamespacedKey(DuckSMP.getInstance(), "custom_homes"), DataType.asMap(DataType.STRING, DataType.STRING), homes);
             player.sendMessage(noItalics("Home " + homeName + " created.", NamedTextColor.GREEN));
 
-            forceLoadChunks(blockLocation, 3);
+            forceLoadChunks(blockLocation, forceLoadChunks);
         });
 
     }
@@ -270,7 +271,7 @@ public class Home extends BukkitCommand implements Listener {
         for (String home : homes.values()) {
             Location location = getLocation(home);
             if (location.getWorld().getBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ()).getType() == Material.MAGENTA_GLAZED_TERRACOTTA) {
-                Bukkit.getScheduler().runTaskLater(plugin, () -> forceLoadChunks(location, 3), 20 * 2);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> forceLoadChunks(location, forceLoadChunks), 20 * 2);
             }
         }
     }
@@ -288,7 +289,7 @@ public class Home extends BukkitCommand implements Listener {
         for (String home : homes.values()) {
             Location location = getLocation(home);
             if (location.getWorld().getBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ()).getType() == Material.MAGENTA_GLAZED_TERRACOTTA) {
-                Bukkit.getScheduler().runTaskLater(plugin, () -> forceUnloadChunks(location, 3), 20 * 2);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> forceUnloadChunks(location, forceLoadChunks), 20 * 2);
             }
         }
     }
@@ -329,7 +330,7 @@ public class Home extends BukkitCommand implements Listener {
             event.setDropItems(false);
             event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), getHome(1));
 
-            forceUnloadChunks(event.getBlock().getLocation(), 3);
+            forceUnloadChunks(event.getBlock().getLocation(), forceLoadChunks);
         }
     }
 
@@ -349,7 +350,7 @@ public class Home extends BukkitCommand implements Listener {
             if (!data.equals("no_one")) {
                 block.setType(Material.AIR);
                 block.getWorld().dropItem(block.getLocation(), getHome(1));
-                forceUnloadChunks(block.getLocation(), 3);
+                forceUnloadChunks(block.getLocation(), forceLoadChunks);
             }
         }
 
