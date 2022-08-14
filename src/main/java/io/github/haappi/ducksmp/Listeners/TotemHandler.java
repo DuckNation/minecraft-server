@@ -40,12 +40,11 @@ public class TotemHandler implements Listener {
             EntityType.TURTLE,
             EntityType.VEX,
             EntityType.VILLAGER,
-//            EntityType.WITCH,
+            EntityType.WITCH,
             EntityType.WITHER,
             EntityType.ZOGLIN,
             EntityType.WANDERING_TRADER,
             EntityType.GIANT
-//            EntityType.BAT
     ));
     public static EntityType randomMob;
     private final DuckSMP plugin;
@@ -70,7 +69,7 @@ public class TotemHandler implements Listener {
                             .append(Component.text(randomMob.name(), NamedTextColor.GREEN)
                                     .append(Component.text("! Come back 3 hours later for a new mob!", NamedTextColor.YELLOW))
                             )));
-        }, 0, 20 * 60 * 60 * 3); // 3 hours
+        }, 0, 20 * 60 * 60 * 2); // 3 hours
     }
 
     @EventHandler
@@ -86,8 +85,8 @@ public class TotemHandler implements Listener {
         event.getDrops().removeIf(item -> item.getType() == Material.TOTEM_OF_UNDYING);
         if (event.getEntity().getKiller() != null) {
             if (event.getEntity().getType() == randomMob) {
-                int randomNumber = Utils.random.nextInt(1, 10);
-                if (randomNumber < 3) {
+                int randomNumber = Utils.random.nextInt(1, 9);
+                if (randomNumber < 2) {
                     ItemStack item = new ItemStack(Material.TOTEM_OF_UNDYING, 1);
                     ItemMeta meta = item.getItemMeta();
                     meta.lore(List.of(Utils.chain(Utils.noItalics("Dropped from", NamedTextColor.YELLOW), Utils.noItalics(": ", NamedTextColor.GRAY), Utils.noItalics(randomMob.name(), NamedTextColor.GREEN))));

@@ -24,7 +24,7 @@ public class StopRestart extends BukkitCommand {
             return true;
         }
         if (!restartNeeded) {
-            sender.sendMessage(Component.text("There isn't a reset scheduled.", NamedTextColor.RED));
+            sender.sendMessage(Component.text("There isn't a restart scheduled.", NamedTextColor.RED));
         } else {
             restartNeeded = false;
             restartID.cancel();
