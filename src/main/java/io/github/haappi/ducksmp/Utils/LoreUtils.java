@@ -17,8 +17,7 @@ import java.util.ArrayList;
 
 import static io.github.haappi.ducksmp.Commands.Home.isHome;
 import static io.github.haappi.ducksmp.Listeners.FireballHandler.isFireBall;
-import static io.github.haappi.ducksmp.Listeners.StatHandler.getItemMeta;
-import static io.github.haappi.ducksmp.Listeners.StatHandler.getStatsForItem;
+import static io.github.haappi.ducksmp.Listeners.StatHandler.*;
 import static io.github.haappi.ducksmp.Utils.Utils.chain;
 import static io.github.haappi.ducksmp.Utils.Utils.noItalics;
 
@@ -34,15 +33,23 @@ public class LoreUtils {
             return;
         }
         @NotNull ItemMeta meta = getItemMeta(item);
-        if (!meta.hasItemFlag(ItemFlag.HIDE_ENCHANTS)) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
         ArrayList<Component> lore = new ArrayList<>();
 
         if (isHome(item)) {
             lore.add(chain(noItalics("Place this to add a ", NamedTextColor.GRAY), noItalics("home", NamedTextColor.AQUA), noItalics(".", NamedTextColor.GRAY)));
         } else if (isFireBall(item)) {
             lore.add(chain(noItalics("Right click", NamedTextColor.GOLD), noItalics(" to throw a fireball.", NamedTextColor.GREEN)));
+        }
+
+        meta.lore(lore);
+        item.setItemMeta(meta);
+
+        if (cantBeUsedForStats(item.getType())) {
+            return;
+        }
+
+        if (!meta.hasItemFlag(ItemFlag.HIDE_ENCHANTS)) {
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
 
 
@@ -61,11 +68,27 @@ public class LoreUtils {
 //           }
 //        }
 
-        lore.add(getStatsForItem(item, "Blocks Broken", String.valueOf(StatHandler.Stat.BLOCKS_BROKEN), PersistentDataType.INTEGER));
-        lore.add(getStatsForItem(item, "Mobs Killed", String.valueOf(StatHandler.Stat.MOBS_KILLED), PersistentDataType.INTEGER));
-        lore.add(getStatsForItem(item, "Players Killed", String.valueOf(StatHandler.Stat.PLAYERS_KILLED), PersistentDataType.INTEGER));
-        lore.add(getStatsForItem(item, "Damage Dealt", String.valueOf(StatHandler.Stat.DAMAGE_DEALT), PersistentDataType.DOUBLE));
-        lore.add(getStatsForItem(item, "Treasure Found", String.valueOf(StatHandler.Stat.TREASURE_CAUGHT), PersistentDataType.INTEGER));
+        Component stat;
+        stat = getStatsForItem(item, "Blocks Broken", String.valueOf(StatHandler.Stat.BLOCKS_BROKEN), PersistentDataType.INTEGER);
+        if (stat != null) {
+            lore.add(stat);
+        }
+        stat = getStatsForItem(item, "Mobs Killed", String.valueOf(StatHandler.Stat.MOBS_KILLED), PersistentDataType.INTEGER);
+        if (stat != null) {
+            lore.add(stat);
+        }
+        stat = getStatsForItem(item, "Players Killed", String.valueOf(StatHandler.Stat.PLAYERS_KILLED), PersistentDataType.INTEGER);
+        if (stat != null) {
+            lore.add(stat);
+        }
+        stat = getStatsForItem(item, "Damage Dealt", String.valueOf(StatHandler.Stat.DAMAGE_DEALT), PersistentDataType.DOUBLE);
+        if (stat != null) {
+            lore.add(stat);
+        }
+        stat = getStatsForItem(item, "Treasure Found", String.valueOf(StatHandler.Stat.TREASURE_CAUGHT), PersistentDataType.INTEGER);
+        if (stat != null) {
+            lore.add(stat);
+        }
 
         if (item.getEnchantments().size() != 0) {
             lore.add(noItalics("    ", NamedTextColor.YELLOW));
