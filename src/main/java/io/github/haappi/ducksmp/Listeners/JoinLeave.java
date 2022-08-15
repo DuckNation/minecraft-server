@@ -133,7 +133,7 @@ public class JoinLeave implements Listener {
             setPDCLink(player, (byte) 0);
         }
         player.setNoDamageTicks(20 * 3); // no damage for 3 seconds
-        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> saveStuffInDB(player));
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> saveStuffInDB(player), 20 * 5L);
 
         if (DuckSMP.showRestartBar) {
             player.showBossBar(DuckSMP.restartBar);
