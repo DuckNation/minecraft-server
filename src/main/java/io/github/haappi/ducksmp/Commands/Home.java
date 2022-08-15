@@ -36,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.github.haappi.ducksmp.Listeners.StatHandler.getItemMeta;
 import static io.github.haappi.ducksmp.Utils.Utils.*;
@@ -182,16 +183,23 @@ public class Home extends BukkitCommand implements Listener {
 
     private static void forceLoadChunks(Location starting, int radius) {
         // maybe load chunks slowly adding a delay between each chunk
+        int counter = 1;
+        final DuckSMP instance = DuckSMP.getInstance();
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
-                @NotNull CompletableFuture<Chunk> future = starting.getWorld().getChunkAtAsync(starting.getBlockX() + (x * 16), starting.getBlockZ() + (z * 16));
-                future.whenComplete((chunk, throwable) -> {
-                    if (throwable != null) {
-                        throwable.printStackTrace();
-                    } else {
-                        chunk.setForceLoaded(true);
-                    }
-                });
+                int finalX = x;
+                int finalZ = z;
+                Bukkit.getScheduler().runTaskLater(instance, () -> {
+                    @NotNull CompletableFuture<Chunk> future = starting.getWorld().getChunkAtAsync(starting.getBlockX() + (finalX * 16), starting.getBlockZ() + (finalZ * 16));
+                    future.whenComplete((chunk, throwable) -> {
+                        if (throwable != null) {
+                            throwable.printStackTrace();
+                        } else {
+                            chunk.setForceLoaded(true);
+                        }
+                    });
+                }, 10L * counter + 20);
+                counter++;
             }
         }
     }
@@ -268,10 +276,12 @@ public class Home extends BukkitCommand implements Listener {
 
         Map<String, String> homes = getHomeMapsOfPlayer(player);
 
+        AtomicInteger counter = new AtomicInteger(1);
+
         for (String home : homes.values()) {
             Location location = getLocation(home);
             if (location.getWorld().getBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ()).getType() == Material.MAGENTA_GLAZED_TERRACOTTA) {
-                Bukkit.getScheduler().runTaskLater(plugin, () -> forceLoadChunks(location, forceLoadChunks), 20 * 2);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> forceLoadChunks(location, forceLoadChunks), 10L * counter.getAndIncrement());
             }
         }
     }
