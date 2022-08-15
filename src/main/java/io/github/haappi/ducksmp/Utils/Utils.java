@@ -194,11 +194,14 @@ public class Utils {
     }
 
     public static void sendTeamPackets() {
+        AtomicInteger current = new AtomicInteger(1);
         for (Player p : Bukkit.getOnlinePlayers()) {
-            for (Map.Entry<UUID, Tuple<ClientboundSetPlayerTeamPacket, ClientboundSetPlayerTeamPacket>> entry : packetsToSend.entrySet()) {
-                ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getA());
-                ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getB());
-            }
+            Bukkit.getScheduler().runTaskLater(DuckSMP.getInstance(), () -> {
+                for (Map.Entry<UUID, Tuple<ClientboundSetPlayerTeamPacket, ClientboundSetPlayerTeamPacket>> entry : packetsToSend.entrySet()) {
+                    ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getA());
+                    ((CraftPlayer) p).getHandle().connection.send(entry.getValue().getB());
+                }
+            }, 2L * current.getAndIncrement());
         }
     }
 
