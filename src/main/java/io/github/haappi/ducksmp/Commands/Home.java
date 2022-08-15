@@ -44,7 +44,7 @@ import static io.github.haappi.ducksmp.Utils.Utils.*;
 public class Home extends BukkitCommand implements Listener {
     private static final HashMap<UUID, Integer> tasks = new HashMap<>();
     private static final HashMap<UUID, Long> cooldowns = new HashMap<>();
-    private static final int forceLoadChunks = 1;
+    private static final int forceLoadChunks = 2;
     public static ConcurrentHashMap<UUID, Location> pickingName = new ConcurrentHashMap<>();
     private final DuckSMP plugin;
 
@@ -198,7 +198,7 @@ public class Home extends BukkitCommand implements Listener {
                             chunk.setForceLoaded(true);
                         }
                     });
-                }, 10L * counter + 20);
+                }, 13L * counter + 20);
                 counter++;
             }
         }
