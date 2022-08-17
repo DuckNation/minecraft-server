@@ -49,16 +49,16 @@ public class NetherNerf implements Listener {
                     if (snapshot.getBlockType(x, y, z) == Material.ANCIENT_DEBRIS) {
                         final Location location = new Location(chunk.getWorld(), x + chunkX, y, z + chunkZ);
                         locations.add(location);
-                        Bukkit.getScheduler().runTaskLater(this.plugin, () -> location.getBlock().setType(Material.WATER), 10L);
+                        Bukkit.getScheduler().runTaskLater(this.plugin, () -> location.getBlock().setType(Material.NETHERRACK), 10L);
                     }
                 }
             }
         }
 
         for (Location location : locations) {
-            for (int y = location.getBlockY() + 1; y < 120; y++) {
+            for (int y = location.getBlockY() + 20; y < 120; y++) {
                 if (isSafeToPlaceBlock(snapshot, location.getBlockX(), y, location.getBlockZ())) {
-                    Bukkit.getScheduler().runTaskLater(this.plugin, () -> location.getBlock().setType(Material.LAVA), 10L);
+                    Bukkit.getScheduler().runTaskLater(this.plugin, () -> location.getBlock().setType(Material.ANCIENT_DEBRIS), 10L);
                     System.out.println("placed block at " + location.getBlockX() + " " + y + " " + location.getBlockZ());
                     break;
                 }
