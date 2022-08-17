@@ -47,7 +47,7 @@ public class NetherNerf implements Listener {
             for (int z = 0; z < 16; z++) {
                 for (int y = _y; y < _y + 8; y++) {
                     if (snapshot.getBlockType(x, y, z) == Material.ANCIENT_DEBRIS) {
-                        final Location location = new Location(chunk.getWorld(), chunkX, y, chunkZ);
+                        final Location location = new Location(chunk.getWorld(), x + chunkX, y, z + chunkZ);
                         locations.add(location);
                         Bukkit.getScheduler().runTaskLater(this.plugin, () -> location.getBlock().setType(Material.NETHERRACK), 10L);
                     }
@@ -67,9 +67,9 @@ public class NetherNerf implements Listener {
 
     }
 
-    private boolean isSafeToPlaceBlock(ChunkSnapshot snapshot, int x, int y, int z) {
-        int newX = x / 16;
-        int newZ = z / 16;
+    private boolean isSafeToPlaceBlock(ChunkSnapshot snapshot, int newX, int y, int newZ) {
+        newX = newX / 16;
+        newZ = newZ / 16;
         System.out.println("newX: " + newX + " newZ: " + newZ);
         return (snapshot.getBlockType(newX, y, newZ) != Material.AIR)
                 && (snapshot.getBlockType(newX, y + 1, newZ) != Material.AIR)
