@@ -3,6 +3,7 @@ package io.github.haappi.ducksmp;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.model.CreateCollectionOptions;
+import io.github.haappi.ducksmp.Biomes.NetherNerf;
 import io.github.haappi.ducksmp.Commands.*;
 import io.github.haappi.ducksmp.Cosmetics.NameTag.Common;
 import io.github.haappi.ducksmp.Cosmetics.NameTag.NameTagCommand;
@@ -56,6 +57,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
 
         new Messages();
         new Villager();
+        new NetherNerf();
         new TotemHandler();
         new Crystal();
         new StatHandler();
