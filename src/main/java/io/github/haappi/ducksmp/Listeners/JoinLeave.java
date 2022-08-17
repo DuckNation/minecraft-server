@@ -1,6 +1,8 @@
 package io.github.haappi.ducksmp.Listeners;
 
+import com.destroystokyo.paper.event.brigadier.AsyncPlayerSendSuggestionsEvent;
 import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
+import com.destroystokyo.paper.io.chunk.ChunkLoadTask;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import io.github.haappi.ducksmp.DuckSMP;
@@ -10,13 +12,18 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,11 +41,30 @@ public class JoinLeave implements Listener {
 
     private final DuckSMP plugin;
     private final ConcurrentHashMap<String, String> IPNameMapping = new ConcurrentHashMap<>();
+//    public static boolean isAllowingConnections = true;
 
     public JoinLeave() {
         this.plugin = DuckSMP.getInstance();
+//        isAllowingConnections = false;
         Bukkit.getPluginManager().registerEvents(this, plugin);
+
+//        Bukkit.getScheduler().runTaskLater(this.plugin, () -> isAllowingConnections = true, 20 * 60 * 2L); // 2 minutes
     }
+
+//    @EventHandler
+//    public void onAsyncJoin(AsyncPlayerPreLoginEvent event) {
+//        if (isAllowingConnections) {
+//            return;
+//        }
+//        OfflinePlayer player = Bukkit.getOfflinePlayer(event.getUniqueId());
+//        if (Bukkit.getServer().getOperators().contains(player)) {
+//            event.allow();
+//        } else {
+//            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Component.text("The server is currently in startup phase. Please try again later.", NamedTextColor.RED));
+//        }
+//    }
+
+
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
@@ -112,6 +138,9 @@ public class JoinLeave implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+//        if (!isAllowingConnections) {
+//            player.sendMessage(Component.text("Reminder: The server is currently in startup mode.", NamedTextColor.RED));
+//        }
         injectPlayer(player);
         if (player.isOp()) {
             event.joinMessage(Component.text()
