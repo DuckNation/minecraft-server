@@ -30,8 +30,8 @@ public class Extra implements Listener {
         claimPerms.put("ghast-fireball", "DENY");
         claimPerms.put("wither-damage", "DENY");
         claimPerms.put("chorus-fruit-teleport", "DENY");
-        claimPerms.put("other-explosion", "DENY");
 
+        claimPerms.put("other-explosion", "ALLOW");
         claimPerms.put("fire-spread", "ALLOW");
         claimPerms.put("lava-fire", "ALLOW");
         claimPerms.put("pistons", "ALLOW");
@@ -39,6 +39,7 @@ public class Extra implements Listener {
         claimPerms.put("creeper-explosion", "ALLOW");
         claimPerms.put("block-trampling", "ALLOW");
         claimPerms.put("firework-damage", "ALLOW");
+        claimPerms.put("pvp", "ALLOW");
     }
 //
 //    //    @EventHandler
