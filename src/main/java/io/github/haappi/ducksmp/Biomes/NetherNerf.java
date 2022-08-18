@@ -4,12 +4,17 @@ import io.github.haappi.ducksmp.DuckSMP;
 import org.bukkit.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 import static io.github.haappi.ducksmp.Utils.Utils.random;
 
@@ -21,6 +26,57 @@ public class NetherNerf implements Listener {
     public NetherNerf() {
         this.plugin = DuckSMP.getInstance();
         Bukkit.getPluginManager().registerEvents(this, plugin);
+
+        Iterator<Recipe> iter = Bukkit.getServer().recipeIterator();
+        while (iter.hasNext()) {
+            Recipe r = iter.next();
+            if (r.getResult().getType() == Material.NETHERITE_INGOT) {
+                iter.remove();
+            }
+        }
+        Bukkit.addRecipe(ingotRecipe());
+        Bukkit.addRecipe(ingotRecipeV2());
+    }
+
+    private ShapedRecipe ingotRecipeV2() {
+        NamespacedKey key = new NamespacedKey(plugin, "netherite_ingot_2");
+
+        ShapedRecipe recipe = new ShapedRecipe(key, new ItemStack(Material.NETHERITE_INGOT, 6));
+
+        recipe.shape(
+                "ABA",
+                "BCB",
+                "ABA");
+        recipe.setIngredient('A', Material.FURNACE);
+        recipe.setIngredient('B', Material.WAXED_WEATHERED_CUT_COPPER);
+        recipe.setIngredient('C', Material.NETHERITE_SCRAP);
+
+        return recipe;
+    }
+
+    private ShapedRecipe ingotRecipe() {
+        NamespacedKey key = new NamespacedKey(plugin, "netherite_ingot");
+
+        ShapedRecipe recipe = new ShapedRecipe(key, new ItemStack(Material.NETHERITE_INGOT, 2));
+
+        recipe.shape(
+                "ABC",
+                "BDB",
+                "CBA");
+        recipe.setIngredient('A', Material.RAW_COPPER_BLOCK);
+        recipe.setIngredient('B', Material.NETHERITE_SCRAP);
+        recipe.setIngredient('C', Material.WARPED_FUNGUS_ON_A_STICK);
+        recipe.setIngredient('D', Material.LAVA_BUCKET);
+
+        return recipe;
+    }
+
+    @EventHandler
+    public void onItemSpawn(ItemSpawnEvent event) {
+        if (event.getEntity().getItemStack().getType() == Material.ANCIENT_DEBRIS) {
+            event.getEntity().setInvulnerable(true);
+        }
+        // todo make debris blowable by tnt. fix pvp flags not working in claims (just add it) & modify the files.
     }
 
 
