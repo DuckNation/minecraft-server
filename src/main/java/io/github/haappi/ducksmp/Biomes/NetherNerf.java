@@ -47,7 +47,7 @@ public class NetherNerf implements Listener {
                 "ABA",
                 "BCB",
                 "ABA");
-        recipe.setIngredient('A', Material.FURNACE);
+        recipe.setIngredient('A', Material.MANGROVE_PROPAGULE);
         recipe.setIngredient('B', Material.WAXED_WEATHERED_CUT_COPPER);
         recipe.setIngredient('C', Material.NETHERITE_SCRAP);
 
