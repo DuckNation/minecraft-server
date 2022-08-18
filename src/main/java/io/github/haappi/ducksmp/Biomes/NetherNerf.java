@@ -41,7 +41,7 @@ public class NetherNerf implements Listener {
     private ShapedRecipe ingotRecipeV2() {
         NamespacedKey key = new NamespacedKey(plugin, "netherite_ingot_2");
 
-        ShapedRecipe recipe = new ShapedRecipe(key, new ItemStack(Material.NETHERITE_INGOT, 6));
+        ShapedRecipe recipe = new ShapedRecipe(key, new ItemStack(Material.NETHERITE_INGOT, 3));
 
         recipe.shape(
                 "ABA",
@@ -57,7 +57,7 @@ public class NetherNerf implements Listener {
     private ShapedRecipe ingotRecipe() {
         NamespacedKey key = new NamespacedKey(plugin, "netherite_ingot");
 
-        ShapedRecipe recipe = new ShapedRecipe(key, new ItemStack(Material.NETHERITE_INGOT, 2));
+        ShapedRecipe recipe = new ShapedRecipe(key, new ItemStack(Material.NETHERITE_INGOT, 1));
 
         recipe.shape(
                 "ABC",
