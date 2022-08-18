@@ -120,15 +120,20 @@ public class NetherNerf implements Listener {
         for (Location _location : locations) {
             int x = _location.getBlockX();
             int z = _location.getBlockZ();
+            int counter = 0;
             for (int y = _location.getBlockY() + random.nextInt(8, 25); y < 120; y++) {
+                counter++;
                 if (isSafeToPlaceBlock(snapshot, x, y, z)) {
                     int finalY = y;
                     Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                         _location.getBlock().setType(Material.NETHERRACK);
-                        _location.add(0, _location.getBlockY() + finalY, 0).getBlock().setType(Material.ANCIENT_DEBRIS);
+                        _location.subtract(0, _location.getBlockY(), 0).add(0, finalY, 0).getBlock().setType(Material.ANCIENT_DEBRIS);
                         locations.remove(_location);
                     }, 5L);
                     break;
+                }
+                if (counter > 40) {
+                    break; // Give up after 40 tries
                 }
             }
         }
@@ -138,15 +143,23 @@ public class NetherNerf implements Listener {
     private boolean isSafeToPlaceBlock(ChunkSnapshot snapshot, int newX, int y, int newZ) {
         int newXX = newX & 15;
         int newZZ = newZ & 15;
+        if (newZ + 1 >= 16 || newZ - 1 < 0 || newX + 1 >= 16 || newX - 1 < 0) {
+            return false;
+        }
         return (snapshot.getBlockType(newXX, y, newZZ) != Material.AIR)
                 && (snapshot.getBlockType(newXX, y + 1, newZZ) != Material.AIR)
                 && (snapshot.getBlockType(newXX, y - 1, newZZ) != Material.AIR)
                 && (snapshot.getBlockType(newXX, y, newZZ) != Material.ANCIENT_DEBRIS)
                 && (snapshot.getBlockType(newXX, y, newZZ) != Material.BEDROCK)
+                && (snapshot.getBlockType(newXX + 1, y, newZZ) != Material.BEDROCK)
+                && (snapshot.getBlockType(newXX - 1, y, newZZ) != Material.BEDROCK)
+                && (snapshot.getBlockType(newXX, y, newZZ + 1) != Material.BEDROCK)
+                && (snapshot.getBlockType(newXX, y, newZZ - 1) != Material.BEDROCK)
                 && y < 127
                 && (snapshot.getBlockType(newXX, y, newZZ) != Material.CHEST)
                 && (snapshot.getBlockType(newXX, y, newZZ) != Material.GOLD_BLOCK)
                 && (snapshot.getBlockType(newXX, y, newZZ) != Material.NETHER_PORTAL)
                 && (snapshot.getBlockType(newXX, y, newZZ) != Material.OBSIDIAN);
     }
+
 }
