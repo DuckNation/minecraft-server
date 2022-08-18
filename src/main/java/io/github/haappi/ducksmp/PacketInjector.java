@@ -6,6 +6,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
+import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.network.protocol.game.ServerboundSignUpdatePacket;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -44,6 +45,10 @@ public class PacketInjector {
                         Home.callback(signUpdatePacket.getLines()[0], Home.pickingName.remove(player.getUniqueId()), player);
                     }
                 }
+
+//                if (packet instanceof ServerboundMovePlayerPacket movePlayerPacket) {
+//                    System.out.println(movePlayerPacket.y);
+//                }
 //                Bukkit.getServer().getConsoleSender().sendMessage("Received packet: " + packet.getClass().getName() + " from " + player.getName() + ". " + packet.toString());
                 super.channelRead(channelHandlerContext, packet); // this sends stuff to the server. including keep alive packets.
             }
