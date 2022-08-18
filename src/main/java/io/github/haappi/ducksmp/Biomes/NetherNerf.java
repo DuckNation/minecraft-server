@@ -143,7 +143,7 @@ public class NetherNerf implements Listener {
     private boolean isSafeToPlaceBlock(ChunkSnapshot snapshot, int newX, int y, int newZ) {
         int newXX = newX & 15;
         int newZZ = newZ & 15;
-        if (newZ + 1 >= 16 || newZ - 1 < 0 || newX + 1 >= 16 || newX - 1 < 0) {
+        if (newZZ + 1 >= 16 || newZZ - 1 < 0 || newXX + 1 >= 16 || newXX - 1 < 0) {
             return false;
         }
         return (snapshot.getBlockType(newXX, y, newZZ) != Material.AIR)
@@ -151,10 +151,10 @@ public class NetherNerf implements Listener {
                 && (snapshot.getBlockType(newXX, y - 1, newZZ) != Material.AIR)
                 && (snapshot.getBlockType(newXX, y, newZZ) != Material.ANCIENT_DEBRIS)
                 && (snapshot.getBlockType(newXX, y, newZZ) != Material.BEDROCK)
-                && (snapshot.getBlockType(newXX + 1, y, newZZ) != Material.BEDROCK)
-                && (snapshot.getBlockType(newXX - 1, y, newZZ) != Material.BEDROCK)
-                && (snapshot.getBlockType(newXX, y, newZZ + 1) != Material.BEDROCK)
-                && (snapshot.getBlockType(newXX, y, newZZ - 1) != Material.BEDROCK)
+                && (snapshot.getBlockType(newXX + 1, y, newZZ) != Material.AIR)
+                && (snapshot.getBlockType(newXX - 1, y, newZZ) != Material.AIR)
+                && (snapshot.getBlockType(newXX, y, newZZ + 1) != Material.AIR)
+                && (snapshot.getBlockType(newXX, y, newZZ - 1) != Material.AIR)
                 && y < 127
                 && (snapshot.getBlockType(newXX, y, newZZ) != Material.CHEST)
                 && (snapshot.getBlockType(newXX, y, newZZ) != Material.GOLD_BLOCK)
