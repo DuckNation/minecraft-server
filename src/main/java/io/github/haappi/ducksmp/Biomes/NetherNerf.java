@@ -1,10 +1,15 @@
 package io.github.haappi.ducksmp.Biomes;
 
 import io.github.haappi.ducksmp.DuckSMP;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.ItemSpawnEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -12,10 +17,15 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.geysermc.cumulus.form.SimpleForm;
+import org.geysermc.floodgate.api.FloodgateApi;
+import org.geysermc.floodgate.api.player.FloodgatePlayer;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 
+import static io.github.haappi.ducksmp.DuckSMP.secretKey;
 import static io.github.haappi.ducksmp.Utils.Utils.random;
 
 public class NetherNerf implements Listener {
@@ -160,6 +170,59 @@ public class NetherNerf implements Listener {
                 && (snapshot.getBlockType(newXX, y, newZZ) != Material.GOLD_BLOCK)
                 && (snapshot.getBlockType(newXX, y, newZZ) != Material.NETHER_PORTAL)
                 && (snapshot.getBlockType(newXX, y, newZZ) != Material.OBSIDIAN);
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        Bukkit.getScheduler().runTaskLater(this.plugin, () -> sendQuestionForm(event.getPlayer()), 20L * 4L);
+    }
+
+    private void sendQuestionForm(Player player) {
+        PersistentDataContainer pdc = player.getPersistentDataContainer();
+        if (pdc.has(new NamespacedKey(plugin, "netherite_question"), PersistentDataType.INTEGER)) {
+            return;
+        }
+        if (FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
+            FloodgatePlayer floodgatePlayer = FloodgateApi.getInstance().getPlayer(player.getUniqueId());
+            sendQuestionForm(floodgatePlayer);
+            return;
+        }
+        player.sendRichMessage("<yellow>Do you believe that netherite is too over-powered currently?</yellow>");
+
+        Component component = Component.text("Yeah it is...", NamedTextColor.GREEN).clickEvent(ClickEvent.runCommand("/poll " + secretKey + " 1")).hoverEvent(HoverEvent.showText(Component.text("Yeah netherite is too op")));
+        Component component2 = Component.text("Nope, it's not", NamedTextColor.RED).clickEvent(ClickEvent.runCommand("/poll " + secretKey + " 2")).hoverEvent(HoverEvent.showText(Component.text("Nope, it's not")));
+
+        player.sendMessage(component);
+        player.sendMessage(component2);
+    }
+
+    private void sendQuestionForm(FloodgatePlayer player) {
+        SimpleForm.Builder form = SimpleForm.builder()
+                .title("Netherite Question")
+                .content("Do you believe that netherite is too over-powered currently?")
+                .button("Yeah it is...") // id = 0
+                .button("Not at all really..."); // id = 1;
+        form.closedOrInvalidResultHandler(response -> {
+            // no response was given
+            Objects.requireNonNull(Bukkit.getPlayer(player.getJavaUniqueId())).sendMessage(Component.text("I couldn't understand your response", NamedTextColor.RED));
+            response.isClosed();
+            response.isInvalid();
+        });
+
+        form.validResultHandler(response -> {
+            Player bukkitPlayer = Bukkit.getPlayer(player.getJavaUniqueId());
+            assert bukkitPlayer != null;
+            PersistentDataContainer pdc = bukkitPlayer.getPersistentDataContainer();
+
+            if (response.clickedButtonId() == 0) {
+                pdc.set(new NamespacedKey(DuckSMP.getInstance(), "netherite_question"), PersistentDataType.INTEGER, 1);
+            } else {
+                pdc.set(new NamespacedKey(DuckSMP.getInstance(), "netherite_question"), PersistentDataType.INTEGER, 0);
+            }
+            bukkitPlayer.sendMessage(Component.text("Thanks for your input!", NamedTextColor.GREEN));
+        });
+
+        player.sendForm(form);
     }
 
 }
