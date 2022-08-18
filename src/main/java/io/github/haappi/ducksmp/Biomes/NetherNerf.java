@@ -71,13 +71,12 @@ public class NetherNerf implements Listener {
         return recipe;
     }
 
-    @EventHandler
-    public void onItemSpawn(ItemSpawnEvent event) {
-        if (event.getEntity().getItemStack().getType() == Material.ANCIENT_DEBRIS) {
-            event.getEntity().setInvulnerable(true);
-        }
-        // todo make debris blowable by tnt. fix pvp flags not working in claims (just add it) & modify the files.
-    }
+//    @EventHandler
+//    public void onItemSpawn(ItemSpawnEvent event) {
+//        if (event.getEntity().getItemStack().getType() == Material.ANCIENT_DEBRIS) {
+//            event.getEntity().setInvulnerable(true);
+//        }
+//    }
 
 
     @EventHandler
