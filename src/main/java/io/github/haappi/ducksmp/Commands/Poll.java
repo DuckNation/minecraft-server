@@ -35,10 +35,15 @@ public class Poll extends BukkitCommand {
             return true;
         }
         PersistentDataContainer container = player.getPersistentDataContainer();
+        NamespacedKey key = new NamespacedKey(DuckSMP.getInstance(), "netherite_question");
+        if (container.has(key, PersistentDataType.INTEGER)) {
+            sender.sendMessage(Component.text("You've already answered this question!", NamedTextColor.RED));
+            return true;
+        }
         if (args[1].equals("1")) {
-            container.set(new NamespacedKey(DuckSMP.getInstance(), "netherite_question"), PersistentDataType.INTEGER, 1);
+            container.set(key, PersistentDataType.INTEGER, 1);
         } else {
-            container.set(new NamespacedKey(DuckSMP.getInstance(), "netherite_question"), PersistentDataType.INTEGER, 0);
+            container.set(key, PersistentDataType.INTEGER, 0);
         }
         player.sendMessage(Component.text("Thanks for your input!", NamedTextColor.GREEN));
         return true;
