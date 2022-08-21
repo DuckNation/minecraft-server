@@ -33,7 +33,7 @@ public class AntiDimension implements Listener {
         }
     }
 
-    @EventHandler
+//    @EventHandler
     public void onEnd(PlayerTeleportEvent event) {
         if (event.getPlayer().isOp()) {
             return;
@@ -41,8 +41,8 @@ public class AntiDimension implements Listener {
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
             event.setCancelled(true);
         }
-//        if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
-//            event.setCancelled(true);
-//        }
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
+            event.setCancelled(true);
+        }
     }
 }

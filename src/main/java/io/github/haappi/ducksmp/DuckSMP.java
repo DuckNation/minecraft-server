@@ -14,6 +14,7 @@ import io.github.haappi.ducksmp.Listeners.*;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,6 +28,7 @@ import static io.github.haappi.ducksmp.Utils.Utils.unRegisterBukkitCommand;
 public final class DuckSMP extends JavaPlugin implements Listener {
 
     public static ArrayList<Integer> taskIds = new ArrayList<>();
+    public static Material secretMaterial = Material.ENDER_EYE;
     public static String secretKey;
     public static String redisHost;
     public static int redisPort;
@@ -80,6 +82,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new BetterTeleport();
         new FireballHandler();
         new DiscordLink();
+        new EndStuff();
 
 //        registerNewCommand(new Signup("signup"));
         registerNewCommand(new StopRestart("stoprestart"));
@@ -130,6 +133,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
             config.addDefault("redis-host", "localhost");
             config.addDefault("redis-port", 6379);
             config.addDefault("redis-auth", "your-redis-auth");
+            config.addDefault("secret-item", "ENDER_EYE");
             config.options().copyDefaults(true);
             this.saveConfig();
             this.getLogger().severe("A proper Mongo URI is required to run this plugin.");
@@ -140,6 +144,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         redisHost = config.getString("redis-host");
         redisPort = config.getInt("redis-port");
         redisPassword = config.getString("redis-auth");
+        secretMaterial = Material.valueOf(config.getString("secret-item"));
         return true;
     }
 
