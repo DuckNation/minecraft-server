@@ -172,10 +172,10 @@ public class NetherNerf implements Listener {
                 && (snapshot.getBlockType(newXX, y, newZZ) != Material.OBSIDIAN);
     }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        Bukkit.getScheduler().runTaskLater(this.plugin, () -> sendQuestionForm(event.getPlayer()), 20L * 4L);
-    }
+//    @EventHandler
+//    public void onJoin(PlayerJoinEvent event) {
+//        Bukkit.getScheduler().runTaskLater(this.plugin, () -> sendQuestionForm(event.getPlayer()), 20L * 4L);
+//    }
 
     private void sendQuestionForm(Player player) {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
