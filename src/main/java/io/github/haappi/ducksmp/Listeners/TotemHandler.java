@@ -27,24 +27,15 @@ public class TotemHandler implements Listener {
             EntityType.AXOLOTL,
             EntityType.BEE,
             EntityType.CAT,
-            EntityType.ELDER_GUARDIAN,
-            EntityType.ENDER_DRAGON,
-            EntityType.ENDERMITE,
             EntityType.EVOKER,
             EntityType.GHAST,
-            EntityType.ILLUSIONER,
-            EntityType.RAVAGER,
             EntityType.SHULKER,
             EntityType.SKELETON_HORSE,
             EntityType.TADPOLE,
             EntityType.TURTLE,
-            EntityType.VEX,
-            EntityType.VILLAGER,
             EntityType.WITCH,
-            EntityType.WITHER,
             EntityType.ZOGLIN,
-            EntityType.WANDERING_TRADER,
-            EntityType.GIANT
+            EntityType.WANDERING_TRADER
     ));
     public static EntityType randomMob;
     private final DuckSMP plugin;
