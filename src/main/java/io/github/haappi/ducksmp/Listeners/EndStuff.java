@@ -79,7 +79,7 @@ public class EndStuff implements Listener {
             for (int newZ = center.getBlockZ() - 1; newZ <= center.getBlockZ() + 1; newZ++) {
                 Location loc = new Location(location.getWorld(), newX, location.getBlockY(), newZ);
                 loc.getBlock().setType(Material.END_PORTAL);
-                Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player.getLocation(), Sound.BLOCK_END_GATEWAY_SPAWN, 1.0f, 1.0f));
+                Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player.getLocation(), Sound.BLOCK_END_PORTAL_SPAWN, 1.0f, 1.0f));
             }
         }
     }
