@@ -83,6 +83,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new FireballHandler();
         new DiscordLink();
         new EndStuff();
+        new Event();
 
 //        registerNewCommand(new Signup("signup"));
         registerNewCommand(new StopRestart("stoprestart"));
