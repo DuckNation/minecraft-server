@@ -12,9 +12,13 @@ import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import static io.github.haappi.ducksmp.Utils.LoreUtils.applyEnchantsToLore;
+import static io.github.haappi.ducksmp.Utils.Utils.random;
 
 public class Elytra implements Listener {
 
@@ -46,6 +50,18 @@ public class Elytra implements Listener {
     public void onEnchant(EnchantItemEvent event) {
         if (event.getItem().getType() == Material.ELYTRA) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onDamage(PlayerItemDamageEvent event) {
+        if (event.getItem().getType() == Material.ELYTRA) {
+            ItemStack itemStack = event.getItem();
+            ItemMeta meta = itemStack.getItemMeta();
+            if (meta instanceof Damageable damageable) {
+                damageable.setDamage(damageable.getDamage() + random.nextInt(2, 5));
+                itemStack.setItemMeta(meta);
+            }
         }
     }
 
