@@ -8,6 +8,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -38,6 +39,13 @@ public class Elytra implements Listener {
             itemStack.addEnchantment(Enchantment.BINDING_CURSE, 1);
 
             applyEnchantsToLore(itemStack);
+        }
+    }
+
+    @EventHandler
+    public void onEnchant(EnchantItemEvent event) {
+        if (event.getItem().getType() == Material.ELYTRA) {
+            event.setCancelled(true);
         }
     }
 
@@ -77,8 +85,8 @@ public class Elytra implements Listener {
 
 //    @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if (event.getInventory().getHolder() instanceof CustomHolder) {
-            AnvilInventory inventory = (AnvilInventory) event.getInventory();
+        if (event.getInventory() instanceof AnvilInventory inventory) {
+            System.out.println(event.getClick());
             System.out.println(inventory.getFirstItem());
             System.out.println(event.getCurrentItem());// todo work on this
             if (event.getCurrentItem() == inventory.getFirstItem()) {
