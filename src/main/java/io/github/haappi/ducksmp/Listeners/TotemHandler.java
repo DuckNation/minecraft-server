@@ -77,7 +77,7 @@ public class TotemHandler implements Listener {
         if (event.getEntity().getKiller() != null) {
             if (event.getEntity().getType() == randomMob) {
                 int randomNumber = Utils.random.nextInt(1, 9);
-                if (randomNumber < 2) {
+                if (randomNumber < 5) {
                     ItemStack item = new ItemStack(Material.TOTEM_OF_UNDYING, 1);
                     ItemMeta meta = item.getItemMeta();
                     meta.lore(List.of(Utils.chain(Utils.noItalics("Dropped from", NamedTextColor.YELLOW), Utils.noItalics(": ", NamedTextColor.GRAY), Utils.noItalics(randomMob.name(), NamedTextColor.GREEN))));
