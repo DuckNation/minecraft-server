@@ -35,7 +35,9 @@ public class Event implements Listener {
         this.plugin = DuckSMP.getInstance();
         numberFormat.setGroupingUsed(true);
         Bukkit.getPluginManager().registerEvents(this, plugin);
-        Bukkit.addRecipe(eventItemRecipe());
+        if (System.currentTimeMillis() < 1661691600L * 100) {
+            Bukkit.addRecipe(eventItemRecipe());
+        }
     }
 
 
