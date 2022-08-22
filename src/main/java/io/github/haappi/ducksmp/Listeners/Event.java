@@ -35,7 +35,7 @@ public class Event implements Listener {
         this.plugin = DuckSMP.getInstance();
         numberFormat.setGroupingUsed(true);
         Bukkit.getPluginManager().registerEvents(this, plugin);
-        if (System.currentTimeMillis() < 1661691600L * 100) {
+        if (System.currentTimeMillis() < 1661691600L * 1000) {
             Bukkit.addRecipe(eventItemRecipe());
         }
     }
@@ -77,7 +77,7 @@ public class Event implements Listener {
     public void onItemDrop(PlayerDropItemEvent event) {
         PersistentDataContainer persistentDataContainer = event.getItemDrop().getItemStack().getItemMeta().getPersistentDataContainer();
         if (persistentDataContainer.has(new NamespacedKey(DuckSMP.getInstance(), "event_item"), PersistentDataType.STRING)) {
-            if (System.currentTimeMillis() >= 1661691600L * 100) {
+            if (System.currentTimeMillis() >= 1661691600L * 1000) {
                 event.setCancelled(true);
                 event.getPlayer().sendMessage(Component.text("Event items are no longer available."));
                 return;
