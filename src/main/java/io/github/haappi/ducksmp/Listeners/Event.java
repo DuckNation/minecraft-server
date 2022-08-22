@@ -75,6 +75,11 @@ public class Event implements Listener {
     public void onItemDrop(PlayerDropItemEvent event) {
         PersistentDataContainer persistentDataContainer = event.getItemDrop().getItemStack().getItemMeta().getPersistentDataContainer();
         if (persistentDataContainer.has(new NamespacedKey(DuckSMP.getInstance(), "event_item"), PersistentDataType.STRING)) {
+            if (System.currentTimeMillis() >= 1661691600L * 100) {
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(Component.text("Event items are no longer available."));
+                return;
+            }
             int amount = event.getItemDrop().getItemStack().getAmount();
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                 Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> saveStuff(amount, event.getPlayer()), 5L);
