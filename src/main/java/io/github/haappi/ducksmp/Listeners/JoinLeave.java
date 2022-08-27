@@ -10,6 +10,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,6 +30,7 @@ import static io.github.haappi.ducksmp.PacketInjector.injectPlayer;
 import static io.github.haappi.ducksmp.PacketInjector.removePlayer;
 import static io.github.haappi.ducksmp.Utils.Encryption.encrypt;
 import static io.github.haappi.ducksmp.Utils.Utils.miniMessage;
+import static io.github.haappi.ducksmp.Utils.Utils.random;
 
 public class JoinLeave implements Listener {
 
@@ -61,6 +63,7 @@ public class JoinLeave implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
+        player.setGameMode(GameMode.SURVIVAL);
         removePlayer(player);
         if (player.isOp()) {
             event.quitMessage(Component.text()
@@ -158,6 +161,12 @@ public class JoinLeave implements Listener {
 
         if (DuckSMP.showRestartBar) {
             player.showBossBar(DuckSMP.restartBar);
+        }
+
+        random.nextInt(1, 1000);
+        if (random.nextInt(1, 250) == 1) {
+            player.sendMessage(Component.text("You got gamemode creative!", NamedTextColor.GOLD));
+            player.setGameMode(GameMode.CREATIVE);
         }
     }
 
