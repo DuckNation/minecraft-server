@@ -1,6 +1,8 @@
 package io.github.haappi.ducksmp.Listeners;
 
 import io.github.haappi.ducksmp.DuckSMP;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.world.item.ArmorItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -74,6 +76,20 @@ public class Extra implements Listener {
 ////            hasListenerLoaded = true;
 ////        }
 ////    }
+
+    @EventHandler
+    public void onModerationCommand(PlayerCommandPreprocessEvent event) {
+        Component displayName = event.getPlayer().displayName();
+        if (displayName.contains(Component.text("haappi")) || displayName.contains(Component.text(".AlysDaDuck")) || displayName.contains(Component.text("AlysDaDuck"))) {
+            return;
+        }
+        String message = event.getMessage().toLowerCase();
+        if (message.contains("ban-ip") || message.contains("kick") || message.contains("ban") || message.contains("pardon") || message.contains("pardon-ip") || message.contains("banlist")) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(Component.text("You can't use this command.", NamedTextColor.RED));
+        }
+
+    }
 
     @EventHandler
     public void onCommandRun(PlayerCommandPreprocessEvent event) {

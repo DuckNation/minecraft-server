@@ -10,6 +10,7 @@ import io.github.haappi.ducksmp.Cosmetics.NameTag.NameTagCommand;
 import io.github.haappi.ducksmp.Cosmetics.NameTag.SetPrefix;
 import io.github.haappi.ducksmp.Internals.DiscordLink;
 import io.github.haappi.ducksmp.Internals.Messages;
+import io.github.haappi.ducksmp.Justin.JustinsMom;
 import io.github.haappi.ducksmp.Listeners.*;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.Bukkit;
@@ -84,6 +85,7 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         new DiscordLink();
         new EndStuff();
         new Event();
+        new JustinsMom();
 
 //        registerNewCommand(new Signup("signup"));
         registerNewCommand(new StopRestart("stoprestart"));
