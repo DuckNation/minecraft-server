@@ -33,7 +33,7 @@ public class AntiDimension implements Listener {
         }
     }
 
-//    @EventHandler
+    //    @EventHandler
     public void onEnd(PlayerTeleportEvent event) {
         if (event.getPlayer().isOp()) {
             return;

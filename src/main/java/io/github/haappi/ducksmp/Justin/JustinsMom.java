@@ -77,6 +77,7 @@ public class JustinsMom implements Listener {
             SniffSniffSnort goal = new SniffSniffSnort(this.plugin, cow);
             if (!Bukkit.getMobGoals().hasGoal(cow, goal.getKey())) {
                 Bukkit.getMobGoals().addGoal(cow, 3, goal);
-            }}
+            }
+        }
     }
 }

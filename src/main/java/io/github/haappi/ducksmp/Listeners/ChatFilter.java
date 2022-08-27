@@ -1,6 +1,5 @@
 package io.github.haappi.ducksmp.Listeners;
 
-import com.google.common.io.ByteStreams;
 import io.github.haappi.ducksmp.DuckSMP;
 import io.papermc.paper.adventure.PaperAdventure;
 import io.papermc.paper.event.player.AsyncChatEvent;
@@ -15,7 +14,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -23,8 +21,8 @@ import java.util.Locale;
 
 public class ChatFilter implements Listener {
 
-    private final DuckSMP plugin;
     private static final HashSet<String> blockedWords = new HashSet<>();
+    private final DuckSMP plugin;
 
     public ChatFilter() {
         // https://github.com/Flo0/WorkloadDistribution/tree/master/src/main/java/com/gestankbratwurst/scheduling/workloaddistribution

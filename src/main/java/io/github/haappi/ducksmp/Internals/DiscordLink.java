@@ -29,6 +29,24 @@ public class DiscordLink implements Listener {
 
     private final DuckSMP plugin;
     private final JedisPool pool;
+    JedisPubSub jedisPubSub = new JedisPubSub() {
+
+        @Override
+        public void onMessage(String channel, String message) {
+            Bukkit.getOnlinePlayers().forEach(player -> player.sendRichMessage(message));
+        }
+
+        @Override
+        public void onSubscribe(String channel, int subscribedChannels) {
+            plugin.getLogger().info("Subscribed to channel " + channel);
+        }
+
+        @Override
+        public void onUnsubscribe(String channel, int subscribedChannels) {
+            plugin.getLogger().info("Unsubscribed from channel " + channel);
+        }
+
+    };
 
     public DiscordLink() {
         pool = new JedisPool(redisHost, redisPort);
@@ -55,26 +73,6 @@ public class DiscordLink implements Listener {
             }
         });
     }
-
-    JedisPubSub jedisPubSub = new JedisPubSub() {
-
-        @Override
-        public void onMessage(String channel, String message) {
-            Bukkit.getOnlinePlayers().forEach(player -> player.sendRichMessage(message));
-        }
-
-        @Override
-        public void onSubscribe(String channel, int subscribedChannels) {
-            plugin.getLogger().info("Subscribed to channel " + channel);
-        }
-
-        @Override
-        public void onUnsubscribe(String channel, int subscribedChannels) {
-            plugin.getLogger().info("Unsubscribed from channel " + channel);
-        }
-
-    };
-
 
     private void uploadToMongo(Player player, HashMap<String, String> document, String type) {
         document.put("bound", "clientbound");
@@ -173,8 +171,8 @@ public class DiscordLink implements Listener {
         JSONObject jObject = new JSONObject(t);
         Iterator<?> keys = jObject.keys();
 
-        while( keys.hasNext() ){
-            String key = (String)keys.next();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
             String value = jObject.getString(key);
             map.put(key, value);
 

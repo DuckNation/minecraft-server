@@ -31,7 +31,7 @@ public class CustomLore implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-//    @EventHandler
+    //    @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
         Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
             for (ItemStack item : event.getInventory().getContents()) {
@@ -44,7 +44,7 @@ public class CustomLore implements Listener {
                 if (cantBeUsedForStats(item.getType())) {
                     removeStatsFromItem(item);
                 }
-                 applyEnchantsToLore(item);
+                applyEnchantsToLore(item);
             }
         }, 1L);
 

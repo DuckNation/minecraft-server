@@ -1,7 +1,6 @@
 package io.github.haappi.ducksmp.Listeners;
 
 import io.github.haappi.ducksmp.DuckSMP;
-import io.github.haappi.ducksmp.Utils.CustomHolder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -10,7 +9,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.*;
@@ -65,7 +63,7 @@ public class Elytra implements Listener {
         }
     }
 
-//    @EventHandler
+    //    @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) {
             return;
@@ -85,7 +83,7 @@ public class Elytra implements Listener {
         if (event.getPlayer().getInventory().getChestplate().getType() != Material.ELYTRA) {
             return;
         }
-        InventoryView view =  event.getPlayer().openAnvil(null, true);
+        InventoryView view = event.getPlayer().openAnvil(null, true);
         if (view == null) {
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> event.getPlayer().closeInventory(), 1L);
             return;
@@ -99,7 +97,7 @@ public class Elytra implements Listener {
         event.getPlayer().updateInventory();
     }
 
-//    @EventHandler
+    //    @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (event.getInventory() instanceof AnvilInventory inventory) {
             System.out.println(event.getClick());

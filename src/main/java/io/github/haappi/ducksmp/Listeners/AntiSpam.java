@@ -16,9 +16,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class AntiSpam implements Listener {
 
     public static final ConcurrentLinkedQueue<UUID> mutedPlayers = new ConcurrentLinkedQueue<>();
-    private final DuckSMP plugin;
     public static final ConcurrentHashMap<UUID, Long> cooldowns = new ConcurrentHashMap<>();
     public static final ConcurrentHashMap<UUID, Integer> warnings = new ConcurrentHashMap<>();
+    private final DuckSMP plugin;
 
     public AntiSpam() {
         plugin = DuckSMP.getInstance();

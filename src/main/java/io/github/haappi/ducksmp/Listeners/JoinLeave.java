@@ -1,8 +1,6 @@
 package io.github.haappi.ducksmp.Listeners;
 
-import com.destroystokyo.paper.event.brigadier.AsyncPlayerSendSuggestionsEvent;
 import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
-import com.destroystokyo.paper.io.chunk.ChunkLoadTask;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import io.github.haappi.ducksmp.DuckSMP;
@@ -12,18 +10,13 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
@@ -63,7 +56,6 @@ public class JoinLeave implements Listener {
 //            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Component.text("The server is currently in startup phase. Please try again later.", NamedTextColor.RED));
 //        }
 //    }
-
 
 
     @EventHandler

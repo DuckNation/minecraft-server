@@ -40,6 +40,17 @@ public class Event implements Listener {
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
+    private static ItemStack getRecipe(int count) {
+        ItemStack item = new ItemStack(Material.STRUCTURE_BLOCK, count);
+        ItemMeta meta = item.getItemMeta();
+        meta.displayName(noItalics("Event Item", NamedTextColor.GOLD));
+        meta.lore(Arrays.asList(noItalics(""), chain(noItalics("Drop this to claim an ", NamedTextColor.GRAY), noItalics("event item", NamedTextColor.AQUA), noItalics(".", NamedTextColor.GRAY))));
+        meta.getPersistentDataContainer().set(new NamespacedKey(DuckSMP.getInstance(), "event_item"), PersistentDataType.STRING, "event");
+        item.setItemMeta(meta);
+
+        return item;
+    }
 
     private ShapelessRecipe eventItemRecipe() {
         NamespacedKey key = new NamespacedKey(plugin, "event_recipe");
@@ -59,18 +70,6 @@ public class Event implements Listener {
         recipe.addIngredient(Material.GREEN_WOOL);
 
         return recipe;
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private static ItemStack getRecipe(int count) {
-        ItemStack item = new ItemStack(Material.STRUCTURE_BLOCK, count);
-        ItemMeta meta = item.getItemMeta();
-        meta.displayName(noItalics("Event Item", NamedTextColor.GOLD));
-        meta.lore(Arrays.asList(noItalics(""), chain(noItalics("Drop this to claim an ", NamedTextColor.GRAY), noItalics("event item", NamedTextColor.AQUA), noItalics(".", NamedTextColor.GRAY))));
-        meta.getPersistentDataContainer().set(new NamespacedKey(DuckSMP.getInstance(), "event_item"), PersistentDataType.STRING, "event");
-        item.setItemMeta(meta);
-
-        return item;
     }
 
     @EventHandler

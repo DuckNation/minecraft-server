@@ -22,7 +22,7 @@ import java.util.Map;
 public class Extra implements Listener {
 
     private final DuckSMP plugin;
-    private final HashMap<String, String> claimPerms= new HashMap<>();
+    private final HashMap<String, String> claimPerms = new HashMap<>();
 //    private boolean hasListenerLoaded = false;
 
     public Extra() {

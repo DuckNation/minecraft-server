@@ -6,7 +6,9 @@ import com.destroystokyo.paper.entity.ai.GoalType;
 import io.github.haappi.ducksmp.DuckSMP;
 import org.bukkit.GameMode;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Mob;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Warden;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
