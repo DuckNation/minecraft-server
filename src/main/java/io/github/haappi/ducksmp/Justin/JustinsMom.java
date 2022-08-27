@@ -61,7 +61,7 @@ public class JustinsMom implements Listener {
         if (event.getItemDrop().getItemStack().getAmount() > 1) {
             return;
         }
-        if (random.nextInt(0, 100) > 0) {
+        if (random.nextInt(0, 100) > 70) {
             event.setCancelled(true);
             Warden cow = event.getPlayer().getWorld().spawn(event.getPlayer().getLocation().add(0, 0.5, 0), Warden.class);
             cow.setCustomNameVisible(true);
