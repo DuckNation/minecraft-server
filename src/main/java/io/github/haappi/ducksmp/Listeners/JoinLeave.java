@@ -164,7 +164,7 @@ public class JoinLeave implements Listener {
         }
 
         random.nextInt(1, 1000);
-        if (random.nextInt(1, 250) == 1) {
+        if (random.nextInt(1, 50) == 1) {
             player.sendMessage(Component.text("You got gamemode creative!", NamedTextColor.GOLD));
             player.setGameMode(GameMode.CREATIVE);
         }
