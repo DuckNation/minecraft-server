@@ -31,7 +31,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.github.haappi.ducksmp.Cosmetics.NameTag.Common.packetsToSend;
-import static io.github.haappi.ducksmp.Internals.Messages.doCountdown;
 import static io.github.haappi.ducksmp.Listeners.Combat.canUseCommand;
 
 public class Utils {
@@ -269,7 +268,6 @@ public class Utils {
                 int time = countdown.getAndDecrement();
                 updateBossBar(time, DuckSMP.restartBar);
                 if (time <= 10) {
-                    doCountdown("Server will restart in ", DuckSMP.getInstance(), time);
                     cancel();
                 }
             }

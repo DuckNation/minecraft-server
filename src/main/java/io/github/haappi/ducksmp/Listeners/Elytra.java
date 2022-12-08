@@ -115,7 +115,6 @@ public class Elytra implements Listener {
             if (event.getCurrentItem() == inventory.getResult()) {
                 System.out.println("they got elyra");
                 Bukkit.getScheduler().runTaskLater(this.plugin, () -> event.getWhoClicked().closeInventory(), 1L);
-                return;
             }
         }
     }

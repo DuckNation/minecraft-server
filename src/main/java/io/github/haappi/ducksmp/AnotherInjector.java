@@ -5,15 +5,21 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
+import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
+import net.minecraft.network.protocol.game.ClientboundMoveEntityPacket;
+import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.network.protocol.game.ServerboundSignUpdatePacket;
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-// https://www.spigotmc.org/threads/advanced-minecraft-nms-packet-tutorial.538194/
-public class PacketInjector {
+import static io.github.haappi.ducksmp.Cosmetics.NameTag.JavaMenu.currentlyInMenu;
 
-    public PacketInjector() {
+// https://www.spigotmc.org/threads/advanced-minecraft-nms-packet-tutorial.538194/
+public class AnotherInjector {
+
+    public AnotherInjector() {
         throw new RuntimeException("Unable to instantiate a static class");
     }
 
@@ -33,19 +39,31 @@ public class PacketInjector {
             public void channelRead(@NotNull ChannelHandlerContext channelHandlerContext, @NotNull Object packet) throws Exception {
                 if (packet instanceof ServerboundSignUpdatePacket signUpdatePacket) {
                     if (JavaMenu.responses.containsKey(player.getUniqueId())) {
-                        if (JavaMenu.currentlyInMenu.contains(player.getUniqueId())) {
+                        if (currentlyInMenu.contains(player.getUniqueId())) {
                             JavaMenu.responses.replace(player.getUniqueId(), signUpdatePacket.getLines()[0]);
                             JavaMenu.callback(player);
                         }
                     }
+//                    Field commandList;
+//                    commandList = ServerboundSignUpdatePacket.class.getDeclaredField("c");
+//                    String[] packetCmds = (String[]) commandList.get(signUpdatePacket);
+//                    System.out.println(Arrays.toString(packetCmds));
+//                    Bukkit.getServer().getConsoleSender().sendMessage("Received sign update packet from " + player.getName() + ". " + packet.toString());
+//                    return;
                 }
-
-            super.channelRead(channelHandlerContext, packet); // this sends stuff to the server. including keep alive packets.
+//                Bukkit.getServer().getConsoleSender().sendMessage("Received packet: " + packet.getClass().getName() + " from " + player.getName() + ". " + packet.toString());
+                super.channelRead(channelHandlerContext, packet); // this sends stuff to the server. including keep alive packets.
             }
 
             @Override
             public void write(ChannelHandlerContext channelHandlerContext, Object packet, ChannelPromise channelPromise) throws Exception {
                 if (packet == null) return;
+                if (!(packet instanceof ClientboundMoveEntityPacket ||
+                        packet instanceof ClientboundTeleportEntityPacket ||
+                        packet instanceof ClientboundBlockUpdatePacket)) {
+                    Bukkit.getServer().getConsoleSender().sendMessage("Sending packet: " + packet.getClass().getName() + " to " + player.getName() + ". " + packet);
+
+                }
                 super.write(channelHandlerContext, packet, channelPromise); // without this. the player can't do anything
             }
         };

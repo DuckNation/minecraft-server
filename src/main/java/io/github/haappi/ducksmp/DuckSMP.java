@@ -3,14 +3,10 @@ package io.github.haappi.ducksmp;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.model.CreateCollectionOptions;
-import io.github.haappi.ducksmp.Biomes.NetherNerf;
 import io.github.haappi.ducksmp.Commands.*;
 import io.github.haappi.ducksmp.Cosmetics.NameTag.Common;
 import io.github.haappi.ducksmp.Cosmetics.NameTag.NameTagCommand;
 import io.github.haappi.ducksmp.Cosmetics.NameTag.SetPrefix;
-import io.github.haappi.ducksmp.Internals.DiscordLink;
-import io.github.haappi.ducksmp.Internals.Messages;
-import io.github.haappi.ducksmp.Justin.JustinsMom;
 import io.github.haappi.ducksmp.Listeners.*;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.Bukkit;
@@ -58,59 +54,35 @@ public final class DuckSMP extends JavaPlugin implements Listener {
         this.getLogger().info(ChatColor.GREEN + "Connected to MongoDB.");
         instance = this;
 
-        new Messages();
-        new Villager();
-        new NetherNerf();
-        new TotemHandler();
-        new Crystal();
         new StatHandler();
         new StringRecipe();
-        new Netherite();
 
         new CustomLore();
         new AntiSpam();
         new ChatFilter();
 
         new Common();
-        new GlobalDeathHandler();
 
         new Extra();
         new JoinLeave();
 
         new Combat();
-        new AntiDimension();
-        new Elytra();
         new BetterTeleport();
-        new FireballHandler();
-        new DiscordLink();
-        new EndStuff();
-        new Event();
-        new JustinsMom();
 
-//        registerNewCommand(new Signup("signup"));
-        registerNewCommand(new StopRestart("stoprestart"));
         registerNewCommand(new NightVision("nv"));
         registerNewCommand(new Vanish("v"));
         unRegisterBukkitCommand("tell");
         registerNewCommand(new CustomTell("tell"));
         registerNewCommand(new Reply("reply"));
         registerNewCommand(new NameTagCommand("color"));
-        registerNewCommand(new ChangeMob("changeMob"));
         registerNewCommand(new SetPrefix("setprefix"));
         registerNewCommand(new Compass("compass"));
-        registerNewCommand(new Home("home"));
-        registerNewCommand(new Homes("homes"));
         registerNewCommand(new Flex("flex"));
-        registerNewCommand(new Link("link"));
-        registerNewCommand(new Unlink("unlink"));
         registerNewCommand(new ClearCombat("clearcombat"));
-        registerNewCommand(new TPA("tpa"));
         unRegisterBukkitCommand("restart");
         registerNewCommand(new Restart("restart"));
         unRegisterBukkitCommand("ban");
-        registerNewCommand(new Ban("ban"));
         registerNewCommand(new Unmute("unmute"));
-        registerNewCommand(new Poll("poll"));
     }
 
 

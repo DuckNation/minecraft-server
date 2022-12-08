@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static io.github.haappi.ducksmp.Commands.ChangeMob.updateInDiscord;
-
 public class TotemHandler implements Listener {
 
     public static final ArrayList<EntityType> mobs = new ArrayList<>(Arrays.asList(
@@ -54,7 +52,6 @@ public class TotemHandler implements Listener {
 
         Bukkit.getScheduler().runTaskTimer(this.plugin, () -> {
             randomMob = mobs.get(Utils.random.nextInt(mobs.size()));
-            updateInDiscord();
             Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(
                     Component.text("Aaaaaand the random mob that drops totems this time is: ", NamedTextColor.YELLOW)
                             .append(Component.text(randomMob.name(), NamedTextColor.GREEN)

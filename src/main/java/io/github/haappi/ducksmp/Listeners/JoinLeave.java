@@ -23,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import static io.github.haappi.ducksmp.Commands.Link.setPDCLink;
 import static io.github.haappi.ducksmp.Cosmetics.NameTag.Common.chatColors;
 import static io.github.haappi.ducksmp.Cosmetics.NameTag.Common.getFormattedPrefix;
 import static io.github.haappi.ducksmp.PacketInjector.injectPlayer;
@@ -153,9 +152,7 @@ public class JoinLeave implements Listener {
         if (player.getUniqueId().toString().replaceAll("-", "").equalsIgnoreCase("1ca6d48fc4f4438781f79158a209d60d")) {
             event.joinMessage(null);
         }
-        if (!player.getPersistentDataContainer().has(new NamespacedKey(plugin, "linked"), PersistentDataType.BYTE)) {
-            setPDCLink(player, (byte) 0);
-        }
+        player.getPersistentDataContainer().has(new NamespacedKey(plugin, "linked"), PersistentDataType.BYTE);
         player.setNoDamageTicks(20 * 3); // no damage for 3 seconds
         Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> saveStuffInDB(player), 20 * 5L);
 

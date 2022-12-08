@@ -15,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
-import static io.github.haappi.ducksmp.Commands.Home.isHome;
 import static io.github.haappi.ducksmp.Listeners.FireballHandler.isFireBall;
 import static io.github.haappi.ducksmp.Listeners.StatHandler.*;
 import static io.github.haappi.ducksmp.Utils.Utils.chain;
@@ -35,9 +34,7 @@ public class LoreUtils {
         @NotNull ItemMeta meta = getItemMeta(item);
         ArrayList<Component> lore = new ArrayList<>();
 
-        if (isHome(item)) {
-            lore.add(chain(noItalics("Place this to add a ", NamedTextColor.GRAY), noItalics("home", NamedTextColor.AQUA), noItalics(".", NamedTextColor.GRAY)));
-        } else if (isFireBall(item)) {
+        if (isFireBall(item)) {
             lore.add(chain(noItalics("Right click", NamedTextColor.GOLD), noItalics(" to throw a fireball.", NamedTextColor.GREEN)));
         }
 
