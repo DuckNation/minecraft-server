@@ -39,6 +39,7 @@ public final class DuckSMP extends JavaPlugin {
         jedisPool = new JedisPool(jedisPoolConfig, config.getString("redisHost"), config.getInt("port"), false);
         singleton = this;
         registerNewCommand(new Compass("compass"));
+        registerNewCommand(new Biome("biome"));
         registerNewCommand(new NightVision("nv"));
         unRegisterBukkitCommand("tell");
         registerNewCommand(new Flex("flex"));
