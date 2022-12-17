@@ -34,7 +34,7 @@ public class Discord implements Listener {
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
             try (Jedis jedis = DuckSMP.getSingleton().getJedisPool().getResource()) {
                 jedis.auth(DuckSMP.getSingleton().getConfig().getString("redisPassword"));
-                jedis.publish("discord", "online;" + Bukkit.getOnlinePlayers().size());
+                jedis.publish("discord", "online;" + Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers());
             }
         }, 20L, 20 * 60 * 10); // 10 minutes
 
