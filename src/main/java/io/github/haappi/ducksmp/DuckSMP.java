@@ -48,6 +48,7 @@ public final class DuckSMP extends JavaPlugin {
         registerNewCommand(new AutoSprint("autosprint"));
         this.getServer().getPluginManager().registerEvents(new Discord(this), this);
         this.getServer().getPluginManager().registerEvents(new MOTD(), this);
+        new JoinLeave();
     }
 
     public JedisPool getJedisPool() {
