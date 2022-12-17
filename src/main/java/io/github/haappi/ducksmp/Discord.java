@@ -19,8 +19,8 @@ public class Discord implements Listener {
 
     public Discord(Plugin plugin) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            try (Jedis jedis = DuckSMP.getSingleton().getJedisPool().getResource()) {
-                jedis.auth(DuckSMP.getSingleton().getConfig().getString("redisPassword"));
+            try (Jedis jedis = DuckSMP.getInstance().getJedisPool().getResource()) {
+                jedis.auth(DuckSMP.getInstance().getConfig().getString("redisPassword"));
                 jedis.subscribe(new JedisPubSub() {
                     @Override
                     public void onMessage(String channel, String message) {
@@ -32,8 +32,8 @@ public class Discord implements Listener {
 
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-            try (Jedis jedis = DuckSMP.getSingleton().getJedisPool().getResource()) {
-                jedis.auth(DuckSMP.getSingleton().getConfig().getString("redisPassword"));
+            try (Jedis jedis = DuckSMP.getInstance().getJedisPool().getResource()) {
+                jedis.auth(DuckSMP.getInstance().getConfig().getString("redisPassword"));
                 jedis.publish("discord", "online;" + Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers());
             }
         }, 20L, 20 * 60 * 10); // 10 minutes
@@ -52,12 +52,12 @@ public class Discord implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        easyPublish("join;" + event.getPlayer().getName());
-        Bukkit.getScheduler().runTaskAsynchronously(DuckSMP.getSingleton(), () -> {
-            try (Jedis jedis = DuckSMP.getSingleton().getJedisPool().getResource()) {
-                jedis.auth(DuckSMP.getSingleton().getConfig().getString("redisPassword"));
+        Bukkit.getScheduler().runTaskAsynchronously(DuckSMP.getInstance(), () -> {
+            try (Jedis jedis = DuckSMP.getInstance().getJedisPool().getResource()) {
+                jedis.auth(DuckSMP.getInstance().getConfig().getString("redisPassword"));
                 String encrypted = Encryption.encrypt(event.getPlayer().getAddress().getAddress().getHostAddress());
                 jedis.set("motd:" + encrypted, String.format("<newline><gray>Welcome Back</gray> <aqua><bold>%s</bold></aqua><gray>", event.getPlayer().getName()));
+                jedis.publish("discord", "join;" + event.getPlayer().getName());
             }
         });
 

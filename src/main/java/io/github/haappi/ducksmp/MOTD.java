@@ -25,8 +25,8 @@ public class MOTD implements Listener {
     private String getPlayerMOTDFromIP(String hostAddress) {
         String encrypted = Encryption.encrypt(hostAddress);
 
-        try (Jedis jedis = DuckSMP.getSingleton().getJedisPool().getResource()) {
-            jedis.auth(DuckSMP.getSingleton().getConfig().getString("redisPassword"));
+        try (Jedis jedis = DuckSMP.getInstance().getJedisPool().getResource()) {
+            jedis.auth(DuckSMP.getInstance().getConfig().getString("redisPassword"));
             String motd = jedis.get("motd:" + encrypted);
             return Objects.requireNonNullElse(motd, "");
         }

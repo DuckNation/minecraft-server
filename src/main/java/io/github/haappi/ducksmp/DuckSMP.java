@@ -9,13 +9,16 @@ import redis.clients.jedis.JedisPoolConfig;
 import java.time.Duration;
 import java.util.UUID;
 
+import static io.github.haappi.ducksmp.Utils.registerNewCommand;
+import static io.github.haappi.ducksmp.Utils.unRegisterBukkitCommand;
+
 public final class DuckSMP extends JavaPlugin {
 
     public static MiniMessage miniMessage = MiniMessage.miniMessage();
     private static DuckSMP singleton;
     private JedisPool jedisPool;
 
-    public static DuckSMP getSingleton() {
+    public static DuckSMP getInstance() {
         return singleton;
     }
 
@@ -35,6 +38,13 @@ public final class DuckSMP extends JavaPlugin {
 
         jedisPool = new JedisPool(jedisPoolConfig, config.getString("redisHost"), config.getInt("port"), false);
         singleton = this;
+        registerNewCommand(new Compass("compass"));
+        registerNewCommand(new NightVision("nv"));
+        unRegisterBukkitCommand("tell");
+        registerNewCommand(new Flex("flex"));
+        registerNewCommand(new CustomTell("tell"));
+        registerNewCommand(new Reply("reply"));
+        registerNewCommand(new AutoSprint("autosprint"));
         this.getServer().getPluginManager().registerEvents(new Discord(this), this);
         this.getServer().getPluginManager().registerEvents(new MOTD(), this);
     }

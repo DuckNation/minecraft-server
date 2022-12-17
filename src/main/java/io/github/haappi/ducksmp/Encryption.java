@@ -33,7 +33,7 @@ public class Encryption {
 
     public static SecretKeySpec setKey() {
         MessageDigest sha;
-        Plugin plugin = Bukkit.getPluginManager().getPlugin(DuckSMP.getSingleton().getName());
+        Plugin plugin = Bukkit.getPluginManager().getPlugin(DuckSMP.getInstance().getName());
         if (plugin == null) {
             Logger.getAnonymousLogger().severe("Could not find plugin!");
             return null;
