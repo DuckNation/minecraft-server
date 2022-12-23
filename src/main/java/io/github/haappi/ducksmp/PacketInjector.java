@@ -39,7 +39,7 @@ public class PacketInjector {
             }
         };
 
-        Channel channel = ((CraftPlayer) player).getHandle().networkManager.channel;
+        Channel channel = ((CraftPlayer) player).getHandle().connection.getConnection().channel;
         channel.pipeline().addBefore("packet_handler", player.getName(), channelDuplexHandler);
     }
 }

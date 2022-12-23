@@ -26,7 +26,7 @@ var paperVersion = "1.19.3"
 dependencies {
     paperDevBundle("$paperVersion-R0.1-SNAPSHOT")
     compileOnly("org.geysermc.floodgate:api:2.0-SNAPSHOT")
-    implementation("redis.clients:jedis:4.3.0")
+    implementation("redis.clients:jedis:4.3.1")
 }
 
 java {
