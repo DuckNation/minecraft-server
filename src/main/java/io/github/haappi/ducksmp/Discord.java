@@ -33,12 +33,13 @@ public class Discord implements Listener {
                         String type = message.split(";")[0];
                         switch (type) {
                             case "chat" -> {
-                                Bukkit.getOnlinePlayers().forEach(p -> p.sendRichMessage(message));
+                                String _message = message.split(";")[1];
+                                Bukkit.getOnlinePlayers().forEach(p -> p.sendRichMessage(_message));
                             }
-                            case "list" -> {
+                            case "getList" -> {
                                 ArrayList<String> onlinePlayers = new ArrayList<>();
                                 Bukkit.getOnlinePlayers().forEach(p -> onlinePlayers.add(p.getName()));
-                                easyPublish("list;" + String.join(",", onlinePlayers));
+                                easyPublish("returnList;" + String.join(",", onlinePlayers));
                             }
                         }
                     }
