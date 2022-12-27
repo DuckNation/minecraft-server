@@ -2,7 +2,9 @@ package io.github.haappi.ducksmp;
 
 import io.papermc.paper.adventure.PaperAdventure;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -13,6 +15,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.github.haappi.ducksmp.Utils.easyPublish;
 
@@ -25,7 +30,17 @@ public class Discord implements Listener {
                 jedis.subscribe(new JedisPubSub() {
                     @Override
                     public void onMessage(String channel, String message) {
-                        Bukkit.getOnlinePlayers().forEach(p -> p.sendRichMessage(message));
+                        String type = message.split(";")[0];
+                        switch (type) {
+                            case "chat" -> {
+                                Bukkit.getOnlinePlayers().forEach(p -> p.sendRichMessage(message));
+                            }
+                            case "list" -> {
+                                ArrayList<String> onlinePlayers = new ArrayList<>();
+                                Bukkit.getOnlinePlayers().forEach(p -> onlinePlayers.add(p.getName()));
+                                easyPublish("list;" + String.join(",", onlinePlayers));
+                            }
+                        }
                     }
                 }, "minecraft");
             }
