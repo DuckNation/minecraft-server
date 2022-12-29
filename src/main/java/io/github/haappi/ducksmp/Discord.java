@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
 
@@ -24,7 +25,7 @@ import static io.github.haappi.ducksmp.Utils.easyPublish;
 public class Discord implements Listener {
 
     public Discord(Plugin plugin) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        BukkitTask task = Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try (Jedis jedis = DuckSMP.getInstance().getJedisPool().getResource()) {
                 jedis.auth(DuckSMP.getInstance().getConfig().getString("redisPassword"));
                 jedis.subscribe(new JedisPubSub() {
@@ -46,6 +47,7 @@ public class Discord implements Listener {
                 }, "minecraft");
             }
         });
+        DuckSMP.getInstance().addTask(task);
 
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {

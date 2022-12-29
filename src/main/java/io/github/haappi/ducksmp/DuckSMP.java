@@ -3,10 +3,12 @@ package io.github.haappi.ducksmp;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static io.github.haappi.ducksmp.Utils.registerNewCommand;
@@ -17,6 +19,15 @@ public final class DuckSMP extends JavaPlugin {
     public static MiniMessage miniMessage = MiniMessage.miniMessage();
     private static DuckSMP singleton;
     private JedisPool jedisPool;
+    private ArrayList<BukkitTask> tasks = new ArrayList<>();
+
+    public void addTask(BukkitTask task) {
+        tasks.add(task);
+    }
+
+    public void cancelAllTasks() {
+        tasks.forEach(BukkitTask::cancel);
+    }
 
     public static DuckSMP getInstance() {
         return singleton;
@@ -62,5 +73,6 @@ public final class DuckSMP extends JavaPlugin {
         if (jedisPool != null) {
             jedisPool.close();
         }
+        cancelAllTasks();
     }
 }
