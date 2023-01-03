@@ -53,7 +53,12 @@ public final class DuckSMP extends JavaPlugin {
         registerNewCommand(new Biome("biome"));
         registerNewCommand(new NightVision("nv"));
         unRegisterBukkitCommand("tell");
+        unRegisterBukkitCommand("ban-ip");
+        unRegisterBukkitCommand("minecraft:ban-ip");
+        unRegisterBukkitCommand("ban");
         registerNewCommand(new Flex("flex"));
+        registerNewCommand(new CustomBan("ban"));
+        registerNewCommand(new CustomBanIP("ban-ip"));
         registerNewCommand(new CustomTell("tell"));
         registerNewCommand(new Reply("reply"));
         registerNewCommand(new AutoSprint("autosprint"));

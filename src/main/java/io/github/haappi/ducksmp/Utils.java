@@ -2,6 +2,7 @@ package io.github.haappi.ducksmp;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_19_R2.CraftServer;
 import org.bukkit.plugin.Plugin;
@@ -9,6 +10,7 @@ import redis.clients.jedis.Jedis;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Utils {
     public static void easyPublish(Plugin plugin, Jedis instance, String channel, String message) {
@@ -63,9 +65,18 @@ public class Utils {
     }
 
     public static void unRegisterBukkitCommand(String command) {
-        org.bukkit.command.Command cmd = (((CraftServer) Bukkit.getServer()).getCommandMap()).getCommand(command);
+        Command cmd = (((CraftServer) Bukkit.getServer()).getCommandMap()).getCommand(command);
+        Map<String, Command> knownCommands = new HashMap<>(((CraftServer) Bukkit.getServer()).getCommandMap().getKnownCommands());
+        knownCommands.forEach((s, command1) -> {
+            if (s.contains(Bukkit.getName())) {
+                Bukkit.getServer().getCommandMap().getKnownCommands().remove(s);
+                unRegisterBukkitCommand(command1);
+                command1.unregister(((CraftServer) Bukkit.getServer()).getCommandMap());
+            }
+        });
         if (cmd != null) {
             unRegisterBukkitCommand(cmd);
+            cmd.unregister(((CraftServer) Bukkit.getServer()).getCommandMap());
         }
     }
 }
