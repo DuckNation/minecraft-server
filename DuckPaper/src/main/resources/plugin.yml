@@ -1,4 +1,4 @@
 name: DuckPaper
 version: '${version}'
 main: io.github.haappi.duckpaper.DuckPaper
-api-version: 1.20
+api-version: '1.20'

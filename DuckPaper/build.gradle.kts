@@ -5,7 +5,7 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.1.0"
 }
 
-val minecraftVersion = "1.20.1"
+val minecraftVersion = "1.20"
 val javaVersion = JavaVersion.VERSION_17
 group = "io.github.haappi"
 version = "0.1"

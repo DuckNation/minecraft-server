@@ -12,39 +12,19 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="maven4" />
+      <option name="name" value="maven4" />
+      <option name="url" value="https://repo.opencollab.dev/maven-snapshots/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="MavenRepo" />
       <option name="name" value="MavenRepo" />
       <option name="url" value="https://repo.maven.apache.org/maven2/" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="papermc-repo" />
-      <option name="name" value="papermc-repo" />
+      <option name="id" value="paperweightDecompilerRepository" />
+      <option name="name" value="paperweightDecompilerRepository" />
       <option name="url" value="https://repo.papermc.io/repository/maven-public/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="sonatype" />
-      <option name="name" value="sonatype" />
-      <option name="url" value="https://oss.sonatype.org/content/groups/public/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="maven2" />
-      <option name="name" value="maven2" />
-      <option name="url" value="https://repo.opencollab.dev/maven-snapshots/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="MavenLocal" />
-      <option name="name" value="MavenLocal" />
-      <option name="url" value="file:/$MAVEN_REPOSITORY$/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="maven" />
-      <option name="name" value="maven" />
-      <option name="url" value="https://papermc.io/repo/repository/maven-public/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="maven6" />
-      <option name="name" value="maven6" />
-      <option name="url" value="https://hub.jeff-media.com/nexus/repository/jeff-media-public/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="maven3" />
@@ -52,9 +32,19 @@
       <option name="url" value="https://repo.dmulloy2.net/repository/public/" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="maven4" />
-      <option name="name" value="maven4" />
-      <option name="url" value="https://hub.spigotmc.org/nexus/content/repositories/public/" />
+      <option name="id" value="maven" />
+      <option name="name" value="maven" />
+      <option name="url" value="https://papermc.io/repo/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="https://oss.sonatype.org/content/groups/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="MavenLocal" />
+      <option name="name" value="MavenLocal" />
+      <option name="url" value="file:$MAVEN_REPOSITORY$/" />
     </remote-repository>
   </component>
 </project>
