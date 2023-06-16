@@ -1,0 +1,8 @@
+// DuckPlugin/build.gradle
+project(':DuckPaper') {
+    // Module configuration here
+
+    tasks.classes {
+        // Configure the 'classes' task if needed
+    }
+}
