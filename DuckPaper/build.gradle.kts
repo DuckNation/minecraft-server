@@ -21,6 +21,7 @@ repositories {
 
 dependencies {
     paperweight.paperDevBundle("$minecraftVersion-R0.1-SNAPSHOT")
+    implementation("org.apache.httpcomponents:httpclient:4.5.13")
 //    implementation("com.destroystokyo.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
 //    compileOnly("com.destroystokyo.paper:paper:$minecraftVersion-R0.1-SNAPSHOT")
 }
@@ -32,7 +33,7 @@ java {
 
 tasks.withType<JavaCompile> {
     if (JavaVersion.current() < javaVersion) {
-options.compilerArgs.add(javaVersion.majorVersion.toInt().toString())
+        options.compilerArgs.add(javaVersion.majorVersion.toInt().toString())
     }
 }
 
