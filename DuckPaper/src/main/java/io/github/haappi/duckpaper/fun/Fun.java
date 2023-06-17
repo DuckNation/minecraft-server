@@ -18,6 +18,7 @@ public class Fun {
         manager.registerEvents(new AntiRaidFarm(), plugin);
         manager.registerEvents(new NightSkip(), plugin);
         manager.registerEvents(new ItsNotGay(), plugin);
+        manager.registerEvents(new DeathHead(), plugin);
 
 
     }
