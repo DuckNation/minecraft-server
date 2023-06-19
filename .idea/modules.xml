@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DuckPaper/DuckSMP.DuckPaper.test.iml" filepath="$PROJECT_DIR$/.idea/modules/DuckPaper/DuckSMP.DuckPaper.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DuckVelocity/DuckSMP.DuckVelocity.iml" filepath="$PROJECT_DIR$/.idea/modules/DuckVelocity/DuckSMP.DuckVelocity.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DuckVelocity/DuckSMP.DuckVelocity.main.iml" filepath="$PROJECT_DIR$/.idea/modules/DuckVelocity/DuckSMP.DuckVelocity.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DuckVelocity/DuckSMP.DuckVelocity.test.iml" filepath="$PROJECT_DIR$/.idea/modules/DuckVelocity/DuckSMP.DuckVelocity.test.iml" />
     </modules>
   </component>
 </project>

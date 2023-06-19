@@ -4,6 +4,8 @@ import io.github.haappi.duckpaper.DuckPaper;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 
+import static io.github.haappi.duckpaper.utils.CommandRelated.registerNewCommand;
+
 /*
 Ported from https://github.com/oddlama/vane/blob/ace0e15bb30060ffc43406840951cefe9ac250ca/vane-trifles/src/main/java/org/oddlama/vane/trifles/
  */
@@ -19,6 +21,8 @@ public class Fun {
         manager.registerEvents(new NightSkip(), plugin);
         manager.registerEvents(new ItsNotGay(), plugin);
         manager.registerEvents(new DeathHead(), plugin);
+
+        registerNewCommand(new Kiss("kiss"));
 
 
     }

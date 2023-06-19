@@ -5,40 +5,52 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.velocitypowered/velocity-annotation-processor/4.0.0-SNAPSHOT/14362fcce528f71bbf015bacec792d2d33e82fba/velocity-annotation-processor-4.0.0-SNAPSHOT.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.velocitypowered/velocity-api/4.0.0-SNAPSHOT/f2a8ecbea421718b1202091bd520fbeb34fa491/velocity-api-4.0.0-SNAPSHOT.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-serializer-legacy/4.7.0/a4024b13870196cc5d5ab75f57a417b05892c292/adventure-text-serializer-legacy-4.7.0.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-serializer-plain/4.7.0/b19a73b5c08f5519402f055dfbfd77212a7d0f43/adventure-text-serializer-plain-4.7.0.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/adventure-api/4.7.0/2c75a48918aa1a2063e85d2ed866e84dcf1aaa2/adventure-api-4.7.0.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/adventure-key/4.7.0/3fbcad775873c1c08c0b085538f84df4d56cd1e1/adventure-key-4.7.0.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-serializer-gson/4.7.0/36b7c1806120ef9acca933079c5977bd19b961fa/adventure-text-serializer-gson-4.7.0.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.spongepowered/configurate-gson/4.1.1/c4221028ad7e7e61e2effc4d9c657cab96e6f27d/configurate-gson-4.1.1.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.6/9180733b7df8542621dc12e21e87557e8c99b8cb/gson-2.8.6.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/cloud.commandframework/cloud-annotations/1.7.1/c60c6388222c7084c896a25cd32b39699fe0bf6/cloud-annotations-1.7.1.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/cloud.commandframework/cloud-core/1.7.1/d98654c6af97f88397d69745db6ae53baf131ec1/cloud-core-1.7.1.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/cloud.commandframework/cloud-services/1.7.1/b622a3ce7cfb72ce29fbae1961550299c3c57090/cloud-services-1.7.1.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/io.leangen.geantyref/geantyref/1.3.13/8a56163906cd05968c6618dcdbd049e9a513ee4b/geantyref-1.3.13.jar" />
+        </processorPath>
+        <module name="DuckSMP.DuckPaper.main" />
+      </profile>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.velocitypowered/velocity-api/3.1.1/82f54eae5d50f9390947c2623c6d6fe84e6fb0/velocity-api-3.1.1.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/cloud.commandframework/cloud-annotations/1.7.1/c60c6388222c7084c896a25cd32b39699fe0bf6/cloud-annotations-1.7.1.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.moandjiezana.toml/toml4j/0.7.2/a03337911d0bd2c40932aca3946edb30d0e7d0c/toml4j-0.7.2.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.spongepowered/configurate-gson/3.7.2/431733e80d7dfc62b37962c2723bba5c996548f/configurate-gson-3.7.2.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-serializer-legacy/4.9.3/9e7811601e508e0af6d53e35eab3588ee607bff6/adventure-text-serializer-legacy-4.9.3.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-serializer-plain/4.9.3/61d39db7e84c11d91be551cb9bc50c1aa7e64983/adventure-text-serializer-plain-4.9.3.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/adventure-api/4.9.3/b0054b3a4d144f09962fe72abc746191e7f931a2/adventure-api-4.9.3.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/adventure-key/4.9.3/1cf3ecba345cf8b810a00b941c8f14ecc6e5df16/adventure-key-4.9.3.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-serializer-gson/4.9.3/141df0329e00b791bcc8b2921cd715ac7d506bbe/adventure-text-serializer-gson-4.9.3.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.8/431fc3cbc0ff81abdbfde070062741089c3ba874/gson-2.8.8.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.spongepowered/configurate-hocon/3.7.2/a5e49f57ae8f5e61dbae48a158a28343e7d6f707/configurate-hocon-3.7.2.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.spongepowered/configurate-yaml/3.7.2/a0c3eec370aa9bdec3f450f842edcb03f6d42be2/configurate-yaml-3.7.2.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.spongepowered/configurate-core/3.7.2/985223b13c7da64116a7e20203b2904023eeb1db/configurate-core-3.7.2.jar" />
           <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.inject/guice/5.0.1/dae7556b441cada2b4f0a2314eb68e1ff423429/guice-5.0.1.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.guava/guava/30.1.1-jre/87e0fd1df874ea3cbe577702fe6f17068b790fd8/guava-30.1.1-jre.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/coffee/1.0.0-SNAPSHOT/8d6901d0147d4e229db146f3a8e64bd3de5de35b/coffee-1.0.0-SNAPSHOT.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.guava/guava/30.1-jre/d0c3ce2311c9e36e73228da25a6e99b2ab826f/guava-30.1-jre.jar" />
           <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.30/b5a4b6d16ab13e34a88fae84c35cd5d68cac922c/slf4j-api-1.7.30.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.8.0/6b83e4a33220272c3a08991498ba9dc09519f190/checker-qual-3.8.0.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.6.1/52ca62b41f68584c4d2de39d6176758e9383d0b6/checker-qual-3.6.1.jar" />
           <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.velocitypowered/velocity-brigadier/1.0.0-SNAPSHOT/719dd1bda540a9be7f70f23c68fbe1a0e2fc69ca/velocity-brigadier-1.0.0-SNAPSHOT.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.spongepowered/configurate-hocon/4.1.1/b38f3b43081fd6c376daabda6567f91dc26e2fc7/configurate-hocon-4.1.1.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.spongepowered/configurate-yaml/4.1.1/746570930584cc1c4b0b2f58f9df1173ad434e8c/configurate-yaml-4.1.1.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/b421526c5f297295adef1c886e5246c39d4ac629/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/cloud.commandframework/cloud-core/1.7.1/d98654c6af97f88397d69745db6ae53baf131ec1/cloud-core-1.7.1.jar" />
           <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.5.1/562d366678b89ce5d6b6b82c1a073880341e3fba/error_prone_annotations-2.5.1.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.3.4/dac170e4594de319655ffb62f41cbd6dbb5e601e/error_prone_annotations-2.3.4.jar" />
           <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/ba035118bc8bac37d7eff77700720999acd9986d/j2objc-annotations-1.3.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/examination-string/1.1.0/9a6f6f9e10ca3ff3ce46db59845aae63f9d16fd8/examination-string-1.1.0.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/examination-api/1.1.0/d7b5e3f8edda2b64c37bc0059e265cc1f6e08322/examination-api-1.1.0.jar" />
           <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar" />
           <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/aopalliance/aopalliance/1.0/235ba8b489512805ac13a8f9ea77a1ca5ebe3e8/aopalliance-1.0.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.typesafe/config/1.4.1/19058a07624a87f90d129af7cd9c68bee94535a9/config-1.4.1.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.spongepowered/configurate-core/4.1.1/e6b975293ac0a15a1bd1f25470ef4dfabc66104a/configurate-core-4.1.1.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.28/7cae037c3014350c923776548e71c9feb7a69259/snakeyaml-1.28.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/io.leangen.geantyref/geantyref/1.3.11/bc9c03b53917314d21fe6276aceb08aa84bf80dd/geantyref-1.3.11.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.typesafe/config/1.4.0/a8b341fe81552834edc231193afd6f56a96f0eff/config-1.4.0.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.26/a78a8747147d2c5807683e76ec2b633e95c14fe9/snakeyaml-1.26.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/cloud.commandframework/cloud-services/1.7.1/b622a3ce7cfb72ce29fbae1961550299c3c57090/cloud-services-1.7.1.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/examination-string/1.3.0/6f34afef5c54ccce4996bc321abf77518b55b4bd/examination-string-1.3.0.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/net.kyori/examination-api/1.3.0/8a2d185275307f1e2ef2adf7152b9a0d1d44c30b/examination-api-1.3.0.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/b421526c5f297295adef1c886e5246c39d4ac629/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar" />
+          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/io.leangen.geantyref/geantyref/1.3.13/8a56163906cd05968c6618dcdbd049e9a513ee4b/geantyref-1.3.13.jar" />
         </processorPath>
         <module name="DuckSMP.DuckVelocity.main" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="11" />
+    <bytecodeTargetLevel target="14" />
   </component>
 </project>
