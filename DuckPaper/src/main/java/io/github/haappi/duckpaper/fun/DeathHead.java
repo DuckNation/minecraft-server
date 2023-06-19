@@ -9,7 +9,6 @@ import io.github.haappi.duckpaper.DuckPaper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -23,7 +22,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.lang.reflect.Field;
-import java.util.List;
 import java.util.UUID;
 
 public class DeathHead implements Listener {
