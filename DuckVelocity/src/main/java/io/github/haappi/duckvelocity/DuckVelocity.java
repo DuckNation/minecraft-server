@@ -5,6 +5,9 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
+import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
+import io.github.haappi.duckvelocity.PluginListener.MessageListener;
 import io.github.haappi.duckvelocity.Chat.SendDiscordHandler;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -22,8 +25,10 @@ import static io.github.haappi.duckvelocity.Config.checkConfig;
 public class DuckVelocity {
     public static final CloseableHttpClient httpClient = HttpClients.createDefault();
     private static DuckVelocity instance;
+    private final ChannelIdentifier customChannel =
+            MinecraftChannelIdentifier.from("duck:messenger");
 
-    private ProxyServer server;
+    private ProxyServer proxy;
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
 
 
@@ -32,22 +37,25 @@ public class DuckVelocity {
 
     @Inject
     public DuckVelocity(ProxyServer proxy) {
-        this.server = proxy;
+        this.proxy = proxy;
         instance = this;
         checkConfig();
     }
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        server.getEventManager().register(this, new SendDiscordHandler());
+        proxy.getEventManager().register(this, new SendDiscordHandler());
+
+        proxy.getChannelRegistrar().register(customChannel);
+        proxy.getEventManager().register(this, new MessageListener(customChannel));
     }
 
-    public static DuckVelocity getInstance() {
+    public static synchronized DuckVelocity getInstance() {
         return instance;
     }
 
     public ProxyServer getProxy() {
-        return this.server;
+        return this.proxy;
     }
 
     public MiniMessage getMiniMessage() {

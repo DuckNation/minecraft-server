@@ -7,7 +7,7 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.1.0"
 }
 
-val minecraftVersion = "1.20"
+val minecraftVersion = "1.20.1"
 val javaVersion = JavaVersion.VERSION_17
 group = "io.github.haappi"
 version = "0.1"
@@ -31,6 +31,7 @@ dependencies {
     implementation("cloud.commandframework:cloud-annotations:1.7.1")
     implementation("cloud.commandframework:cloud-minecraft-extras:1.7.1")
     annotationProcessor("cloud.commandframework:cloud-annotations:1.7.1")
+    implementation("org.json:json:20230227")
 //    implementation("com.destroystokyo.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
 //    compileOnly("com.destroystokyo.paper:paper:$minecraftVersion-R0.1-SNAPSHOT")
 }

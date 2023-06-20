@@ -1,5 +1,7 @@
 package io.github.haappi.duckpaper.utils;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import io.github.haappi.duckpaper.DuckPaper;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
@@ -31,5 +33,21 @@ public class Utils {
 
     public static String titleCase(String string) {
         return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
+    }
+
+    public static byte[] stringToByteArray(String message, String delim) {
+        String[] msg = message.split(delim);
+
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+
+        for (String s : msg) {
+            out.writeUTF(s);
+        }
+
+        return out.toByteArray();
+    }
+
+    public static byte[] stringToByteArray(String message) {
+        return stringToByteArray(message, ";");
     }
 }

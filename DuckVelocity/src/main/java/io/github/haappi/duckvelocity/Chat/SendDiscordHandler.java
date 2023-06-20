@@ -1,6 +1,5 @@
 package io.github.haappi.duckvelocity.Chat;
 
-import com.google.common.base.Enums;
 import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
@@ -11,7 +10,6 @@ import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import io.github.haappi.duckvelocity.Config;
 import io.github.haappi.duckvelocity.DuckVelocity;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -22,9 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.websocket.*;
 import java.io.IOException;
-import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -75,41 +71,6 @@ public class SendDiscordHandler {
     public void onPlayerJoin(ServerConnectedEvent event) {
         String serverName = getServerName(event.getServer());
         write(String.format("**%s** connected to **%s**", event.getPlayer().getUsername(), serverName), Types.PLAYER_JOIN);
-
-        server.getScheduler()
-                .buildTask(DuckVelocity.getInstance(), () -> {
-                    HttpGet get = new HttpGet(Config.API_BASE_URL + "/chats/get?uuid=" + event.getPlayer().getUniqueId() + "&key=" + Config.API_KEY);
-
-                    try {
-                        HttpResponse response = httpClient.execute(get);
-                        int statusCode = response.getStatusLine().getStatusCode();
-                        String stringResponse = EntityUtils.toString(response.getEntity());
-                        if (statusCode != 200) {
-                            event.getPlayer().sendMessage(Component.text("Failed to load your chat channels.", NamedTextColor.RED));
-                            System.out.println(stringResponse);
-                            return;
-                        }
-                        JSONArray jsonArray = new JSONArray(stringResponse);
-                        event.getPlayer().sendMessage(mm.deserialize("<gray>Found <green>" + jsonArray.length() + "</greem> chat channels."));
-
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            Iterator<String> keys = jsonObject.keys();
-                            while (keys.hasNext()) {
-                                String key = keys.next();
-                                String value = jsonObject.getString(key);
-
-                                Channel channel = ChannelManager.createChannel(key, value);
-                                channel.subscribePlayer(event.getPlayer());
-                            }
-                        }
-
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .delay(3L, TimeUnit.SECONDS)
-                .schedule();
     }
 
     @Subscribe(order = PostOrder.LAST)

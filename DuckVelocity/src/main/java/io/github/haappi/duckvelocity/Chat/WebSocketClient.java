@@ -22,8 +22,6 @@ public class WebSocketClient {
     protected Session userSession = null;
     private final MessageCallback callback;
 
-    private final MiniMessage mm = DuckVelocity.getInstance().getMiniMessage();
-
     public WebSocketClient(MessageCallback callback) {
         this.callback = callback;
         container = ClientManager.createClient();
@@ -50,6 +48,9 @@ public class WebSocketClient {
         String[] message = msg.split(";", 2);
         if (message.length != 2) return;
         Types type = Types.getByValue(message[0]);
+        if (type == null) {
+            throw new IllegalArgumentException("Unknown type: " + message[0]);
+        }
         String content = message[1];
 
         callback.onMessageReceived(type, content);

@@ -19,12 +19,15 @@ public class ChannelManager {
         Iterator<Map.Entry<String, Channel>> iterator = channels.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, Channel> entry = iterator.next();
-            System.out.println("name: " + entry.getKey());
-            System.out.println("channel: " + entry.getValue().getId());
             if (entry.getValue().getId().equals(channel.getId())) {
                 iterator.remove();
             }
         }
+    }
+
+    public static void sendMessageToChannel(String channel, String message) {
+        channels.get(channel).sendMessage(message);
+
     }
 
 

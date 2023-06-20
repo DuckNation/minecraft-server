@@ -5,11 +5,15 @@ import io.github.haappi.duckvelocity.Config;
 import io.github.haappi.duckvelocity.DuckVelocity;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
-import net.kyori.adventure.pointer.Pointer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Channel {
     private final String id;
@@ -41,9 +45,13 @@ public class Channel {
         return subscribedPlayers;
     }
 
-    public Audience subscribePlayer(Player player) {
+    public Audience subscribePlayer(@Nullable Player player) {
+        if (player == null) {
+            return subscribedPlayers;
+        }
         subscribedPlayers = Audience.audience(subscribedPlayers, player);
-        subscribedPlayers.sendMessage(Component.text(player.getUsername() + " has connected to the channel: " + this.name, NamedTextColor.GREEN));
+        if (!this.name.equals("global"))
+            subscribedPlayers.sendMessage(Component.text(player.getUsername() + " has connected to the channel: " + this.name, NamedTextColor.GREEN));
         return subscribedPlayers;
     }
 
@@ -63,5 +71,18 @@ public class Channel {
             ChannelManager.removeChannel(this);
         }
         return subscribedPlayers;
+    }
+
+    public void sendMessage(String message) {
+        MiniMessage mm = DuckVelocity.getInstance().getMiniMessage();
+
+        client.sendMessage("chat;" + PlainTextComponentSerializer.plainText().serialize(mm.deserialize(message)));
+
+        message = String.format("<gray><i>(%s)</i></gray> ", this.name) + message.replaceAll("gold", "yellow").replaceAll("green", "yellow");
+
+
+        if (!this.name.equals("global")) {
+            subscribedPlayers.sendMessage(Component.text().append(mm.deserialize(message)));
+        }
     }
 }
