@@ -50,8 +50,12 @@ public class Channel {
             return subscribedPlayers;
         }
         subscribedPlayers = Audience.audience(subscribedPlayers, player);
-        if (!this.name.equals("global"))
+        if (!this.name.equals("global")) {
+            if (player.hasPermission("duck.silent_join")) {
+                return subscribedPlayers;
+            }
             subscribedPlayers.sendMessage(Component.text(player.getUsername() + " has connected to the channel: " + this.name, NamedTextColor.GREEN));
+        }
         return subscribedPlayers;
     }
 
@@ -66,9 +70,16 @@ public class Channel {
         });
 
         if (subscribed.isEmpty()) {
-            subscribedPlayers = Audience.audience(subscribed);
+            subscribedPlayers = Audience.empty();
             client.disconnect();
             ChannelManager.removeChannel(this);
+        } else {
+            if (!this.name.equals("global")) {
+                if (player.hasPermission("duck.silent_join")) {
+                    return subscribedPlayers;
+                }
+                subscribedPlayers.sendMessage(Component.text(player.getUsername() + " has disconnected from the channel: " + this.name, NamedTextColor.GREEN));
+            }
         }
         return subscribedPlayers;
     }

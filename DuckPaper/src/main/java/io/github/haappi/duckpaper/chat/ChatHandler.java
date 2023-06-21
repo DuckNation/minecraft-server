@@ -16,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -24,19 +25,31 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
+import io.github.haappi.duckpaper.chat.commands.Chat;
 import static io.github.haappi.duckpaper.DuckPaper.*;
+import static io.github.haappi.duckpaper.utils.CommandRelated.registerNewCommand;
 import static io.github.haappi.duckpaper.utils.Utils.stringToByteArray;
 
 public class ChatHandler implements Listener {
-    public static final ConcurrentHashMap<UUID, String> channels = new ConcurrentHashMap<>();
-    public static final ConcurrentHashMap<UUID, ArrayList<String>> allowedChannels = new ConcurrentHashMap<>();
+    public static final ConcurrentHashMap<UUID, String> currentChannel = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<UUID, ArrayList<String>> allowedChannels = new ConcurrentHashMap<>();
     private final DuckPaper plugin;
 
     public ChatHandler(DuckPaper instance) {
         this.plugin = instance;
         instance.getServer().getPluginManager().registerEvents(this, instance);
 
+        registerNewCommand(new Chat(instance));
+    }
+
+    public static ArrayList<String> getAllowedChannels(UUID uuid) {
+        if (!allowedChannels.containsKey(uuid)) {
+            ArrayList<String> channels = new ArrayList<>();
+            channels.add("global");
+            allowedChannels.put(uuid, channels);
+            return channels;
+        }
+        return allowedChannels.get(uuid);
     }
 
 
@@ -61,6 +74,11 @@ public class ChatHandler implements Listener {
         loadChatChannels(event.getPlayer());
     }
 
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onQuit(PlayerQuitEvent event) {
+        allowedChannels.remove(event.getPlayer().getUniqueId());
+    }
+
     private Component formatForAPI(Player player, Component msg) {
         return Component.text()
                 .append(player.name().color(NamedTextColor.GREEN))
@@ -73,14 +91,7 @@ public class ChatHandler implements Listener {
 
         String channel;
 
-        if (player.getDisplayName().equals("saaddi")) {
-
-            channel = channels.putIfAbsent(player.getUniqueId(), "okk") == null ? "okk" : channels.get(player.getUniqueId());
-        } else {
-            channel = channels.putIfAbsent(player.getUniqueId(), "global") == null ? "global" : channels.get(player.getUniqueId());
-
-        }
-
+        channel = currentChannel.putIfAbsent(player.getUniqueId(), "global") == null ? "global" : currentChannel.get(player.getUniqueId());
 
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Chat");
@@ -108,7 +119,7 @@ public class ChatHandler implements Listener {
                 }
                 JSONArray jsonArray = new JSONArray(stringResponse);
                 player.sendActionBar(miniMessage.deserialize("<gray>Found <green>" + jsonArray.length() + "</green> chat channels."));
-                ArrayList<String> channels = allowedChannels.putIfAbsent(player.getUniqueId(), new ArrayList<>()) == null ? allowedChannels.get(player.getUniqueId()) : allowedChannels.get(player.getUniqueId());
+                ArrayList<String> channels = getAllowedChannels(player.getUniqueId());
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -123,7 +134,6 @@ public class ChatHandler implements Listener {
                         ));
                     }
                 }
-                System.out.println(allowedChannels.get(player.getUniqueId()));
                 player.sendPluginMessage(plugin, PLUGIN_CHANNEL, stringToByteArray(
                         String.format("Chat;subscribe;global;global;%s", player.getUniqueId())
                 ));

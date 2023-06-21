@@ -5,7 +5,9 @@ public enum Types {
     PLAYER_JOIN("join"),
     PLAYER_LEAVE("leave"),
     PLAYER_CHAT("chat"),
-    INFO("info");
+    INFO("info"),
+    CREATE_DISCORD_CHANNEL("create_discord_channel"),
+    DELETE_DISCORD_CHANNEL("delete_discord_channel");
 
     private final String value;
 

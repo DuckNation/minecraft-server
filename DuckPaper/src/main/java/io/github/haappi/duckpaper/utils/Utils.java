@@ -2,9 +2,21 @@ package io.github.haappi.duckpaper.utils;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.google.gson.JsonObject;
 import io.github.haappi.duckpaper.DuckPaper;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.util.EntityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+
+import static io.github.haappi.duckpaper.DuckPaper.httpClient;
 
 public class Utils {
     public static BukkitTask scheduleNextTick(Runnable task) {
@@ -50,4 +62,53 @@ public class Utils {
     public static byte[] stringToByteArray(String message) {
         return stringToByteArray(message, ";");
     }
+
+    public static String toQueryParam(HashMap<String, Object> map) {
+        StringBuilder end = new StringBuilder("&");
+
+        for (String key : map.keySet()) {
+            end.append(key).append("=").append(map.get(key)).append("&");
+        }
+
+        return end.substring(0, end.length() - 1);
+    }
+
+    public static List<Object> performHttpRequest(HttpEntityEnclosingRequestBase request) {
+        try {
+            HttpResponse response = httpClient.execute(request);
+            int statusCode = response.getStatusLine().getStatusCode();
+            String stringResponse = EntityUtils.toString(response.getEntity());
+            JSONObject object = new JSONObject(stringResponse);
+
+            return List.of(statusCode, object);
+        } catch (IOException ignored) {
+            return List.of(500, new JSONObject().put("detail", "Internal server error"));
+        }
+    }
+
+    public static List<Object> performHttpRequest(HttpDelete delete) {
+        try {
+            HttpResponse response = httpClient.execute(delete);
+            int statusCode = response.getStatusLine().getStatusCode();
+            String stringResponse = EntityUtils.toString(response.getEntity());
+            JSONObject object = new JSONObject(stringResponse);
+
+            return List.of(statusCode, object);
+        } catch (IOException ignored) {
+            return List.of(500, new JSONObject().put("detail", "Internal server error"));
+        }
+    }
+
+    public static String[] removeFirstElement(String[] array) {
+        if (array == null || array.length == 0) {
+            return array;
+        }
+
+        String[] newArray = new String[array.length - 1];
+
+        System.arraycopy(array, 1, newArray, 0, newArray.length);
+
+        return newArray;
+    }
+
 }

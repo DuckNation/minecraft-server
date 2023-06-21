@@ -2,8 +2,10 @@ package io.github.haappi.duckpaper.utils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Command extends BukkitCommand implements TabCompleter {
+public abstract class Command extends BukkitCommand {
 
     private final @Nullable String permission;
 
@@ -25,7 +27,7 @@ public abstract class Command extends BukkitCommand implements TabCompleter {
         this(name, null);
     }
 
-    protected Command(String name, String permission) {
+    protected Command(String name, @Nullable String permission) {
         super(name);
         this.permission = permission;
     }
@@ -39,21 +41,9 @@ public abstract class Command extends BukkitCommand implements TabCompleter {
         return onCommand(sender, label, args);
     }
 
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (!(sender instanceof Player player)) {
-            return null;
-        }
-        if (permission != null && !player.hasPermission(permission)) {
-            return null;
-        }
-        return onTabComplete(player, command, alias, args);
-    }
+    public abstract @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, String[] args);
 
     public abstract boolean onCommand(CommandSender commandSender, String label, String[] args);
 
     public abstract Component usage();
-
-    public List<String> onTabComplete(Player player, Command command, String alias, String[] args) {
-        return new ArrayList<>();
-    }
 }
