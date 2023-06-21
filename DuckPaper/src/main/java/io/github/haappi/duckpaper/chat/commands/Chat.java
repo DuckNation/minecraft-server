@@ -45,7 +45,7 @@ public class Chat extends Command {
 
         if (args.length == 1) {
             List<String> list = new ArrayList<>(subCommnands);
-            list.addAll(getAllowedChannels(player.getUniqueId()).stream().filter(entry -> entry.toLowerCase().startsWith(args[1])).toList());
+            list.addAll(getAllowedChannels(player.getUniqueId()).stream().filter(entry -> entry.toLowerCase().startsWith(args[0])).toList());
             return list;
         }
         if (args.length == 2) {

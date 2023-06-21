@@ -93,8 +93,6 @@ public class SendDiscordHandler {
     public static void handle(@Nullable Types type, String message) {
         if (type == null) return;
         DuckVelocity instance = DuckVelocity.getInstance();
-        System.out.println(type);
-        System.out.println(message);
 //        switch (type) {
 //            case PLAYER_CHAT -> {
 //                Component deserialized = instance.getMiniMessage().deserialize(message);

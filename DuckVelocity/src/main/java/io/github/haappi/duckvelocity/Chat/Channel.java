@@ -27,10 +27,17 @@ public class Channel {
         this.subscribedPlayers = Audience.empty();
         this.client = new WebSocketClient((type, message) -> {
             switch (type) {
-                case PLAYER_CHAT -> this.subscribedPlayers.sendMessage(DuckVelocity.getInstance().getMiniMessage().deserialize(message));
+                case PLAYER_CHAT -> {
+                    String msg = message.replace("Discord", this.name);
+                    this.subscribedPlayers.sendMessage(DuckVelocity.getInstance().getMiniMessage().deserialize(msg));
+                }
             }
         });
         this.client.connect(Config.WSS_BASE_URL + "/wss/" + id + "?key=" + Config.API_KEY);
+
+        if (!this.name.equals("global")) {
+            ChannelManager.createChannel("global", "global").sendMessage(Types.CREATE_DISCORD_CHANNEL, this.id + ";" + this.name);
+        }
     }
 
     public String getId() {
@@ -88,6 +95,7 @@ public class Channel {
         MiniMessage mm = DuckVelocity.getInstance().getMiniMessage();
 
         client.sendMessage("chat;" + PlainTextComponentSerializer.plainText().serialize(mm.deserialize(message)));
+        System.out.println(this.name + " " + message);
 
         message = String.format("<gray><i>(%s)</i></gray> ", this.name) + message.replaceAll("gold", "yellow").replaceAll("green", "yellow");
 
@@ -95,5 +103,9 @@ public class Channel {
         if (!this.name.equals("global")) {
             subscribedPlayers.sendMessage(Component.text().append(mm.deserialize(message)));
         }
+    }
+
+    public void sendMessage(Types type, String message) {
+        client.sendMessage(type.toString() + ";" + message);
     }
 }

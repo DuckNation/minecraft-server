@@ -14,6 +14,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 
+import static io.github.haappi.duckvelocity.Chat.ChannelManager.createChannel;
 import static io.github.haappi.duckvelocity.Config.checkConfig;
 
 @Plugin(
@@ -48,6 +49,8 @@ public class DuckVelocity {
 
         proxy.getChannelRegistrar().register(customChannel);
         proxy.getEventManager().register(this, new MessageListener(customChannel));
+
+        createChannel("global", "global");
     }
 
     public static synchronized DuckVelocity getInstance() {

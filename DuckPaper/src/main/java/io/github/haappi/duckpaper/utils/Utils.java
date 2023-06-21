@@ -43,6 +43,13 @@ public class Utils {
         return runTaskLater(task, (long) ms / 50);
     }
 
+    public static BukkitTask runTaskLater(Runnable task, int ms, boolean async) {
+        if (async) {
+            return Bukkit.getScheduler().runTaskLaterAsynchronously(DuckPaper.getInstance(), task, (long) ms / 50L);
+        }
+        return runTaskLater(task, (long) ms / 50);
+    }
+
     public static String titleCase(String string) {
         return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
     }

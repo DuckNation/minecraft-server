@@ -105,7 +105,7 @@ public class ChatHandler implements Listener {
     }
 
     private void loadChatChannels(Player player) {
-        Utils.scheduleNextTickAsync(() -> {
+        Utils.runTaskLater(() -> {
             HttpGet get = new HttpGet(Config.API_BASE_URL + "/chats/get?uuid=" + player.getUniqueId() + "&key=" + Config.API_KEY);
 
             try {
@@ -141,7 +141,7 @@ public class ChatHandler implements Listener {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        });
+        }, 3000, true);
     }
 
 }
