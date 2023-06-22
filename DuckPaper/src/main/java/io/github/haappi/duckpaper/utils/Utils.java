@@ -74,10 +74,14 @@ public class Utils {
         StringBuilder end = new StringBuilder("&");
 
         for (String key : map.keySet()) {
-            end.append(key).append("=").append(map.get(key)).append("&");
+            end.append(key).append("=").append(sanitizeQueryParam(map.get(key))).append("&");
         }
 
         return end.substring(0, end.length() - 1);
+    }
+
+    public static String sanitizeQueryParam(Object value) {
+        return value.toString().replaceAll("[^a-zA-Z0-9-]", ""); // only allow alphanumeric characters and dashes
     }
 
     public static List<Object> performHttpRequest(HttpEntityEnclosingRequestBase request) {
