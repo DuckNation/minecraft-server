@@ -7,6 +7,7 @@ import cloud.commandframework.paper.PaperCommandManager;
 import com.mojang.brigadier.exceptions.Dynamic2CommandExceptionType;
 import io.github.haappi.duckpaper.NMS.NMSEvents;
 import io.github.haappi.duckpaper.chat.ChatHandler;
+import io.github.haappi.duckpaper.commands.CommandHandler;
 import io.github.haappi.duckpaper.fun.Fun;
 import io.github.haappi.duckpaper.nametag.NameTag;
 import io.github.haappi.duckpaper.utils.Config;
@@ -38,6 +39,7 @@ public final class DuckPaper extends JavaPlugin implements Listener {
         DuckPaper.instance = this;
 
         new Fun(this);
+        new CommandHandler(this);
         new NameTag(this);
 
         new ChatHandler(this);

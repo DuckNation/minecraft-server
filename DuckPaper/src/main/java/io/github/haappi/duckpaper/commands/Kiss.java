@@ -1,11 +1,10 @@
-package io.github.haappi.duckpaper.fun;
+package io.github.haappi.duckpaper.commands;
 
 import io.github.haappi.duckpaper.utils.Command;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
