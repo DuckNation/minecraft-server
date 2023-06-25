@@ -8,6 +8,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +28,7 @@ import static io.github.haappi.duckpaper.utils.Utils.*;
 public class Chat extends Command {
     ArrayList<String> subCommnands = new ArrayList<>(Arrays.asList("create", "join", "leave", "mute", "unmute", "block", "unblock", "manage", "delete"));
     /**
-     * // todo implement <block | mute | unmute | unblock | manage | delete> properly
+     * // todo implement <block | unblock | manage | delete> properly
      */
     private final DuckPaper plugin;
 
@@ -164,9 +165,17 @@ public class Chat extends Command {
             }
 
             player.sendPluginMessage(plugin, PLUGIN_CHANNEL, stringToByteArray(
-                    String.format("Chat;subscribe;%s;%s;%s", object.get("name"), object.get("_id"), player.getUniqueId())
+                    String.format("Chat;init;%s;%s;%s", object.get("name"), object.get("_id"), player.getUniqueId())
             ));
-            player.sendMessage(Component.text("Successfully created channel!", NamedTextColor.GREEN));
+
+            Bukkit.getScheduler().runTaskLater(DuckPaper.getInstance(), () -> {
+                player.sendPluginMessage(plugin, PLUGIN_CHANNEL, stringToByteArray(
+                        String.format("Chat;subscribe;%s;%s;%s", object.get("name"), object.get("_id"), player.getUniqueId())
+                ));
+
+                player.sendMessage(Component.text("Successfully created channel!", NamedTextColor.GREEN));
+            }, 100L);
+
             getAllowedChannels(player.getUniqueId()).add(object.getString("name"));
         });
 
@@ -245,15 +254,11 @@ public class Chat extends Command {
     }
 
     private boolean unmuteHandler(Player player, String[] args) {
-        player.sendMessage(Component.text("This command is not yet implemented. Please rejoin the channel to unmute all channels.", NamedTextColor.RED));
-        return false;
-//        String channelName = args[0];
-//
-//        player.sendPluginMessage(plugin, PLUGIN_CHANNEL, stringToByteArray(
-//                String.format("Chat;unmute;%s;%s", channelName, player.getUniqueId())
-//        ));
-//
-//        return true;
+        player.sendPluginMessage(plugin, PLUGIN_CHANNEL, stringToByteArray(
+                String.format("Chat;unmute;%s;%s", args[0], player.getUniqueId())
+        ));
+
+        return true;
     }
 
     private boolean manageHandler(Player player, String[] args) {
@@ -268,11 +273,11 @@ public class Chat extends Command {
                 Component.text("Usage: /chat <create|join|leave|mute|unmute|manage> [channel]", NamedTextColor.RED)
                 .append(Component.newline())
                 .append(Component.text("Create a new channel: /chat create <channel> [password]", NamedTextColor.AQUA)).append(Component.newline())
-                .append(Component.text("Join a channel: /chat join <channel> [password]", NamedTextColor.AQUA)).append(Component.newline())
+                .append(Component.text("Join a channel: /chat join <channel> [password]", NamedTextColor.BLUE)).append(Component.newline())
                 .append(Component.text("Leave a channel: /chat leave <channel>", NamedTextColor.AQUA)).append(Component.newline())
-                .append(Component.text("Mute a channel: /chat mute <channel>", NamedTextColor.AQUA)).append(Component.newline())
+                .append(Component.text("Mute a channel: /chat mute <channel>", NamedTextColor.BLUE)).append(Component.newline())
                 .append(Component.text("Unmute a channel: /chat unmute <channel>", NamedTextColor.AQUA)).append(Component.newline())
-                .append(Component.text("Manage a channel: /chat manage <channel>", NamedTextColor.AQUA));
+                .append(Component.text("Manage a channel: /chat manage <channel>", NamedTextColor.BLUE));
         return msg;
 
     }

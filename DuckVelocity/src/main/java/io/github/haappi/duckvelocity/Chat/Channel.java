@@ -34,10 +34,6 @@ public class Channel {
             }
         });
         this.client.connect(Config.WSS_BASE_URL + "/wss/" + id + "?key=" + Config.API_KEY);
-
-        if (!this.name.equals("global")) {
-            ChannelManager.createChannel("global", "global").sendMessage(Types.CREATE_DISCORD_CHANNEL, this.id + ";" + this.name);
-        }
     }
 
     public String getId() {
