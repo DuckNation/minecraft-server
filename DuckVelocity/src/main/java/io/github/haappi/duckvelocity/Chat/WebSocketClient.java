@@ -18,6 +18,8 @@ public class WebSocketClient {
         void onMessageReceived(Types type, String message);
     }
 
+    private String sServer;
+
     protected WebSocketContainer container;
     protected Session userSession = null;
     private final MessageCallback callback;
@@ -30,6 +32,7 @@ public class WebSocketClient {
     public void connect(String sServer) {
         try {
             userSession = container.connectToServer(this, new URI(sServer));
+            this.sServer = sServer;
         } catch (DeploymentException | URISyntaxException | IOException e) {
             e.printStackTrace();
         }
@@ -56,11 +59,16 @@ public class WebSocketClient {
         callback.onMessageReceived(type, content);
     }
 
-    public void disconnect()  {
+    public void disconnect() {
         try {
             userSession.close();
         } catch (IOException exception) {
             exception.printStackTrace();
         }
+    }
+
+    @OnClose
+    public void reopen() {
+        this.connect(this.sServer);
     }
 }

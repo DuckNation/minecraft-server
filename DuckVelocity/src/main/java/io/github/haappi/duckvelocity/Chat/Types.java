@@ -7,7 +7,7 @@ public enum Types {
     PLAYER_CHAT("chat"),
     INFO("info"),
     CREATE_DISCORD_CHANNEL("create_discord_channel"),
-    DELETE_DISCORD_CHANNEL("delete_discord_channel");
+    DELETE_DISCORD_CHANNEL("delete_discord_channel"), REMOVE_PLAYER("remove_player");
 
     private final String value;
 

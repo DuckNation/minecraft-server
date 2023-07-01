@@ -1,12 +1,15 @@
 package io.github.haappi.duckvelocity;
 
 import com.google.inject.Inject;
+import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
+import io.github.haappi.duckvelocity.Message.Message;
+import io.github.haappi.duckvelocity.Message.Reply;
 import io.github.haappi.duckvelocity.PluginListener.MessageListener;
 import io.github.haappi.duckvelocity.Chat.SendDiscordHandler;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -51,6 +54,10 @@ public class DuckVelocity {
         proxy.getEventManager().register(this, new MessageListener(customChannel));
 
         createChannel("global", "global");
+        CommandManager commandManager = proxy.getCommandManager();
+
+        commandManager.register("message", new Message(), "msg", "tell", "whisper", "w", "m");
+        commandManager.register("reply", new Reply(), "r");
     }
 
     public static synchronized DuckVelocity getInstance() {

@@ -19,6 +19,10 @@ public class ChatHandler {
             case "subscribe" -> {
                 ChannelManager.createChannel(args[0], args[1]).subscribePlayer(playerFromUUID(args[2]));
             }
+            case "unsubscribe" -> {
+                ChannelManager.createChannel(args[0], args[1]).unsubscribePlayer(playerFromUUID(args[2]));
+                ChannelManager.createChannel("global", "global").sendMessage(Types.REMOVE_PLAYER, args[1] + ";" + args[2]);
+            }
             case "init" -> {
                 ChannelManager.createChannel("global", "global").sendMessage(Types.CREATE_DISCORD_CHANNEL, args[1] + ";" + args[0]);
             }
