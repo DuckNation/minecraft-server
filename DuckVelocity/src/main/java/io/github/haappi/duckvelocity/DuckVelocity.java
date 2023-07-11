@@ -58,7 +58,7 @@ public class DuckVelocity {
 
         commandManager.register("message", new Message(), "msg", "tell", "whisper", "w", "m");
         commandManager.register("reply", new Reply(), "r");
-        commandManager.register("verify", new Verify(), "r");
+        commandManager.register("verify", new Verify());
     }
 
     public static synchronized DuckVelocity getInstance() {

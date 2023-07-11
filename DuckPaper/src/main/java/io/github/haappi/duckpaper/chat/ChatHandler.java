@@ -86,8 +86,8 @@ public class ChatHandler implements Listener {
                 .append(msg).build();
     }
 
-    private boolean sendMessage(Player player, Component message) {
-        String serialized = plugin.getMiniMessage().serialize(message);
+    public static boolean sendMessage(Player player, Component message) {
+        String serialized = DuckPaper.getInstance().getMiniMessage().serialize(message);
 
         String channel;
 
@@ -99,14 +99,14 @@ public class ChatHandler implements Listener {
         out.writeUTF(channel);
         out.writeUTF(serialized);
 
-        player.sendPluginMessage(plugin, PLUGIN_CHANNEL, out.toByteArray());
+        player.sendPluginMessage(DuckPaper.getInstance(), PLUGIN_CHANNEL, out.toByteArray());
 
         return !channel.equals("global");
     }
 
     private void loadChatChannels(Player player) {
         Utils.runTaskLater(() -> {
-            HttpGet get = new HttpGet(Config.API_BASE_URL + "/chats/get?uuid=" + player.getUniqueId() + "&key=" + Config.API_KEY);
+            HttpGet get = new HttpGet(Config.API_BASE_URL + "/chats/better-get?player_uuid=" + player.getUniqueId() + "&key=" + Config.API_KEY);
 
             try {
                 HttpResponse response = httpClient.execute(get);
@@ -123,16 +123,13 @@ public class ChatHandler implements Listener {
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    Iterator<String> keys = jsonObject.keys();
-                    while (keys.hasNext()) {
-                        String key = keys.next();
-                        String value = jsonObject.getString(key);
-                        channels.add(key);
+                    String key = jsonObject.getString("name");
+                    String value = jsonObject.getString("uuid");
+                    channels.add(key);
 
-                        player.sendPluginMessage(plugin, PLUGIN_CHANNEL, stringToByteArray(
-                                String.format("Chat;subscribe;%s;%s;%s", key, value, player.getUniqueId())
-                        ));
-                    }
+                    player.sendPluginMessage(plugin, PLUGIN_CHANNEL, stringToByteArray(
+                            String.format("Chat;subscribe;%s;%s;%s", key, value, player.getUniqueId())
+                    ));
                 }
                 player.sendPluginMessage(plugin, PLUGIN_CHANNEL, stringToByteArray(
                         String.format("Chat;subscribe;global;global;%s", player.getUniqueId())

@@ -68,6 +68,7 @@ public class Utils {
             int statusCode = response.getStatusLine().getStatusCode();
             String stringResponse = EntityUtils.toString(response.getEntity());
             JSONObject object = new JSONObject(stringResponse);
+            System.out.println(object);
 
             return List.of(statusCode, object);
         } catch (IOException ignored) {

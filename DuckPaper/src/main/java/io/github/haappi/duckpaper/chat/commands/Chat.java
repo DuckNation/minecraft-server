@@ -1,6 +1,7 @@
 package io.github.haappi.duckpaper.chat.commands;
 
 import io.github.haappi.duckpaper.DuckPaper;
+import io.github.haappi.duckpaper.chat.ChatHandler;
 import io.github.haappi.duckpaper.utils.Command;
 import io.github.haappi.duckpaper.utils.Config;
 import io.github.haappi.duckpaper.utils.Utils;
@@ -33,7 +34,7 @@ public class Chat extends Command {
     private final DuckPaper plugin;
 
     public Chat(DuckPaper plugin) {
-        super("chat", "Chat related commands", "/chat <subcommand>", List.of("c"), null);
+        super("chat", "Chat related commands", "/chat <subcommand>", List.of("c"), "duck.chat");
         this.plugin = plugin;
     }
 
@@ -76,8 +77,18 @@ public class Chat extends Command {
 
         if (!subCommnands.contains(args[0])) {
             if (getAllowedChannels(player.getUniqueId()).contains(args[0]) || args[0].equals("global")) {
-                currentChannel.put(player.getUniqueId(), args[0]);
-                player.sendMessage(Component.text("You are now talking in " + args[0], NamedTextColor.GREEN));
+                if (args.length > 1) {
+                    String oldChannel = currentChannel.get(player.getUniqueId());
+                    currentChannel.put(player.getUniqueId(), args[0]);
+                    Component message = player.name().append(Component.text(": "));
+                    message = message.append(Component.text(String.join(" ", Arrays.copyOfRange(args, 1, args.length))));
+                    ChatHandler.sendMessage(player, message);
+                    currentChannel.put(player.getUniqueId(), oldChannel);
+                    return true;
+                } else {
+                    currentChannel.put(player.getUniqueId(), args[0]);
+                    player.sendMessage(Component.text("You are now talking in " + args[0], NamedTextColor.GREEN));
+                }
             } else {
                 player.sendMessage(Component.text("You do not have access to that channel!", NamedTextColor.RED));
                 return false;
@@ -153,7 +164,7 @@ public class Chat extends Command {
             if (password != null) {
                 params.put("password", password);
             }
-            HttpPost req = new HttpPost(Config.API_BASE_URL + "/chats/create?key=" +Config.API_KEY + Utils.toQueryParam(params));
+            HttpPost req = new HttpPost(Config.API_BASE_URL + "/chats/create?key=" + Config.API_KEY + Utils.createQueryString(params));
 
             List<Object> returnType = performHttpRequest(req);
 
@@ -196,7 +207,7 @@ public class Chat extends Command {
             params.put("password", password);
         }
 
-        HttpPost req = new HttpPost(Config.API_BASE_URL + "/chats/join?key=" +Config.API_KEY + Utils.toQueryParam(params));
+        HttpPost req = new HttpPost(Config.API_BASE_URL + "/chats/join?key=" +Config.API_KEY + Utils.createQueryString(params));
 
         List<Object> returnType = performHttpRequest(req);
 
@@ -223,7 +234,7 @@ public class Chat extends Command {
         params.put("uuid", player.getUniqueId());
         params.put("name", channelName);
 
-        HttpDelete req = new HttpDelete(Config.API_BASE_URL + "/chats/leave?key=" +Config.API_KEY + Utils.toQueryParam(params));
+        HttpDelete req = new HttpDelete(Config.API_BASE_URL + "/chats/leave?key=" +Config.API_KEY + Utils.createQueryString(params));
 
         List<Object> returnType = performHttpRequest(req);
         JSONObject object = (JSONObject) returnType.get(1);
@@ -246,7 +257,7 @@ public class Chat extends Command {
         String channelName = args[0];
 
         player.sendPluginMessage(plugin, PLUGIN_CHANNEL, stringToByteArray(
-                String.format("Chat;unsubscribe;%s;%s", channelName, player.getUniqueId())
+                String.format("Chat;mute;%s;%s", channelName, player.getUniqueId())
         ));
         player.sendMessage(Component.text("Muted: " + channelName, NamedTextColor.GREEN));
 

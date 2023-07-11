@@ -6,6 +6,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 public class Reply implements SimpleCommand {
+    public Reply() {
+
+    }
+
     public static void doMessage(Invocation invocation, Player toMessage, String strMessage) {
         Component invoker;
         if (invocation.source() instanceof Player player) {

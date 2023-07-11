@@ -13,8 +13,11 @@ import org.bukkit.scheduler.BukkitTask;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static io.github.haappi.duckpaper.DuckPaper.httpClient;
 
@@ -70,14 +73,22 @@ public class Utils {
         return stringToByteArray(message, ";");
     }
 
-    public static String toQueryParam(HashMap<String, Object> map) {
-        StringBuilder end = new StringBuilder("&");
-
-        for (String key : map.keySet()) {
-            end.append(key).append("=").append(sanitizeQueryParam(map.get(key))).append("&");
+    public static String createQueryString(HashMap<String, Object> params) {
+        StringBuilder queryString = new StringBuilder("&");
+        params.put("key", Config.API_KEY);
+        try {
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                String key = URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8);
+                String value = URLEncoder.encode(sanitizeQueryParam(entry.getValue().toString()), StandardCharsets.UTF_8);
+                queryString.append(key).append("=").append(value).append("&");
+            }
+            if (!queryString.isEmpty()) {
+                queryString.deleteCharAt(queryString.length() - 1); // Remove trailing "&"
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        return end.substring(0, end.length() - 1);
+        return queryString.toString();
     }
 
     public static String sanitizeQueryParam(Object value) {

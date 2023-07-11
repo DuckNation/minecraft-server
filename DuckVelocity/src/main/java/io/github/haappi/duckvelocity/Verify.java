@@ -21,7 +21,7 @@ public class Verify implements RawCommand {
         HashMap<String, Object> params = new HashMap<>();
         params.put("uuid", player.getUniqueId().toString());
         params.put("username", player.getUsername());
-        HttpPost req = new HttpPost(Config.API_BASE_URL + "/verification/create-pin?key=" + Config.API_KEY + Utils.createQueryString(params));
+        HttpPost req = new HttpPost(Config.API_BASE_URL + "/verification/create-pin?" + Utils.createQueryString(params));
 
         List<Object> resp = Utils.performHttpRequest(req);
 
@@ -34,7 +34,6 @@ public class Verify implements RawCommand {
         }
 
         player.sendMessage(mm.deserialize(body.getString("message")));
-
-
     }
+
 }
