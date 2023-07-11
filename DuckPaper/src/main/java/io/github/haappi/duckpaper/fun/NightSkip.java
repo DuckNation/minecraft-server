@@ -78,6 +78,9 @@ public class NightSkip implements Listener {
         if (!enoughPlayersAsleep(world)) {
             return;
         }
+        if (world.getTime() > 0 && world.getTime() < 12541) {
+            return;
+        }
         WorldTime.changeTime(world, DuckPaper.getInstance(), 24000, 200);
         world.setStorm(false);
         world.setThundering(false);
