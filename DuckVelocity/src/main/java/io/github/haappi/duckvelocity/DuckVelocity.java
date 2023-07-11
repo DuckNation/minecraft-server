@@ -8,10 +8,10 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
+import io.github.haappi.duckvelocity.Chat.SendDiscordHandler;
 import io.github.haappi.duckvelocity.Message.Message;
 import io.github.haappi.duckvelocity.Message.Reply;
 import io.github.haappi.duckvelocity.PluginListener.MessageListener;
-import io.github.haappi.duckvelocity.Chat.SendDiscordHandler;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -31,11 +31,8 @@ public class DuckVelocity {
     private static DuckVelocity instance;
     private final ChannelIdentifier customChannel =
             MinecraftChannelIdentifier.from("duck:messenger");
-
-    private ProxyServer proxy;
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
-
-
+    private ProxyServer proxy;
     @Inject
     private Logger logger;
 
@@ -44,6 +41,10 @@ public class DuckVelocity {
         this.proxy = proxy;
         instance = this;
         checkConfig();
+    }
+
+    public static synchronized DuckVelocity getInstance() {
+        return instance;
     }
 
     @Subscribe
@@ -61,10 +62,6 @@ public class DuckVelocity {
         commandManager.register("verify", new Verify());
     }
 
-    public static synchronized DuckVelocity getInstance() {
-        return instance;
-    }
-
     public ProxyServer getProxy() {
         return this.proxy;
     }
@@ -72,7 +69,6 @@ public class DuckVelocity {
     public MiniMessage getMiniMessage() {
         return this.miniMessage;
     }
-
 
 
 }

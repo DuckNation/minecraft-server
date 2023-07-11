@@ -18,7 +18,7 @@ public enum Types {
     public static Types getByValue(String value) {
         for (Types type : Types.values()) {
             if (type.value.equals(value)) {
-                return type; 
+                return type;
             }
         }
         return null;

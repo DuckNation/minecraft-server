@@ -27,11 +27,11 @@ import static io.github.haappi.duckpaper.chat.ChatHandler.getAllowedChannels;
 import static io.github.haappi.duckpaper.utils.Utils.*;
 
 public class Chat extends Command {
-    ArrayList<String> subCommnands = new ArrayList<>(Arrays.asList("create", "join", "leave", "mute", "unmute", "block", "unblock", "manage", "delete"));
     /**
      * // todo implement <block | unblock | manage | delete> properly
      */
     private final DuckPaper plugin;
+    ArrayList<String> subCommnands = new ArrayList<>(Arrays.asList("create", "join", "leave", "mute", "unmute", "block", "unblock", "manage", "delete"));
 
     public Chat(DuckPaper plugin) {
         super("chat", "Chat related commands", "/chat <subcommand>", List.of("c"), "duck.chat");
@@ -207,7 +207,7 @@ public class Chat extends Command {
             params.put("password", password);
         }
 
-        HttpPost req = new HttpPost(Config.API_BASE_URL + "/chats/join?key=" +Config.API_KEY + Utils.createQueryString(params));
+        HttpPost req = new HttpPost(Config.API_BASE_URL + "/chats/join?key=" + Config.API_KEY + Utils.createQueryString(params));
 
         List<Object> returnType = performHttpRequest(req);
 
@@ -234,7 +234,7 @@ public class Chat extends Command {
         params.put("uuid", player.getUniqueId());
         params.put("name", channelName);
 
-        HttpDelete req = new HttpDelete(Config.API_BASE_URL + "/chats/leave?key=" +Config.API_KEY + Utils.createQueryString(params));
+        HttpDelete req = new HttpDelete(Config.API_BASE_URL + "/chats/leave?key=" + Config.API_KEY + Utils.createQueryString(params));
 
         List<Object> returnType = performHttpRequest(req);
         JSONObject object = (JSONObject) returnType.get(1);
@@ -282,13 +282,13 @@ public class Chat extends Command {
     public Component usage() {
         Component msg =
                 Component.text("Usage: /chat <create|join|leave|mute|unmute|manage> [channel]", NamedTextColor.RED)
-                .append(Component.newline())
-                .append(Component.text("Create a new channel: /chat create <channel> [password]", NamedTextColor.AQUA)).append(Component.newline())
-                .append(Component.text("Join a channel: /chat join <channel> [password]", NamedTextColor.BLUE)).append(Component.newline())
-                .append(Component.text("Leave a channel: /chat leave <channel>", NamedTextColor.AQUA)).append(Component.newline())
-                .append(Component.text("Mute a channel: /chat mute <channel>", NamedTextColor.BLUE)).append(Component.newline())
-                .append(Component.text("Unmute a channel: /chat unmute <channel>", NamedTextColor.AQUA)).append(Component.newline())
-                .append(Component.text("Manage a channel: /chat manage <channel>", NamedTextColor.BLUE));
+                        .append(Component.newline())
+                        .append(Component.text("Create a new channel: /chat create <channel> [password]", NamedTextColor.AQUA)).append(Component.newline())
+                        .append(Component.text("Join a channel: /chat join <channel> [password]", NamedTextColor.BLUE)).append(Component.newline())
+                        .append(Component.text("Leave a channel: /chat leave <channel>", NamedTextColor.AQUA)).append(Component.newline())
+                        .append(Component.text("Mute a channel: /chat mute <channel>", NamedTextColor.BLUE)).append(Component.newline())
+                        .append(Component.text("Unmute a channel: /chat unmute <channel>", NamedTextColor.AQUA)).append(Component.newline())
+                        .append(Component.text("Manage a channel: /chat manage <channel>", NamedTextColor.BLUE));
         return msg;
 
     }

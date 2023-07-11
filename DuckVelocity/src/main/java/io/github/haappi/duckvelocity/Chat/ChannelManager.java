@@ -2,7 +2,8 @@ package io.github.haappi.duckvelocity.Chat;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ChannelManager {
@@ -35,9 +36,6 @@ public class ChannelManager {
         channels.get(channel).sendMessage(message);
 
     }
-
-
-
 
 
 }

@@ -11,26 +11,24 @@ import io.github.haappi.duckvelocity.Chat.ChatHandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
-import java.io.EOFException;
-
 public class MessageListener {
 
     private final ChannelIdentifier identifier;
 
-    public MessageListener(ChannelIdentifier identifier){
+    public MessageListener(ChannelIdentifier identifier) {
         this.identifier = identifier;
     }
 
     @Subscribe
-    public void onPluginMessageEvent(PluginMessageEvent event){
-        if(event.getIdentifier().equals(identifier)){
+    public void onPluginMessageEvent(PluginMessageEvent event) {
+        if (event.getIdentifier().equals(identifier)) {
             event.setResult(PluginMessageEvent.ForwardResult.handled());
 
-            if(event.getSource() instanceof Player player){
+            if (event.getSource() instanceof Player player) {
                 player.disconnect(Component.text("You attempted to send a plugin message?", NamedTextColor.RED));
             }
 
-            if(event.getSource() instanceof ServerConnection){
+            if (event.getSource() instanceof ServerConnection) {
                 ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
                 String channel = in.readUTF();
                 String action = in.readUTF();

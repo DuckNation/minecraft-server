@@ -19,7 +19,7 @@ public class Fun {
         manager.registerEvents(new NightSkip(), plugin);
         manager.registerEvents(new ItsNotGay(), plugin);
         manager.registerEvents(new DeathHead(), plugin);
-
+        manager.registerEvents(new Perms(), plugin);
 
 
     }

@@ -3,6 +3,7 @@ package io.github.haappi.duckpaper.chat;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import io.github.haappi.duckpaper.DuckPaper;
+import io.github.haappi.duckpaper.chat.commands.Chat;
 import io.github.haappi.duckpaper.utils.Config;
 import io.github.haappi.duckpaper.utils.Utils;
 import io.papermc.paper.event.player.AsyncChatEvent;
@@ -22,10 +23,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import io.github.haappi.duckpaper.chat.commands.Chat;
+
 import static io.github.haappi.duckpaper.DuckPaper.*;
 import static io.github.haappi.duckpaper.utils.CommandRelated.registerNewCommand;
 import static io.github.haappi.duckpaper.utils.Utils.stringToByteArray;
@@ -52,16 +52,33 @@ public class ChatHandler implements Listener {
         return allowedChannels.get(uuid);
     }
 
+    public static boolean sendMessage(Player player, Component message) {
+        String serialized = DuckPaper.getInstance().getMiniMessage().serialize(message);
+
+        String channel;
+
+        channel = currentChannel.putIfAbsent(player.getUniqueId(), "global") == null ? "global" : currentChannel.get(player.getUniqueId());
+
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("Chat");
+        out.writeUTF("message");
+        out.writeUTF(channel);
+        out.writeUTF(serialized);
+
+        player.sendPluginMessage(DuckPaper.getInstance(), PLUGIN_CHANNEL, out.toByteArray());
+
+        return !channel.equals("global");
+    }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void format(AsyncChatEvent event) {
         event.renderer((source, sourceDisplayName, message, viewer) ->
                 Component.text()
-                .append(Component.text("[", NamedTextColor.GRAY))
-                .append(sourceDisplayName).color(event.getPlayer().isOp() ? NamedTextColor.GOLD : NamedTextColor.GREEN)
-                .append(Component.text("] ", NamedTextColor.GRAY))
-                .append(message.color(NamedTextColor.WHITE))
-                .build());
+                        .append(Component.text("[", NamedTextColor.GRAY))
+                        .append(sourceDisplayName).color(event.getPlayer().isOp() ? NamedTextColor.GOLD : NamedTextColor.GREEN)
+                        .append(Component.text("] ", NamedTextColor.GRAY))
+                        .append(message.color(NamedTextColor.WHITE))
+                        .build());
     }
 
     @EventHandler
@@ -84,24 +101,6 @@ public class ChatHandler implements Listener {
                 .append(player.name().color(NamedTextColor.GREEN))
                 .append(Component.text(": ", NamedTextColor.GRAY))
                 .append(msg).build();
-    }
-
-    public static boolean sendMessage(Player player, Component message) {
-        String serialized = DuckPaper.getInstance().getMiniMessage().serialize(message);
-
-        String channel;
-
-        channel = currentChannel.putIfAbsent(player.getUniqueId(), "global") == null ? "global" : currentChannel.get(player.getUniqueId());
-
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF("Chat");
-        out.writeUTF("message");
-        out.writeUTF(channel);
-        out.writeUTF(serialized);
-
-        player.sendPluginMessage(DuckPaper.getInstance(), PLUGIN_CHANNEL, out.toByteArray());
-
-        return !channel.equals("global");
     }
 
     private void loadChatChannels(Player player) {

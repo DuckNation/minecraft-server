@@ -1,29 +1,19 @@
 package io.github.haappi.duckvelocity.Chat;
 
-import io.github.haappi.duckvelocity.DuckVelocity;
 import org.glassfish.tyrus.client.ClientManager;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static io.github.haappi.duckvelocity.Chat.SendDiscordHandler.handle;
-
 @ClientEndpoint
 public class WebSocketClient {
 
-    public interface MessageCallback {
-        void onMessageReceived(Types type, String message);
-    }
-
-    private String sServer;
-
+    private final MessageCallback callback;
     protected WebSocketContainer container;
     protected Session userSession = null;
-    private final MessageCallback callback;
-
+    private String sServer;
     public WebSocketClient(MessageCallback callback) {
         this.callback = callback;
         container = ClientManager.createClient();
@@ -70,5 +60,9 @@ public class WebSocketClient {
     @OnClose
     public void reopen() {
         this.connect(this.sServer);
+    }
+
+    public interface MessageCallback {
+        void onMessageReceived(Types type, String message);
     }
 }

@@ -2,7 +2,6 @@ package io.github.haappi.duckpaper.utils;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import com.google.gson.JsonObject;
 import io.github.haappi.duckpaper.DuckPaper;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;

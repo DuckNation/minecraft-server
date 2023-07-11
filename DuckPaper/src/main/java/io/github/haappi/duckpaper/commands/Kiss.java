@@ -30,7 +30,7 @@ public class Kiss extends Command {
 
     @Override
     public Component usage() {
-       return Component.text()
+        return Component.text()
                 .append(Component.text("Usage: ", NamedTextColor.RED))
                 .append(Component.text("/kiss ", NamedTextColor.YELLOW))
                 .append(Component.text("<username>", NamedTextColor.AQUA)).build();

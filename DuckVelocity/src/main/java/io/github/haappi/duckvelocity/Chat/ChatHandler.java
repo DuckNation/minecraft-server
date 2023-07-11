@@ -6,7 +6,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 public class ChatHandler {
@@ -26,7 +25,7 @@ public class ChatHandler {
             case "init" -> {
                 ChannelManager.createChannel("global", "global").sendMessage(Types.CREATE_DISCORD_CHANNEL, args[1] + ";" + args[0]);
             }
-             case "mute" -> {
+            case "mute" -> {
                 ChannelManager.channels.get(args[0]).unsubscribePlayer(playerFromUUID(args[1]));
             }
             case "unmute" -> {

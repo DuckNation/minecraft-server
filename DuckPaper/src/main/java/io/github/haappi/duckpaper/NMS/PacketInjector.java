@@ -43,25 +43,25 @@ public class PacketInjector {
                     for (int i = 0; i < clientboundSetEntityDataPacket.packedItems().size(); i++) {
                         final SynchedEntityData.DataValue<?> item = clientboundSetEntityDataPacket.packedItems().get(i);
 //                        if(item.id() == 2) idxNameComponent = i;
-                        if(item.id() == 3) idxNameVisible = i;
+                        if (item.id() == 3) idxNameVisible = i;
                     }
 
 //                    for (SynchedEntityData.DataValue val : clientboundSetEntityDataPacket.packedItems()) {
 //                        if(customNameVisible != null) {
-                            SynchedEntityData.DataValue<Boolean> dataValueVisible =
-                                    new SynchedEntityData.DataItem<>(
-                                            new EntityDataAccessor<>(
-                                                    3,
-                                                    EntityDataSerializers.BOOLEAN
-                                            ),
-                                            true
-                                    ).value();
+                    SynchedEntityData.DataValue<Boolean> dataValueVisible =
+                            new SynchedEntityData.DataItem<>(
+                                    new EntityDataAccessor<>(
+                                            3,
+                                            EntityDataSerializers.BOOLEAN
+                                    ),
+                                    true
+                            ).value();
 
-                            if (idxNameVisible == null) {
-                                clientboundSetEntityDataPacket.packedItems().add(dataValueVisible);
-                            } else {
-                                clientboundSetEntityDataPacket.packedItems().set(idxNameVisible, dataValueVisible);
-                            }
+                    if (idxNameVisible == null) {
+                        clientboundSetEntityDataPacket.packedItems().add(dataValueVisible);
+                    } else {
+                        clientboundSetEntityDataPacket.packedItems().set(idxNameVisible, dataValueVisible);
+                    }
 //                    System.out.println("overrode name visible");
 //                            super.write(channelHandlerContext, clientboundSetEntityDataPacket, channelPromise);
 //                        }

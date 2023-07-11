@@ -10,24 +10,13 @@ import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import io.github.haappi.duckvelocity.Config;
 import io.github.haappi.duckvelocity.DuckVelocity;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.util.EntityUtils;
 import org.jetbrains.annotations.Nullable;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
-import static io.github.haappi.duckvelocity.DuckVelocity.httpClient;
 
 @SuppressWarnings("unused")
 public class SendDiscordHandler {
@@ -51,6 +40,17 @@ public class SendDiscordHandler {
                 .repeat(10, TimeUnit.MINUTES)
                 .delay(5L, TimeUnit.SECONDS)
                 .schedule();
+    }
+
+    public static void handle(@Nullable Types type, String message) {
+        if (type == null) return;
+        DuckVelocity instance = DuckVelocity.getInstance();
+//        switch (type) {
+//            case PLAYER_CHAT -> {
+//                Component deserialized = instance.getMiniMessage().deserialize(message);
+//                instance.getProxy().getAllPlayers().forEach(p -> p.sendMessage(deserialized));
+//            }
+//        }
     }
 
     private String getPlayers() {
@@ -88,17 +88,6 @@ public class SendDiscordHandler {
 
     private void write(Types type, String message) {
         client.sendMessage(type + ";" + message);
-    }
-
-    public static void handle(@Nullable Types type, String message) {
-        if (type == null) return;
-        DuckVelocity instance = DuckVelocity.getInstance();
-//        switch (type) {
-//            case PLAYER_CHAT -> {
-//                Component deserialized = instance.getMiniMessage().deserialize(message);
-//                instance.getProxy().getAllPlayers().forEach(p -> p.sendMessage(deserialized));
-//            }
-//        }
     }
 
 
