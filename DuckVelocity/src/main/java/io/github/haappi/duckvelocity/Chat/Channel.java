@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Channel {
     private final String id;
@@ -50,6 +51,15 @@ public class Channel {
 
     public Audience subscribePlayer(@Nullable Player player) {
         if (player == null) {
+            return subscribedPlayers;
+        }
+        AtomicBoolean inChat = new AtomicBoolean(false);
+        subscribedPlayers.forEachAudience(aud -> {
+            if (Objects.equals(String.valueOf(aud.get(Identity.UUID).orElse(null)), player.getUniqueId().toString())) {
+                inChat.set(true);
+            }
+        });
+        if (inChat.get()) {
             return subscribedPlayers;
         }
         subscribedPlayers = Audience.audience(subscribedPlayers, player);
