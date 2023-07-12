@@ -1,5 +1,6 @@
 package io.github.haappi.duckvelocity.Chat;
 
+
 import org.glassfish.tyrus.client.ClientManager;
 
 import javax.websocket.*;

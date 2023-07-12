@@ -53,15 +53,15 @@ public class Channel {
         if (player == null) {
             return subscribedPlayers;
         }
-        AtomicBoolean inChat = new AtomicBoolean(false);
-        subscribedPlayers.forEachAudience(aud -> {
-            if (Objects.equals(String.valueOf(aud.get(Identity.UUID).orElse(null)), player.getUniqueId().toString())) {
-                inChat.set(true);
-            }
-        });
-        if (inChat.get()) {
-            return subscribedPlayers;
-        }
+//        AtomicBoolean inChat = new AtomicBoolean(false);
+//        subscribedPlayers.forEachAudience(aud -> {
+//            if (Objects.equals(String.valueOf(aud.get(Identity.UUID).orElse(null)), player.getUniqueId().toString())) {
+//                inChat.set(true);
+//            }
+//        });
+//        if (inChat.get()) {
+//            return subscribedPlayers;
+//        }
         subscribedPlayers = Audience.audience(subscribedPlayers, player);
         if (!this.name.equals("global")) {
             if (player.hasPermission("duck.silent_join")) {

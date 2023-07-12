@@ -24,7 +24,6 @@ dependencies {
     implementation("net.kyori:adventure-text-minimessage:4.13.0")
     implementation 'cloud.commandframework:cloud-velocity:1.7.1'
     implementation 'cloud.commandframework:cloud-annotations:1.7.1'
-    implementation('javax.websocket:javax.websocket-api:1.1')
     implementation('org.glassfish.tyrus.bundles:tyrus-standalone-client:1.9')
     implementation("org.json:json:20230227")
 
