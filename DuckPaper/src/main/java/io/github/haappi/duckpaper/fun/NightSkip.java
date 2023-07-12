@@ -8,6 +8,7 @@ import io.papermc.paper.event.player.PlayerBedFailEnterEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
+import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,7 +53,7 @@ public class NightSkip implements Listener {
     private void addToSleeping(Player player) {
         sleepingNoobs.add(player.getUniqueId());
 
-        int count = (int) Math.ceil(getPossibleSleepers(player.getWorld()) * 0.5);
+        int count = (int) Math.ceil(getPossibleSleepers(player.getWorld()) * player.getWorld().getGameRuleValue(GameRule.PLAYERS_SLEEPING_PERCENTAGE));
         int sleepingCount = sleepingNoobs.size();
 
         Component message = Component.text()
@@ -93,7 +94,7 @@ public class NightSkip implements Listener {
     }
 
     private boolean enoughPlayersAsleep(World world) {
-        return sleepingNoobs.size() >= Math.ceil(getPossibleSleepers(world) * 0.5);
+        return sleepingNoobs.size() >= Math.ceil(getPossibleSleepers(world) * world.getGameRuleValue(GameRule.PLAYERS_SLEEPING_PERCENTAGE));
     }
 
 
