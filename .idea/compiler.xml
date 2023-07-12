@@ -5,16 +5,6 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/cloud.commandframework/cloud-annotations/1.7.1/c60c6388222c7084c896a25cd32b39699fe0bf6/cloud-annotations-1.7.1.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/cloud.commandframework/cloud-core/1.7.1/d98654c6af97f88397d69745db6ae53baf131ec1/cloud-core-1.7.1.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/cloud.commandframework/cloud-services/1.7.1/b622a3ce7cfb72ce29fbae1961550299c3c57090/cloud-services-1.7.1.jar" />
-          <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/io.leangen.geantyref/geantyref/1.3.13/8a56163906cd05968c6618dcdbd049e9a513ee4b/geantyref-1.3.13.jar" />
-        </processorPath>
-        <module name="DuckSMP.DuckPaper.main" />
-      </profile>
-      <profile name="Gradle Imported" enabled="true">
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
           <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.velocitypowered/velocity-api/3.1.1/82f54eae5d50f9390947c2623c6d6fe84e6fb0/velocity-api-3.1.1.jar" />
           <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/cloud.commandframework/cloud-annotations/1.7.1/c60c6388222c7084c896a25cd32b39699fe0bf6/cloud-annotations-1.7.1.jar" />
           <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.moandjiezana.toml/toml4j/0.7.2/a03337911d0bd2c40932aca3946edb30d0e7d0c/toml4j-0.7.2.jar" />

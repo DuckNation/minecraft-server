@@ -3,9 +3,12 @@ package io.github.haappi.duckpaper.commands;
 import io.github.haappi.duckpaper.utils.Command;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Named;
 import java.util.List;
 
 public class Kiss extends Command {
@@ -25,6 +28,13 @@ public class Kiss extends Command {
             commandSender.sendMessage(usage());
             return false;
         }
+        Player player = Bukkit.getPlayer(args[0]);
+        if (player == null) {
+            commandSender.sendMessage(Component.text("Player not found", NamedTextColor.RED));
+            return false;
+        }
+        commandSender.sendMessage(Component.text("You just kissed ", NamedTextColor.GREEN).append(Component.text(args[0], NamedTextColor.AQUA)));
+        player.sendMessage(Component.text("You've been kissed by ", NamedTextColor.GREEN).append(Component.text(commandSender.getName(), NamedTextColor.AQUA)).append(Component.text(". Was it with consent???", NamedTextColor.GREEN)));
         return true;
     }
 

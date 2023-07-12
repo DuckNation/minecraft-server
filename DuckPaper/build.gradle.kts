@@ -24,16 +24,8 @@ repositories {
 dependencies {
     paperweight.paperDevBundle("$minecraftVersion-R0.1-SNAPSHOT")
     implementation("org.apache.httpcomponents:httpclient:4.5.13")
-    implementation("cloud.commandframework:cloud-core:1.7.1")
-    implementation("javax.websocket:javax.websocket-api:1.1")
-    implementation("org.glassfish.tyrus.bundles:tyrus-standalone-client:1.9")
-    implementation("cloud.commandframework:cloud-paper:1.7.1")
-    implementation("cloud.commandframework:cloud-annotations:1.7.1")
-    implementation("cloud.commandframework:cloud-minecraft-extras:1.7.1")
-    annotationProcessor("cloud.commandframework:cloud-annotations:1.7.1")
     implementation("org.json:json:20230227")
 //    implementation("com.destroystokyo.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
-//    compileOnly("com.destroystokyo.paper:paper:$minecraftVersion-R0.1-SNAPSHOT")
 }
 
 java {

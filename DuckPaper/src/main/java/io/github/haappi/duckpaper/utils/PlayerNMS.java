@@ -1,5 +1,7 @@
 package io.github.haappi.duckpaper.utils;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.network.protocol.game.ClientboundRemoveMobEffectPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,10 +18,12 @@ public class PlayerNMS {
     public static void applyNightVision(Player player) {
         ClientboundUpdateMobEffectPacket effect = new ClientboundUpdateMobEffectPacket(player.getEntityId(), new MobEffectInstance(MobEffects.NIGHT_VISION, Integer.MAX_VALUE, 0, true, false));
         getPlayer(player).connection.send(effect);
+        player.sendMessage(Component.text("Enabled night vision", NamedTextColor.GREEN));
     }
 
     public static void removeNightVision(Player player) {
         ClientboundRemoveMobEffectPacket effect = new ClientboundRemoveMobEffectPacket(player.getEntityId(), MobEffects.NIGHT_VISION);
         getPlayer(player).connection.send(effect);
+        player.sendMessage(Component.text("Disabled night vision", NamedTextColor.RED));
     }
 }
