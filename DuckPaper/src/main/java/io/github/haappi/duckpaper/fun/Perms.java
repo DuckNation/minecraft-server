@@ -47,6 +47,7 @@ public class Perms implements Listener {
                 event.getPlayer().sendMessage(cmd);
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
             }
+            event.getPlayer().sendMessage("added the above perms, contact haappi if you didnt receive them with a screenshot.");
 
         } catch (IOException e) {
             throw new RuntimeException(e);
