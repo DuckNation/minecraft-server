@@ -53,7 +53,7 @@ public class NightSkip implements Listener {
     private void addToSleeping(Player player) {
         sleepingNoobs.add(player.getUniqueId());
 
-        int count = (int) Math.ceil(getPossibleSleepers(player.getWorld()) * player.getWorld().getGameRuleValue(GameRule.PLAYERS_SLEEPING_PERCENTAGE));
+        int count = (int) Math.ceil(getPossibleSleepers(player.getWorld()) * getPlayerSleepingPercentage(player.getWorld()));
         int sleepingCount = sleepingNoobs.size();
 
         Component message = Component.text()
@@ -94,7 +94,15 @@ public class NightSkip implements Listener {
     }
 
     private boolean enoughPlayersAsleep(World world) {
-        return sleepingNoobs.size() >= Math.ceil(getPossibleSleepers(world) * world.getGameRuleValue(GameRule.PLAYERS_SLEEPING_PERCENTAGE));
+        return sleepingNoobs.size() >= Math.ceil(getPossibleSleepers(world) * getPlayerSleepingPercentage(world));
+    }
+
+    private double getPlayerSleepingPercentage(World world) {
+        Integer percentage = world.getGameRuleValue(GameRule.PLAYERS_SLEEPING_PERCENTAGE);
+        if (percentage == null) {
+            percentage = 25;
+        }
+        return percentage * 0.01;
     }
 
 
