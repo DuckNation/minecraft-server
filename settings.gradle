@@ -2,3 +2,6 @@ rootProject.name = 'DuckSMP'
 
 include 'DuckPaper'
 include 'DuckVelocity'
+include 'DuckLimbo'
+include 'DuckLobby'
+

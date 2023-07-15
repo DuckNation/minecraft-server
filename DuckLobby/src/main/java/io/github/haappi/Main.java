@@ -1,90 +1,42 @@
 package io.github.haappi;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import com.google.gson.Gson;
+import io.github.haappi.NPC.NPC;
+import io.github.haappi.NPC.SpawnLosers;
 import net.minestom.server.MinecraftServer;
-import net.minestom.server.advancements.FrameType;
-import net.minestom.server.advancements.notifications.Notification;
-import net.minestom.server.advancements.notifications.NotificationCenter;
-import net.minestom.server.color.Color;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.coordinate.Vec;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
-import net.minestom.server.entity.PlayerSkin;
 import net.minestom.server.entity.fakeplayer.FakePlayer;
-import net.minestom.server.entity.fakeplayer.FakePlayerOption;
 import net.minestom.server.event.GlobalEventHandler;
 import net.minestom.server.event.entity.EntityAttackEvent;
-import net.minestom.server.event.entity.EntityDamageEvent;
 import net.minestom.server.event.player.*;
 import net.minestom.server.extras.velocity.VelocityProxy;
 import net.minestom.server.instance.AnvilLoader;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.instance.block.Block;
-import net.minestom.server.item.Enchantment;
-import net.minestom.server.item.ItemStack;
-import net.minestom.server.item.Material;
-import net.minestom.server.item.metadata.LeatherArmorMeta;
 import net.minestom.server.network.packet.server.play.ParticlePacket;
-import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.server.particle.Particle;
 import net.minestom.server.particle.ParticleCreator;
-import net.minestom.server.scoreboard.TeamBuilder;
-import net.minestom.server.tag.Tag;
-import net.minestom.server.thread.Acquirable;
-import net.minestom.server.thread.AcquirableCollection;
-import net.minestom.server.timer.ExecutionType;
 import net.minestom.server.timer.TaskSchedule;
-import net.minestom.server.utils.NamespaceID;
 import net.minestom.server.world.DimensionType;
-import net.minestom.server.world.DimensionTypeManager;
-import org.jetbrains.annotations.NotNull;
-import org.jglrxavpok.hephaistos.nbt.NBTCompoundLike;
-import org.jglrxavpok.hephaistos.nbt.mutable.MutableNBTCompound;
 
-import java.io.IOException;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static io.github.haappi.Utils.raytrace;
 import static io.github.haappi.Utils.stringToByteArray;
 
 public class Main {
-    private static DimensionType LIMBO;
+    private static DimensionType LOBBY;
     private static final ConcurrentHashMap<UUID, Long> simpleCooldown = new ConcurrentHashMap<>();
-    private static final Notification notification = new Notification(
-            Component.text("manage to die!", NamedTextColor.LIGHT_PURPLE),
-            FrameType.GOAL,
-            ItemStack.of(Material.BARRIER)
-    );
+    public static final Gson gson = new Gson();
 
     private static DimensionType generateDimension() {
-        DimensionTypeManager dimensionManager = MinecraftServer.getDimensionTypeManager();
-        DimensionType LIMBO = DimensionType.builder(NamespaceID.from("duck:lobby"))
-                .ultrawarm(false)
-                .natural(false)
-                .piglinSafe(false)
-                .respawnAnchorSafe(false)
-                .bedSafe(false)
-                .raidCapable(false)
-                .skylightEnabled(true)
-                .ceilingEnabled(false)
-                .effects("minecraft:overworld")
-                .ambientLight(1.0f)
-                .height(400)
-                .minY(-80)
-                .logicalHeight(384)
-                .build();
-        dimensionManager.addDimension(LIMBO);
-        return LIMBO;
+        return DimensionType.OVERWORLD;
     }
 
     private static void handleStuff(Player player, Entity entity) {
@@ -107,14 +59,21 @@ public class Main {
     public static void main(String[] args)  {
         MinecraftServer minecraftServer = MinecraftServer.init();
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();
-        Main.LIMBO = generateDimension();
-        InstanceContainer instanceContainer = instanceManager.createInstanceContainer(LIMBO);
+        Main.LOBBY = generateDimension();
+        InstanceContainer world = instanceManager.createInstanceContainer(LOBBY);
 
-        instanceContainer.setChunkLoader(new AnvilLoader("/home/happy/hub_world"));
-        instanceContainer.setTimeRate(0);
-        instanceContainer.setTime(12700);
+        LobbyConfig config = new LobbyConfig("lobby.properties");
 
-        final Pos SPAWN = new Pos(114.5, 125, 57.5, -90f, -5f);
+        world.setChunkLoader(new AnvilLoader(config.getWorldPath()));
+
+        System.setProperty("minestom.chunk-view-distance", String.valueOf(config.getViewDistance()));
+        MinecraftServer.setBrandName(config.getServerBrand());
+        MinecraftServer.setCompressionThreshold(0);
+
+        world.setTimeRate(0);
+        world.setTime(12700);
+
+        final Pos SPAWN = new Pos(config.getSpawnX(), config.getSpawnY(), config.getSpawnZ(), config.getSpawnYaw(), config.getSpawnPitch());
 
 
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
@@ -122,7 +81,7 @@ public class Main {
             final Player player = event.getPlayer();
 
             player.setGameMode(GameMode.ADVENTURE);
-            event.setSpawningInstance(instanceContainer);
+            event.setSpawningInstance(world);
             player.setRespawnPoint(SPAWN);
 
             new Thread(() -> {
@@ -131,14 +90,13 @@ public class Main {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                NPC.join();
+                NPC.join(player);
             }).start();
         });
         globalEventHandler.addListener(PlayerMoveEvent.class, event -> {
             Player player = event.getPlayer();
             if (player.getPosition().y() < 60) {
                 player.teleport(SPAWN);
-                NotificationCenter.send(notification, player);
             };
         });
 
@@ -150,11 +108,6 @@ public class Main {
             Main.handleStuff(event.getPlayer(), event.getTarget());
         });
 
-        globalEventHandler.addListener(PlayerBlockInteractEvent.class, event -> {
-           event.setCancelled(false);
-
-        });
-
         SpawnLosers.spawn();
 
 
@@ -163,8 +116,7 @@ public class Main {
             if ((int) pos.y() != 125) {
                 return;
             }
-            if (instanceContainer.getBlock(pos).compare(Block.LIGHT_GRAY_CARPET)) {
-                System.out.println(pos);
+            if (world.getBlock(pos).compare(Block.LIGHT_GRAY_CARPET)) {
                 event.getPlayer().scheduleNextTick(player -> player.setVelocity(player.getVelocity().lerp(Vec.fromPoint(new Pos(pos.x() + 5, pos.y() + 5, pos.z() - 2)), 0.069d)));
             }
         });
@@ -186,11 +138,11 @@ public class Main {
 
 
 
-        instanceContainer.scheduler().submitTask(() -> {
-            if (instanceContainer.getPlayers().size() <= 3) {
+        world.scheduler().submitTask(() -> {
+            if (world.getPlayers().size() <= 3) {
                 return TaskSchedule.seconds(3);
             }
-            Player player = instanceContainer.getPlayers().stream().filter(p -> (p instanceof FakePlayer)).limit(1).collect(Collectors.toList()).get(0);
+            Player player = world.getPlayers().stream().filter(p -> (p instanceof FakePlayer)).limit(1).collect(Collectors.toList()).get(0);
             player.sendPacketsToViewers(
                     particlePackets
             );
@@ -201,8 +153,8 @@ public class Main {
 
 
 
-        VelocityProxy.enable("WeS7QypY80sT");
+        VelocityProxy.enable(config.getVelocitySecret());
 
-        minecraftServer.start("0.0.0.0", 25566);
+        minecraftServer.start(config.getServerAddress(), config.getServerPort());
     }
 }

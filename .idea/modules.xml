@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DuckLimbo/DuckSMP.DuckLimbo.main.iml" filepath="$PROJECT_DIR$/.idea/modules/DuckLimbo/DuckSMP.DuckLimbo.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DuckLimbo/DuckSMP.DuckLimbo.test.iml" filepath="$PROJECT_DIR$/.idea/modules/DuckLimbo/DuckSMP.DuckLimbo.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DuckLobby/DuckSMP.DuckLobby.main.iml" filepath="$PROJECT_DIR$/.idea/modules/DuckLobby/DuckSMP.DuckLobby.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DuckLobby/DuckSMP.DuckLobby.test.iml" filepath="$PROJECT_DIR$/.idea/modules/DuckLobby/DuckSMP.DuckLobby.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DuckPaper/DuckSMP.DuckPaper.iml" filepath="$PROJECT_DIR$/.idea/modules/DuckPaper/DuckSMP.DuckPaper.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DuckPaper/DuckSMP.DuckPaper.main.iml" filepath="$PROJECT_DIR$/.idea/modules/DuckPaper/DuckSMP.DuckPaper.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DuckPaper/DuckSMP.DuckPaper.test.iml" filepath="$PROJECT_DIR$/.idea/modules/DuckPaper/DuckSMP.DuckPaper.test.iml" />
