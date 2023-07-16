@@ -1,6 +1,7 @@
 package io.github.haappi.duckpaper;
 
 import io.github.haappi.duckpaper.NMS.NMSEvents;
+import io.github.haappi.duckpaper.PluginListener.PluginListener;
 import io.github.haappi.duckpaper.chat.ChatHandler;
 import io.github.haappi.duckpaper.commands.CommandHandler;
 import io.github.haappi.duckpaper.fun.Fun;
@@ -39,6 +40,8 @@ public final class DuckPaper extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(this, this);
 
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, PLUGIN_CHANNEL);
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, PLUGIN_CHANNEL, new PluginListener());
+
 
         Config.loadConfig(this);
 

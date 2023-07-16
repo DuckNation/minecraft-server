@@ -9,15 +9,29 @@ import net.kyori.adventure.text.format.NamedTextColor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-public class Message implements SimpleCommand {
-    public static final ConcurrentHashMap<Player, Player> lastMessaged = new ConcurrentHashMap<>();
+import static io.github.haappi.duckvelocity.Message.MessageObject.lastMessaged;
+import static io.github.haappi.duckvelocity.Mute.MuteCommand.mutedNoobs;
+import static io.github.haappi.duckvelocity.Utils.getPlayersFromInvocation;
 
+public class Message implements SimpleCommand {
     public Message() {
         ProxyServer proxy = DuckVelocity.getInstance().getProxy();
-        proxy.getScheduler().buildTask(DuckVelocity.getInstance(), lastMessaged::clear).repeat(10L, TimeUnit.MINUTES).schedule();
+        proxy.getScheduler().buildTask(DuckVelocity.getInstance(), () -> {
+            ArrayList<UUID> toRemove = new ArrayList<>();
+            for (Map.Entry<UUID, MessageObject> entry : lastMessaged.entrySet()) {
+                if (entry.getValue().shouldDeleteFromMap()) {
+                    toRemove.add(entry.getKey());
+                }
+            }
+            for (UUID uuid : toRemove) {
+                lastMessaged.remove(uuid);
+            }
+        }).repeat(2L, TimeUnit.MINUTES).schedule();
     }
 
     @Override
@@ -26,28 +40,26 @@ public class Message implements SimpleCommand {
             invocation.source().sendMessage(Component.text("Usage: /message <player> <message>", NamedTextColor.RED));
             return;
         }
-        Player toMessage = DuckVelocity.getInstance().getProxy().getPlayer(invocation.arguments()[0]).orElse(null);
-        if (toMessage == null) {
+        if (invocation.source() instanceof Player player) {
+            if (mutedNoobs.containsKey(player.getUniqueId())) {
+                player.sendMessage(Component.text("You are muted.", NamedTextColor.RED));
+                return;
+            }
+        }
+        Player toMessage;
+        try {
+            toMessage = DuckVelocity.getInstance().getProxy().matchPlayer(invocation.arguments()[0]).stream().toList().get(0);
+        } catch (IndexOutOfBoundsException e) {
             invocation.source().sendMessage(Component.text("Player not found", NamedTextColor.RED));
             return;
         }
 
         Reply.doMessage(invocation, toMessage, String.join(" ", invocation.arguments()).replaceFirst(invocation.arguments()[0], ""));
-
-        if (invocation.source() instanceof Player) {
-            lastMessaged.put((Player) invocation.source(), toMessage);
-            lastMessaged.put(toMessage, (Player) invocation.source());
-        }
-
     }
 
     @Override
     public List<String> suggest(Invocation invocation) {
-        ArrayList<String> players = new ArrayList<>();
-        for (Player player : DuckVelocity.getInstance().getProxy().getAllPlayers()) {
-            players.add(player.getUsername());
-        }
-        return players;
+        return getPlayersFromInvocation(invocation);
     }
 
     @Override

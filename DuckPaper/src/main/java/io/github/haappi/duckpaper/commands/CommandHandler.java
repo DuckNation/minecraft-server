@@ -8,5 +8,7 @@ public class CommandHandler {
     public CommandHandler(DuckPaper instance) {
         registerNewCommand(new Kiss("kiss"));
         registerNewCommand(new NightVision(instance));
+        registerNewCommand(new Gray("grayify"));
+        registerNewCommand(new MuteChat("chatmute"));
     }
 }

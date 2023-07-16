@@ -91,7 +91,6 @@ public class Channel {
                 if (player.hasPermission("duck.silent_join")) {
                     return subscribedPlayers;
                 }
-                subscribedPlayers.sendMessage(Component.text(player.getUsername() + " has disconnected from the channel: " + this.name, NamedTextColor.GREEN));
             }
         }
         return subscribedPlayers;

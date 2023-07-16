@@ -2,6 +2,8 @@ package io.github.haappi.duckvelocity;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.velocitypowered.api.command.SimpleCommand;
+import com.velocitypowered.api.proxy.Player;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
@@ -11,9 +13,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static io.github.haappi.duckvelocity.DuckVelocity.httpClient;
 
@@ -98,6 +104,73 @@ public class Utils {
         System.arraycopy(array, 1, newArray, 0, newArray.length);
 
         return newArray;
+    }
+
+    public static Duration parseTime(String input) {
+        Pattern pattern = Pattern.compile("(\\d+d)?(\\d+hr)?(\\d+m)?");
+        Matcher matcher = pattern.matcher(input);
+
+        int days = 0;
+        int hours = 0;
+        int minutes = 0;
+
+        while (matcher.find()) {
+            if (matcher.group(1) != null) {
+                days = Integer.parseInt(matcher.group(1).replaceAll("d", ""));
+            }
+            if (matcher.group(2) != null) {
+                hours = Integer.parseInt(matcher.group(2).replaceAll("hr", ""));
+            }
+            if (matcher.group(3) != null) {
+                minutes = Integer.parseInt(matcher.group(3).replaceAll("m", ""));
+            }
+        }
+
+        return Duration.ofDays(days).plusHours(hours).plusMinutes(minutes);
+    }
+
+    public static long parseTimeToMillis(String input) {
+        Duration duration = parseTime(input);
+
+        return duration.toMillis();
+    }
+
+    public static List<String> getPlayersFromInvocation(SimpleCommand.Invocation invocation) {
+        List<String> players = new ArrayList<>();
+        for (Player player : DuckVelocity.getInstance().getProxy().getAllPlayers()) {
+            if (player.getUsername().toLowerCase().startsWith(invocation.arguments()[0].toLowerCase())) {
+                players.add(player.getUsername());
+            }
+        }
+        return players;
+    }
+
+    public static String parseMillisToTime(long milliseconds) {
+        // Convert milliseconds to a Duration object
+        Duration duration = Duration.ofMillis(milliseconds);
+
+        // Extract the individual components of the duration
+        long days = duration.toDaysPart();
+        long hours = duration.toHoursPart();
+        long minutes = duration.toMinutesPart();
+        long seconds = duration.toSecondsPart();
+
+        // Build the human-friendly time format
+        StringBuilder sb = new StringBuilder();
+        if (days > 0) {
+            sb.append(days).append("day ");
+        }
+        if (hours > 0) {
+            sb.append(hours).append("hour ");
+        }
+        if (minutes > 0) {
+            sb.append(minutes).append("minute ");
+        }
+        if (seconds > 0) {
+            sb.append(seconds).append("second");
+        }
+
+        return sb.toString().trim();
     }
 
 }

@@ -2,6 +2,7 @@ package io.github.haappi.duckpaper.chat;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.sun.jna.platform.win32.COM.util.ComThread;
 import io.github.haappi.duckpaper.DuckPaper;
 import io.github.haappi.duckpaper.chat.commands.Chat;
 import io.github.haappi.duckpaper.utils.Config;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -33,7 +35,10 @@ import static io.github.haappi.duckpaper.utils.Utils.stringToByteArray;
 public class ChatHandler implements Listener {
     public static final ConcurrentHashMap<UUID, String> currentChannel = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<UUID, ArrayList<String>> allowedChannels = new ConcurrentHashMap<>();
+    public static final HashSet<UUID> mutedPlayers = new HashSet<>();
+    public static boolean muted = false;
     private final DuckPaper plugin;
+    public static boolean grayify = false;
 
     public ChatHandler(DuckPaper instance) {
         this.plugin = instance;
@@ -71,17 +76,33 @@ public class ChatHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void checkMute(AsyncChatEvent event) {
+        Player player = event.getPlayer();
+        if (muted && !player.isOp()) {
+            event.setCancelled(true);
+            player.sendMessage(Component.text("Chat is currently muted.", NamedTextColor.RED));
+        }
+        if (mutedPlayers.contains(player.getUniqueId())) {
+            event.setCancelled(true);
+
+            player.sendPluginMessage(plugin, PLUGIN_CHANNEL, stringToByteArray(
+                    String.format("WhyMute;%s", player.getUniqueId())
+            ));
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void format(AsyncChatEvent event) {
         event.renderer((source, sourceDisplayName, message, viewer) ->
                 Component.text()
                         .append(Component.text("[", NamedTextColor.GRAY))
                         .append(sourceDisplayName).color(event.getPlayer().isOp() ? NamedTextColor.GOLD : NamedTextColor.GREEN)
                         .append(Component.text("] ", NamedTextColor.GRAY))
-                        .append(message.color(NamedTextColor.WHITE))
+                        .append(message.color(event.getPlayer().isOp() ? NamedTextColor.WHITE : grayify ? NamedTextColor.GRAY : NamedTextColor.WHITE))
                         .build());
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onMessage(AsyncChatEvent event) {
         event.setCancelled(sendMessage(event.getPlayer(), formatForAPI(event.getPlayer(), event.message())));
     }
