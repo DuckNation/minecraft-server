@@ -14,24 +14,21 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Channel {
     private final String id;
     private final String name;
     private Audience subscribedPlayers;
-    private WebSocketClient client;
+    private final WebSocketClient client;
 
     public Channel(String id, String name) {
         this.id = id;
         this.name = name;
         this.subscribedPlayers = Audience.empty();
         this.client = new WebSocketClient((type, message) -> {
-            switch (type) {
-                case PLAYER_CHAT -> {
-                    String msg = message.replace("Discord", this.name);
-                    this.subscribedPlayers.sendMessage(DuckVelocity.getInstance().getMiniMessage().deserialize(msg));
-                }
+            if (Objects.requireNonNull(type) == Types.PLAYER_CHAT) {
+                String msg = message.replace("Discord", this.name);
+                this.subscribedPlayers.sendMessage(DuckVelocity.getInstance().getMiniMessage().deserialize(msg));
             }
         });
         this.client.connect(Config.WSS_BASE_URL + "/wss/" + id + "?key=" + Config.API_KEY);

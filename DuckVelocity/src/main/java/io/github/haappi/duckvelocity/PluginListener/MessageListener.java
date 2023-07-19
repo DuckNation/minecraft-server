@@ -11,10 +11,9 @@ import io.github.haappi.duckvelocity.Chat.ChatHandler;
 import io.github.haappi.duckvelocity.DuckVelocity;
 import io.github.haappi.duckvelocity.Mute.Mute;
 import io.github.haappi.duckvelocity.Mute.MuteCommand;
+import io.github.haappi.duckvelocity.ServerSwitcher.ServerSwitcher;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-
-import java.util.concurrent.TimeUnit;
 
 import static io.github.haappi.duckvelocity.Utils.parseMillisToTime;
 
@@ -58,12 +57,7 @@ public class MessageListener {
                 switch (channel) {
                     case "Chat" -> ChatHandler.handle(action, args.split(";"));
                     case "Server" -> {
-                        Player player = ((ServerConnection) event.getSource()).getPlayer();
-                        DuckVelocity.getInstance().getProxy().getServer(action).ifPresent(val -> {
-                                player.sendMessage(Component.text("Sending you to ", NamedTextColor.AQUA).append(Component.text(action, NamedTextColor.GOLD)));
-                            DuckVelocity.getInstance().getProxy().getScheduler().buildTask(DuckVelocity.getInstance(), () -> player.createConnectionRequest(val).fireAndForget()).delay(2, TimeUnit.SECONDS).schedule();
-
-                    });
+                        ServerSwitcher.handle(((ServerConnection) event.getSource()).getPlayer(), action);
                     }
                     case "Message" -> {
                         Player player = ((ServerConnection) event.getSource()).getPlayer();

@@ -11,7 +11,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,7 +46,8 @@ public class Perms implements Listener {
                 event.getPlayer().sendMessage(cmd);
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
             }
-            if (data.size() > 1) event.getPlayer().sendMessage("added the above perms, contact haappi if you didnt receive them with a screenshot.");
+            if (data.size() > 1)
+                event.getPlayer().sendMessage("added the above perms, contact haappi if you didnt receive them with a screenshot.");
 
         } catch (IOException e) {
             throw new RuntimeException(e);

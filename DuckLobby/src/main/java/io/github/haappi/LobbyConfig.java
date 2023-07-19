@@ -41,7 +41,8 @@ public class LobbyConfig {
             spawnPitch = Float.parseFloat(config.getProperty("spawn-pitch", "0.0"));
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }    }
+        }
+    }
 
 
     private void saveDefaultConfig(String filename) {

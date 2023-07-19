@@ -2,7 +2,6 @@ package io.github.haappi.duckpaper.chat;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import com.sun.jna.platform.win32.COM.util.ComThread;
 import io.github.haappi.duckpaper.DuckPaper;
 import io.github.haappi.duckpaper.chat.commands.Chat;
 import io.github.haappi.duckpaper.utils.Config;
@@ -34,11 +33,11 @@ import static io.github.haappi.duckpaper.utils.Utils.stringToByteArray;
 
 public class ChatHandler implements Listener {
     public static final ConcurrentHashMap<UUID, String> currentChannel = new ConcurrentHashMap<>();
-    private static final ConcurrentHashMap<UUID, ArrayList<String>> allowedChannels = new ConcurrentHashMap<>();
     public static final HashSet<UUID> mutedPlayers = new HashSet<>();
+    private static final ConcurrentHashMap<UUID, ArrayList<String>> allowedChannels = new ConcurrentHashMap<>();
     public static boolean muted = false;
-    private final DuckPaper plugin;
     public static boolean grayify = false;
+    private final DuckPaper plugin;
 
     public ChatHandler(DuckPaper instance) {
         this.plugin = instance;

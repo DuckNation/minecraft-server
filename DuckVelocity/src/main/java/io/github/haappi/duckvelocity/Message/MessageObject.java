@@ -17,22 +17,6 @@ public class MessageObject {
         this.lastMessageTime = System.currentTimeMillis(); // 10 minutes
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
-    public long getLastMessageTime() {
-        return lastMessageTime;
-    }
-
-    public void setLastMessageTime() {
-        this.lastMessageTime = System.currentTimeMillis();
-    }
-
-    public boolean shouldDeleteFromMap() {
-        return System.currentTimeMillis() - lastMessageTime > 600000; // 10 minutes
-    }
-
     public static @Nullable Player getLastMessaged(Player source) {
         if (source == null) {
             return null;
@@ -59,5 +43,21 @@ public class MessageObject {
         } else {
             lastMessaged.put(target.getUniqueId(), new MessageObject(source));
         }
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public long getLastMessageTime() {
+        return lastMessageTime;
+    }
+
+    public void setLastMessageTime() {
+        this.lastMessageTime = System.currentTimeMillis();
+    }
+
+    public boolean shouldDeleteFromMap() {
+        return System.currentTimeMillis() - lastMessageTime > 600000; // 10 minutes
     }
 }

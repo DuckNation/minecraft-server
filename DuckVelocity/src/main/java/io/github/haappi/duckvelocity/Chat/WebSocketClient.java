@@ -15,6 +15,7 @@ public class WebSocketClient {
     protected WebSocketContainer container;
     protected Session userSession = null;
     private String sServer;
+
     public WebSocketClient(MessageCallback callback) {
         this.callback = callback;
         container = ClientManager.createClient();

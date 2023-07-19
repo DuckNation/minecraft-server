@@ -1,34 +1,30 @@
 package io.github.haappi.NPC;
 
 import net.minestom.server.coordinate.Pos;
-import net.minestom.server.entity.Player;
 import net.minestom.server.entity.PlayerSkin;
 import net.minestom.server.entity.fakeplayer.FakePlayer;
 import net.minestom.server.entity.fakeplayer.FakePlayerOption;
-import net.minestom.server.item.Enchantment;
-import net.minestom.server.item.ItemStack;
-import net.minestom.server.item.Material;
 import net.minestom.server.scoreboard.Team;
 
 import java.util.UUID;
 
 public class NPCPojo {
-    private  String username;
-    private  double x;
-    private  double y;
-    private  double z;
-    private  float yaw;
-    private  float pitch;
-    private  String data;
-    private  String skinTexture;
-    private  String skinSignature;
+    private String username;
+    private double x;
+    private double y;
+    private double z;
+    private float yaw;
+    private float pitch;
+    private String data;
+    private String skinTexture;
+    private String skinSignature;
 
-    private  ItemPojo mainHand;
-    private  ItemPojo offHand;
-    private  ItemPojo helmet;
-    private  ItemPojo chestplate;
-    private  ItemPojo leggings;
-    private  ItemPojo boots;
+    private ItemPojo mainHand;
+    private ItemPojo offHand;
+    private ItemPojo helmet;
+    private ItemPojo chestplate;
+    private ItemPojo leggings;
+    private ItemPojo boots;
 
     public String getUsername() {
         return username;

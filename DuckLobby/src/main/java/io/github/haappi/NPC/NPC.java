@@ -12,13 +12,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class NPC {
 
-    private final Player player;
-    private final Pos position;
-    private final String data;
-//    private final String skinTexture;
+    //    private final String skinTexture;
 //    private final String skinSignature;
     private static final ConcurrentHashMap<NPC, String> NPCS = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Integer, NPC> IDMapping = new ConcurrentHashMap<>();
+    private final Player player;
+    private final Pos position;
+    private final String data;
 
     public NPC(Player player, Pos position, String command) {
         this.player = player;
@@ -27,18 +27,6 @@ public class NPC {
 
         NPCS.put(this, command);
         IDMapping.put(this.player.getEntityId(), this);
-    }
-
-    public Player getPlayer() {
-        return this.player;
-    }
-
-    public String getData() {
-        return this.data;
-    }
-
-    private Pos getPosition() {
-        return this.position;
     }
 
     public static NPC getNPC(Integer entityID) {
@@ -61,5 +49,17 @@ public class NPC {
                 );
             });
         }
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    public String getData() {
+        return this.data;
+    }
+
+    private Pos getPosition() {
+        return this.position;
     }
 }

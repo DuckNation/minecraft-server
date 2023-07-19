@@ -7,7 +7,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import javax.inject.Named;
 import java.util.List;
 
 public class Gray extends Command {

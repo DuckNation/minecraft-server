@@ -31,7 +31,7 @@ public class MuteChat extends Command {
     public Component usage() {
         return Component.text()
                 .append(Component.text("Usage: ", NamedTextColor.RED))
-                .append(Component.text("/grayify ", NamedTextColor.YELLOW)).build();
+                .append(Component.text("/chatmute ", NamedTextColor.YELLOW)).build();
 
     }
 }

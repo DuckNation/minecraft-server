@@ -12,7 +12,9 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.entity.fakeplayer.FakePlayer;
 import net.minestom.server.event.GlobalEventHandler;
 import net.minestom.server.event.entity.EntityAttackEvent;
-import net.minestom.server.event.player.*;
+import net.minestom.server.event.player.PlayerEntityInteractEvent;
+import net.minestom.server.event.player.PlayerLoginEvent;
+import net.minestom.server.event.player.PlayerMoveEvent;
 import net.minestom.server.extras.velocity.VelocityProxy;
 import net.minestom.server.instance.AnvilLoader;
 import net.minestom.server.instance.InstanceContainer;
@@ -31,9 +33,9 @@ import java.util.stream.Collectors;
 import static io.github.haappi.Utils.stringToByteArray;
 
 public class Main {
-    private static DimensionType LOBBY;
-    private static final ConcurrentHashMap<UUID, Long> simpleCooldown = new ConcurrentHashMap<>();
     public static final Gson gson = new Gson();
+    private static final ConcurrentHashMap<UUID, Long> simpleCooldown = new ConcurrentHashMap<>();
+    private static DimensionType LOBBY;
 
     private static DimensionType generateDimension() {
         return DimensionType.OVERWORLD;
@@ -56,7 +58,7 @@ public class Main {
     }
 
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
         MinecraftServer minecraftServer = MinecraftServer.init();
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();
         Main.LOBBY = generateDimension();
@@ -97,7 +99,7 @@ public class Main {
             Player player = event.getPlayer();
             if (player.getPosition().y() < 60) {
                 player.teleport(SPAWN);
-            };
+            }
         });
 
         globalEventHandler.addListener(EntityAttackEvent.class, event -> {
@@ -137,7 +139,6 @@ public class Main {
         }
 
 
-
         world.scheduler().submitTask(() -> {
             if (world.getPlayers().size() <= 3) {
                 return TaskSchedule.seconds(3);
@@ -149,8 +150,6 @@ public class Main {
             return TaskSchedule.seconds(1);
 
         });
-
-
 
 
         VelocityProxy.enable(config.getVelocitySecret());

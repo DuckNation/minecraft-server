@@ -15,7 +15,7 @@ public class PluginListener implements PluginMessageListener {
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
         if (!channel.equals(PLUGIN_CHANNEL)) {
-         return;
+            return;
         }
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String channell = in.readUTF();
@@ -35,14 +35,12 @@ public class PluginListener implements PluginMessageListener {
 
         }
 
-        switch (channell) {
-            case "Mute" -> {
-                if (action.equals("muted")) {
-                    mutedPlayers.add(UUID.fromString(args));
-                }
-                if (action.equals("unmuted")) {
-                    mutedPlayers.remove(UUID.fromString(args));
-                }
+        if (channell.equals("Mute")) {
+            if (action.equals("muted")) {
+                mutedPlayers.add(UUID.fromString(args));
+            }
+            if (action.equals("unmuted")) {
+                mutedPlayers.remove(UUID.fromString(args));
             }
         }
     }

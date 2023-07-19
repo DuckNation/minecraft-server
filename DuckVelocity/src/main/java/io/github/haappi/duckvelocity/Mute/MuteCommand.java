@@ -5,8 +5,6 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.ServerConnection;
 import io.github.haappi.duckvelocity.DuckVelocity;
-import io.github.haappi.duckvelocity.Message.MessageObject;
-import io.github.haappi.duckvelocity.Message.Reply;
 import io.github.haappi.duckvelocity.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -31,6 +29,8 @@ public class MuteCommand implements SimpleCommand {
             ArrayList<UUID> toRemove = new ArrayList<>();
             for (Map.Entry<UUID, Mute> entry : mutedNoobs.entrySet()) {
                 if (entry.getValue()
+
+
                         .getMuteTime() < System.currentTimeMillis()) {
                     toRemove.add(entry.getKey());
                 }
