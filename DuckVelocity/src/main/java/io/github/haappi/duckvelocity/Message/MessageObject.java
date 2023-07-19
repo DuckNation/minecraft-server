@@ -32,7 +32,7 @@ public class MessageObject {
         if (source == null || target == null) {
             return;
         }
-        
+
         lastMessaged.put(source.getUniqueId(), new MessageObject(target.getUniqueId()));
         lastMessaged.put(target.getUniqueId(), new MessageObject(source.getUniqueId()));
     }
