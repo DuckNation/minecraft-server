@@ -26,7 +26,7 @@ public class ServerSwitcher {
                 }
 
                 player.sendMessage(DuckVelocity.getInstance().getMiniMessage().deserialize(
-                        String.format("<red>Server <gold>%s</gold> you selected is currently offline. Please wait <aqua>60</aqua> seconds as it's being loaded.",
+                        String.format("<red>Server <gold>%s</gold> is currently offline. Please wait <aqua>60</aqua> seconds as it's being loaded.",
                                 server)
                 ));
                 HttpGet get = new HttpGet("https://quack.boo/servers/" + server);

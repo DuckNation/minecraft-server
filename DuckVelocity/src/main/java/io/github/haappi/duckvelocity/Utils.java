@@ -136,6 +136,12 @@ public class Utils {
     }
 
     public static List<String> getPlayersFromInvocation(SimpleCommand.Invocation invocation) {
+        if (invocation.arguments().length == 0) {
+            return DuckVelocity.getInstance().getProxy().getAllPlayers().stream().map(Player::getUsername).toList();
+        }
+        if (invocation.arguments().length > 1) {
+            return List.of();
+        }
         List<String> players = new ArrayList<>();
         for (Player player : DuckVelocity.getInstance().getProxy().getAllPlayers()) {
             if (player.getUsername().toLowerCase().startsWith(invocation.arguments()[0].toLowerCase())) {

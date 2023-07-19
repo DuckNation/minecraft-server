@@ -1,6 +1,7 @@
 package io.github.haappi.duckvelocity.Message;
 
 import com.velocitypowered.api.proxy.Player;
+import io.github.haappi.duckvelocity.DuckVelocity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -9,10 +10,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MessageObject {
     public static final ConcurrentHashMap<UUID, MessageObject> lastMessaged = new ConcurrentHashMap<>();
 
-    private final Player player;
+    private final UUID player;
     private long lastMessageTime;
 
-    public MessageObject(Player player) {
+    public MessageObject(UUID player) {
         this.player = player;
         this.lastMessageTime = System.currentTimeMillis(); // 10 minutes
     }
@@ -21,8 +22,8 @@ public class MessageObject {
         if (source == null) {
             return null;
         }
-        if (lastMessaged.containsKey(source)) {
-            return lastMessaged.get(source).getPlayer();
+        if (lastMessaged.containsKey(source.getUniqueId())) {
+            return DuckVelocity.getInstance().getProxy().getPlayer(lastMessaged.get(source.getUniqueId()).getPlayer()).orElse(null);
         }
         return null;
     }
@@ -31,21 +32,12 @@ public class MessageObject {
         if (source == null || target == null) {
             return;
         }
-
-        if (lastMessaged.containsKey(source.getUniqueId())) {
-            lastMessaged.get(source.getUniqueId()).setLastMessageTime();
-        } else {
-            lastMessaged.put(source.getUniqueId(), new MessageObject(target));
-        }
-
-        if (lastMessaged.containsKey(target.getUniqueId())) {
-            lastMessaged.get(target.getUniqueId()).setLastMessageTime();
-        } else {
-            lastMessaged.put(target.getUniqueId(), new MessageObject(source));
-        }
+        
+        lastMessaged.put(source.getUniqueId(), new MessageObject(target.getUniqueId()));
+        lastMessaged.put(target.getUniqueId(), new MessageObject(source.getUniqueId()));
     }
 
-    public Player getPlayer() {
+    public UUID getPlayer() {
         return player;
     }
 
@@ -59,5 +51,9 @@ public class MessageObject {
 
     public boolean shouldDeleteFromMap() {
         return System.currentTimeMillis() - lastMessageTime > 600000; // 10 minutes
+    }
+
+    public String toString() {
+        return "MessageObject{player=" + this.player + ", lastMessageTime=" + this.lastMessageTime + "}";
     }
 }

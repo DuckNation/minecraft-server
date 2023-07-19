@@ -27,7 +27,7 @@ public class Reply implements SimpleCommand {
         toMessage.sendMessage(message);
         invocation.source().sendMessage(message);
 
-        if (invocation instanceof Player player) {
+        if (invocation.source() instanceof Player player) {
             updateLastMessage(player, toMessage);
         }
     }
@@ -53,7 +53,7 @@ public class Reply implements SimpleCommand {
             return;
         }
 
-        doMessage(invocation, toMessage, String.join(" ", invocation.arguments()));
+        doMessage(invocation, toMessage, " " + String.join(" ", invocation.arguments()));
     }
 
     @Override
