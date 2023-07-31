@@ -29,10 +29,11 @@ public class ServerSwitcher {
                         String.format("<red>Server <gold>%s</gold> is currently offline. Please wait <aqua>60</aqua> seconds as it's being loaded.",
                                 server)
                 ));
-                HttpGet get = new HttpGet("https://quack.boo/servers/" + server);
+                HttpGet get = new HttpGet("http://172.17.0.1:2222/" + server);
                 try {
                     DuckVelocity.httpClient.execute(get);
                 } catch (IOException e) {
+                    player.sendMessage(Component.text("Something went wrong while trying to start the server...", NamedTextColor.RED));
                     throw new RuntimeException(e);
                 }
 
@@ -42,7 +43,8 @@ public class ServerSwitcher {
                     if (pingServer(server)) {
                         player.sendMessage(Component.text("Sending you to ", NamedTextColor.AQUA).append(Component.text(server, NamedTextColor.GOLD)));
                         DuckVelocity.getInstance().getProxy().getScheduler().buildTask(DuckVelocity.getInstance(), () -> player.createConnectionRequest(val).fireAndForget()
-                        ).delay(3, TimeUnit.SECONDS).schedule();
+                        ).delay(2, TimeUnit.SECONDS).schedule();
+
                         shutUpStopSpamming.get(player.getUniqueId()).cancel();
                         shutUpStopSpamming.remove(player.getUniqueId());
                     }
